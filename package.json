@@ -6,7 +6,15 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint-staged": "lint-staged",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -33,6 +41,8 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react-hooks": "^4.5.0",
     "prettier": "^2.7.1",
-    "vite": "^3.0.7"
+    "vite": "^3.0.7",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3"
   }
 }
