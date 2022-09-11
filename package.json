@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test": "npm run test:unit",
+    "test": "npm run test:unit && npm run test:e2e",
     "test:unit": "jest",
     "test:e2e": "cypress open",
     "lint-staged": "lint-staged",
