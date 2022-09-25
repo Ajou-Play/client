@@ -1,16 +1,23 @@
-import { useToggle } from '@Hook/.';
+import { Route, Routes } from 'react-router-dom';
+
+import { LoginPage, MainPage, RegisterPage } from '@Page/.';
 
 function App() {
-  const { state, toggleState } = useToggle();
   return (
-    <div
-      className='App'
-      onClick={toggleState}
-      aria-hidden
-    >
-      hihihihihi
-      {state && <div>hihi</div>}
-    </div>
+    <Routes>
+      <Route
+        path='/main'
+        element={<MainPage />}
+      />
+      <Route
+        path='/login'
+        element={<LoginPage />}
+      />
+      <Route
+        path='/register'
+        element={<RegisterPage />}
+      />
+    </Routes>
   );
 }
 export default App;
