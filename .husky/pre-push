@@ -1,4 +1,14 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npm run build && npm run test
+protected_branch='main'
+current_branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
+
+if [ $protected_branch = $current_branch ]
+then
+    echo "${protected_branch} is a protected branch, create PR to merge"
+    exit 1 # push will not execute
+else
+    npm run build && npm run test
+    exit 0 # push will execute
+fi
