@@ -1,14 +1,22 @@
 import { useChannelList, useChannelSelect, useTeamList, useTeamSelect } from './MainPage.hook';
 
-import { TeamList, TeamCreateModal } from '@Component/.';
-import { TeamInfoContainer, BasicTeamInfo } from '@Component/TeamInfoContainer';
+import {
+  TeamInfoContainer,
+  BasicTeamInfo,
+  TeamList,
+  TeamCreateModal,
+  ChannelInfoContainer,
+} from '@Component/.';
+import { getChannelInfo } from '@Component/ChannelInfoContainer/ChannelInfoContainer.util';
 import { useToggle } from '@Hook/.';
 
 export const MainPage = () => {
+  const [teamList, handleAddTeam, handleDeleteTeam] = useTeamList();
   const [teamSelect, handleChangeTeamSelect] = useTeamSelect();
-  const [list, handleAddTeam, handleDeleteTeam] = useTeamList();
-  const ChannelList = useChannelList({ teamId: list[teamSelect].teamId });
+
+  const channelList = useChannelList({ teamId: teamList[teamSelect].teamId });
   const [channelSelect, handleChangeChannelSelect] = useChannelSelect();
+
   const {
     state: modalState,
     trueState: handleModalOpen,
@@ -17,18 +25,21 @@ export const MainPage = () => {
   return (
     <div className='flex'>
       <TeamList
-        list={list}
+        list={teamList}
         teamSelect={teamSelect}
         handleChangeTeamSelect={handleChangeTeamSelect}
         handleModalOpen={handleModalOpen}
       />
       <TeamInfoContainer teamName='팀명은 A-play'>
         <BasicTeamInfo
-          ChannelList={ChannelList}
+          ChannelList={channelList}
           channelSelect={channelSelect}
           handleChangeChannelSelect={handleChangeChannelSelect}
         />
       </TeamInfoContainer>
+      <ChannelInfoContainer {...getChannelInfo({ channels: channelList, id: channelSelect })}>
+        <div>1</div>
+      </ChannelInfoContainer>
       {modalState && (
         <TeamCreateModal
           handleAddTeam={handleAddTeam}
