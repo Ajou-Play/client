@@ -1,0 +1,17 @@
+import { TeamType } from '@Component/TeamList/TeamList.type';
+
+export type UseTeamListResult = {
+  teamList: TeamType[];
+  handleAddTeam: ({ teamId, img, name }: TeamType) => void;
+  handleDeleteTeam: (e: any) => void;
+};
+export type UseTeamList = () => UseTeamListResult;
+
+export type UseTeamSelect = {
+  teamSelect: number;
+  handleChangeTeamSelect: (e: any) => void;
+};
+export type UseChannelSelect = {
+  channelSelect: number;
+  handleChangeChannelSelect: (e: any) => void;
+};
