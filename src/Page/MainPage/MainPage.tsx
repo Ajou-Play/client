@@ -14,14 +14,15 @@ export const MainPage = () => {
   const [teamList, handleAddTeam, handleDeleteTeam] = useTeamList();
   const [teamSelect, handleChangeTeamSelect] = useTeamSelect();
 
-  const channelList = useChannelList({ teamId: teamList[teamSelect].teamId });
-  const [channelSelect, handleChangeChannelSelect] = useChannelSelect();
+  const channelList = useChannelList({ teamId: teamList[teamSelect]?.teamId });
+  const [channelSelect, handleChangeChannelSelect] = useChannelSelect(teamSelect);
 
   const {
     state: modalState,
     trueState: handleModalOpen,
     falseState: handleModalClose,
   } = useToggle(false);
+
   return (
     <div className='flex'>
       <TeamList
@@ -30,7 +31,7 @@ export const MainPage = () => {
         handleChangeTeamSelect={handleChangeTeamSelect}
         handleModalOpen={handleModalOpen}
       />
-      <TeamInfoContainer teamName='팀명은 A-play'>
+      <TeamInfoContainer teamName={teamList[teamSelect]?.name}>
         <BasicTeamInfo
           ChannelList={channelList}
           channelSelect={channelSelect}

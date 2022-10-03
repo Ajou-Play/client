@@ -5,7 +5,6 @@ export type TeamType = {
   teamId: number;
   name: string;
 };
-export type TempList = TeamType[];
 
 export type TeamItemProps = {
   select: boolean;
@@ -18,7 +17,7 @@ export type TeamAddItemProps = {
 };
 
 export type TeamListProps = {
-  list: TempList;
+  list: TeamType[];
   teamSelect: UseTeamSelect[0];
   handleChangeTeamSelect: UseTeamSelect[1];
   handleModalOpen: () => void;

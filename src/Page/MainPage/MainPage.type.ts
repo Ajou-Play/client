@@ -1,7 +1,7 @@
-import { TeamType, TempList } from '@Component/TeamList/TeamList.type';
+import { TeamType } from '@Component/TeamList/TeamList.type';
 
 export type UseTeamListResult = [
-  TempList,
+  TeamType[],
   ({ teamId, img, name }: TeamType) => void,
   (e: any) => void,
 ];
