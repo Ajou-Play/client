@@ -1,26 +1,16 @@
 import { BasicTeamInfoProps } from './BasicTeamInfo.type';
+import { getChannelIconSrc } from './BasicTeamInfo.util';
 
 const imgSize = 'w-4 h-4';
 const ChannelBasicClassName =
   'flex items-center space-x-2 p-[10px] h-8 box-border mb-2 cursor-pointer';
 const Channel = ({ name, select, dataId }: { name: string; select: boolean; dataId: number }) => {
-  const src =
-    name === 'General'
-      ? select
-        ? '/asset/GeneralChannelIcon.svg'
-        : '/asset/NoGeneralChannelIcon.svg'
-      : select
-      ? '/asset/ChannelIcon.svg'
-      : '/asset/NoChannelIcon.svg';
+  const src = getChannelIconSrc({ name, select });
   return (
     <div
       id='ChannelItem'
       data-id={dataId}
-      className={
-        select ? `${ChannelBasicClassName} bg-select-rgba rounded-lg` : `${ChannelBasicClassName}`
-      }
-
-      // border-radius: 8px;
+      className={`${ChannelBasicClassName} ${select ? 'bg-select-rgba rounded-lg' : ''}`}
     >
       <img
         src={src}

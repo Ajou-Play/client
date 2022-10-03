@@ -20,3 +20,6 @@ export const getChannelInfo = ({ channels, id }: GetChannelInfo) => {
   const [target] = filterChannelSameId({ channels, id });
   return target ?? (EMPTY_CHANNEL as ChannelType);
 };
+
+export const getChannelIconSrc = ({ channelId }: { channelId: number }) =>
+  channelId === -1 ? '/asset/BlackGeneralChannelIcon.svg' : '/asset/BlackChannelIcon.svg';

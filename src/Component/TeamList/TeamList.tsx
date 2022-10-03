@@ -7,9 +7,7 @@ const TeamItem = ({ select, img, idx }: TeamItemProps) => {
       id='TeamItem'
       data-id={idx}
       src={img}
-      className={
-        select ? `${basicClassName} border-2 border-solid border-main-color` : `${basicClassName}`
-      }
+      className={`${basicClassName} ${select ? 'border-2 border-solid border-main-color' : ''}`}
       alt='팀'
     />
   );

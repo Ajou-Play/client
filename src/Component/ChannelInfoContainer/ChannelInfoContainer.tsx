@@ -1,7 +1,8 @@
 import { ChannelInfoContainerType } from './ChannelInfoContainer.type';
+import { getChannelIconSrc } from './ChannelInfoContainer.util';
 
 export const ChannelInfoContainer = ({ children, channelId, name }: ChannelInfoContainerType) => {
-  const src = channelId === -1 ? '/asset/NoGeneralChannelIcon.svg' : '/asset/NoChannelIcon.svg';
+  const src = getChannelIconSrc({ channelId });
   return (
     <div className='w-[calc(100vw-362px)]'>
       <div className='flex w-[100%] h-[80px] items-center pl-[20px] space-x-4 leading-5.5 font-extrabold'>
