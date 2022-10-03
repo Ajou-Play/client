@@ -11,11 +11,11 @@ import { getChannelInfo } from '@Component/ChannelInfoContainer/ChannelInfoConta
 import { useToggle } from '@Hook/.';
 
 export const MainPage = () => {
-  const [teamList, handleAddTeam, handleDeleteTeam] = useTeamList();
-  const [teamSelect, handleChangeTeamSelect] = useTeamSelect();
+  const { teamList, handleAddTeam, handleDeleteTeam } = useTeamList();
+  const { teamSelect, handleChangeTeamSelect } = useTeamSelect();
 
   const channelList = useChannelList({ teamId: teamList[teamSelect]?.teamId });
-  const [channelSelect, handleChangeChannelSelect] = useChannelSelect(teamSelect);
+  const { channelSelect, handleChangeChannelSelect } = useChannelSelect(teamSelect);
 
   const {
     state: modalState,

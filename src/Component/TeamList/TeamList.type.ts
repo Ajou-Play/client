@@ -18,7 +18,5 @@ export type TeamAddItemProps = {
 
 export type TeamListProps = {
   list: TeamType[];
-  teamSelect: UseTeamSelect[0];
-  handleChangeTeamSelect: UseTeamSelect[1];
   handleModalOpen: () => void;
-};
+} & Pick<UseTeamSelect, 'teamSelect' | 'handleChangeTeamSelect'>;

@@ -8,7 +8,4 @@ export type ChannelType = {
 
 export type BasicTeamInfoProps = {
   ChannelList: ChannelType[];
-} & {
-  channelSelect: UseChannelSelect[0];
-  handleChangeChannelSelect: UseChannelSelect[1];
-};
+} & Pick<UseChannelSelect, 'channelSelect' | 'handleChangeChannelSelect'>;

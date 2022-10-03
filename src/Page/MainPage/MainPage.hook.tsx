@@ -7,9 +7,9 @@ import { ChannelType } from '@Component/TeamInfoContainer/BasicTeamInfo/BasicTea
 import { TeamType } from '@Component/TeamList/TeamList.type';
 
 export const useTeamList: UseTeamList = () => {
-  const [list, setList] = useState<TeamType[]>([]);
+  const [teamList, setTeamList] = useState<TeamType[]>([]);
   const handleAddTeam = ({ teamId, img, name }: TeamType) => {
-    setList((prev) => [
+    setTeamList((prev) => [
       ...prev,
       {
         teamId,
@@ -22,16 +22,16 @@ export const useTeamList: UseTeamList = () => {
     const target = e.target.closest('#TeamOption');
     if (!target) return;
     const { id } = target.dataset;
-    setList((prev) => prev.filter((item) => (item?.teamId ?? -1) !== id));
+    setTeamList((prev) => prev.filter((item) => (item?.teamId ?? -1) !== id));
   };
 
   useEffect(() => {
     getTeams()
-      .then(setList)
-      .catch((e) => setList([]));
+      .then(setTeamList)
+      .catch((e) => setTeamList([]));
   }, []);
 
-  return [list, handleAddTeam, handleDeleteTeam];
+  return { teamList, handleAddTeam, handleDeleteTeam };
 };
 
 export const useTeamSelect = (): UseTeamSelect => {
@@ -41,32 +41,35 @@ export const useTeamSelect = (): UseTeamSelect => {
     if (!target) return;
     setTeamSelect(Number(target.dataset.id));
   }, []);
-  return [teamSelect, handleChangeTeamSelect];
+  return { teamSelect, handleChangeTeamSelect };
 };
 
 export const useChannelList = ({ teamId }: { teamId: number }) => {
-  const [list, setList] = useState<ChannelType[]>([]);
+  const [channelList, setChannelList] = useState<ChannelType[]>([]);
 
   useEffect(() => {
     getChannels({ teamId })
-      .then(setList)
-      .catch((e) => setList([]));
+      .then(setChannelList)
+      .catch((e) => setChannelList([]));
   }, [teamId]);
 
-  return list;
+  return channelList;
 };
 
 export const useChannelSelect = (deps: number): UseChannelSelect => {
-  const [select, setSelect] = useState<number>(-1);
-  const handleChangeSelect = (e: any) => {
+  const [channelSelect, setChannelSelect] = useState<number>(-1);
+  const handleChangeChannelSelect = (e: any) => {
     const target = e.target.closest('#ChannelItem');
     if (!target) return;
-    setSelect(Number(target.dataset.id));
+    setChannelSelect(Number(target.dataset.id));
   };
 
   useEffect(() => {
-    setSelect(-1);
+    setChannelSelect(-1);
   }, [deps]);
 
-  return [select, handleChangeSelect];
+  return {
+    channelSelect,
+    handleChangeChannelSelect,
+  };
 };
