@@ -4,7 +4,6 @@ export type LoginFormType = {
 };
 
 export type LoginFormProps = {
-  // eslint-disable-next-line no-unused-vars
   onSubmit: (data: LoginFormType) => void;
   handleSignUpButton: () => void;
   handleFindPwdButton: () => void;
