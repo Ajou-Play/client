@@ -7,14 +7,14 @@ import {
   SignUpButton,
 } from './LoginForm.style';
 
-import { LoginInput, LoginFormType } from '@Component/.';
+import { LoginInput, LoginFormType, LoginFormProps } from '@Component/.';
 
-export const LoginForm = () => {
+export const LoginForm = ({
+  onSubmit,
+  handleSignUpButton,
+  handleFindPwdButton,
+}: LoginFormProps) => {
   const { register, handleSubmit } = useForm<LoginFormType>();
-
-  const onSubmit = (data: LoginFormType) => {
-    console.log(data);
-  };
 
   return (
     <form
@@ -33,6 +33,7 @@ export const LoginForm = () => {
       />
       <button
         type='button'
+        onClick={handleFindPwdButton}
         className={FindPasswordButton}
       >
         Forgot password?
@@ -45,6 +46,7 @@ export const LoginForm = () => {
       </button>
       <button
         type='button'
+        onClick={handleSignUpButton}
         className={SignUpButton}
       >
         or Sign up
