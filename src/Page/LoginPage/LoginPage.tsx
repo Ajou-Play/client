@@ -1,6 +1,7 @@
 import { LoginPageWrapper, LoginPageTitle } from './LoginPage.style';
 
-import { LoginForm, LoginFormType } from '@Component/.';
+import { LoginForm } from '@Component/.';
+import type { LoginFormType } from '@Component/.';
 
 export const LoginPage = () => {
   const onSubmit = (data: LoginFormType) => {

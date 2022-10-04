@@ -2,7 +2,7 @@ import React from 'react';
 
 import { LoginInputWrapper, LoginInputTitle, LoginInputStyle } from './LoginInput.style';
 
-import { InputType } from '@Component/.';
+import type { InputType } from '@Component/.';
 
 export const LoginInput = React.forwardRef<HTMLInputElement, InputType>(
   ({ titleContent, placeholder, ...rest }, ref) => (

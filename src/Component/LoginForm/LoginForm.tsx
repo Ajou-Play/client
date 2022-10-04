@@ -7,7 +7,8 @@ import {
   SignUpButton,
 } from './LoginForm.style';
 
-import { LoginInput, LoginFormType, LoginFormProps } from '@Component/.';
+import { LoginInput } from '@Component/.';
+import type { LoginFormType, LoginFormProps } from '@Component/.';
 
 export const LoginForm = ({
   onSubmit,
