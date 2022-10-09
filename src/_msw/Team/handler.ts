@@ -1,5 +1,9 @@
 import { Props } from '../type';
 
+type MockMemberList = {
+  [key: string]: any;
+};
+
 const tempTeamList = [
   {
     teamId: 1,
@@ -18,4 +22,56 @@ const tempTeamList = [
   },
 ];
 
+const mockMemberList: MockMemberList = {
+  '1': {
+    teamId: 1,
+    name: '팀 이름',
+    members: [
+      {
+        userId: 1,
+        name: '김승은',
+        email: 'julie0005@ajou.ac.kr',
+        profileImage: '프로필 이미지 스토리지 링크',
+        type: 'LOCAL',
+      },
+    ],
+    profileImage: '링크',
+  },
+  '2': {
+    teamId: 2,
+    name: '팀 이름',
+    members: [
+      {
+        userId: 1,
+        name: '김승은',
+        email: 'julie0005@ajou.ac.kr',
+        profileImage: '프로필 이미지 스토리지 링크',
+        type: 'LOCAL',
+      },
+    ],
+    profileImage: '링크',
+  },
+  '3': {
+    teamId: 3,
+    name: '팀 이름',
+    members: [
+      {
+        userId: 1,
+        name: '김승은',
+        email: 'julie0005@ajou.ac.kr',
+        profileImage: '프로필 이미지 스토리지 링크',
+        type: 'LOCAL',
+      },
+    ],
+    profileImage: '링크',
+  },
+};
+
 export const mockGetTeam: Props = (req, res, ctx) => res(ctx.json(tempTeamList));
+export const mockGetMemberByTeam: Props = (req, res, ctx) => {
+  const {
+    params: { teamId },
+  } = req;
+
+  return res(ctx.json(mockMemberList[teamId as string] ?? []));
+};
