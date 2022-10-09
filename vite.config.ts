@@ -13,6 +13,7 @@ export default defineConfig({
       { find: '@MSW', replacement: path.resolve(__dirname, 'src/_msw') },
       { find: '@Hook', replacement: path.resolve(__dirname, 'src/Hook') },
       { find: '@Page', replacement: path.resolve(__dirname, 'src/Page') },
+      { find: '@Util', replacement: path.resolve(__dirname, 'src/Util') },
     ],
   },
   server: {
