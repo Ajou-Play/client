@@ -43,7 +43,7 @@ export const ChannelInfoContainer = ({
           </button>
         </div>
       </div>
-      <div className='bg-[#C5C5C5] w-[100%] h-[100%]'>{children}</div>
+      <div className='bg-[#F1F1F1] w-[100%] h-[100%]'>{children}</div>
     </div>
   );
 };
