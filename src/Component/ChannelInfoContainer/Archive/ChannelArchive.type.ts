@@ -9,3 +9,5 @@ export type ArchiveType = {
 export type ArchiveListProps = {
   archiveItems: ArchiveType[];
 };
+
+export type ChannelArchiveProps = ArchiveListProps;

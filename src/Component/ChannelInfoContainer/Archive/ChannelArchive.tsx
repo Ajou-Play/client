@@ -1,60 +1,9 @@
 import React from 'react';
 
-import type { ArchiveListProps, ArchiveType } from './ChannelArchive.type';
+import type { ArchiveListProps, ArchiveType, ChannelArchiveProps } from './ChannelArchive.type';
 
 import { getElementId } from '@/Util';
 import { useMovePage } from '@Hook/.';
-
-const archiveList: ArchiveType[] = [
-  {
-    archiveId: 1,
-    archiveName: '첫 문서~',
-    archiveFormat: 'word',
-    updatedAt: new Date(),
-  },
-  {
-    archiveId: 2,
-    archiveName: '22 문서~',
-    archiveFormat: 'word',
-    updatedAt: new Date(),
-  },
-  {
-    archiveId: 3,
-    archiveName: '3 문서~',
-    archiveFormat: 'word',
-    updatedAt: new Date(),
-  },
-  {
-    archiveId: 4,
-    archiveName: '4 문서~',
-    archiveFormat: 'word',
-    updatedAt: new Date(),
-  },
-  {
-    archiveId: 5,
-    archiveName: '5 문서~',
-    archiveFormat: 'word',
-    updatedAt: new Date(),
-  },
-  {
-    archiveId: 6,
-    archiveName: '6 문서~',
-    archiveFormat: 'word',
-    updatedAt: new Date(),
-  },
-  {
-    archiveId: 7,
-    archiveName: '7 문서~',
-    archiveFormat: 'word',
-    updatedAt: new Date(),
-  },
-  {
-    archiveId: 8,
-    archiveName: '8 문서~',
-    archiveFormat: 'presentation',
-    updatedAt: new Date(),
-  },
-];
 
 const Archive = ({ archiveId, archiveName, archiveFormat, updatedAt }: ArchiveType) => {
   const src = archiveFormat === 'word' ? '/asset/wordFormat.svg' : '/asset/presentationFormat.svg';
@@ -89,7 +38,7 @@ const Archive = ({ archiveId, archiveName, archiveFormat, updatedAt }: ArchiveTy
   );
 };
 
-const ArchiveList = ({ archiveItems }: ArchiveListProps) => {
+export const ArchiveList = ({ archiveItems }: ArchiveListProps) => {
   const moveArchive = useMovePage() as Function;
   const handleArchiveClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const id = getElementId(e, '#archiveItem');
@@ -113,13 +62,13 @@ const ArchiveList = ({ archiveItems }: ArchiveListProps) => {
     </div>
   );
 };
-export const ChannelArchive = () => {
+export const ChannelArchive = ({ archiveItems }: ChannelArchiveProps) => {
   console.log('1');
   return (
     <div className='px-[48px] py-[50px] box-border'>
       <div>새 파일 만들기</div>
       <div>최근문서</div>
-      <ArchiveList archiveItems={archiveList} />
+      <ArchiveList archiveItems={archiveItems} />
     </div>
   );
 };
