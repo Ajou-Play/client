@@ -13,12 +13,13 @@ const Archive = ({ archiveId, archiveName, archiveFormat, updatedAt }: ArchiveTy
       data-id={archiveId}
       id='archiveItem'
     >
-      <div className='cursor-pointer'>
+      <div className='w-[100%] h-[224px] bg-[#D7D7D7] rounded-tl-lg rounded-tr-lg cursor-pointer relative'>
         <iframe
           src={String(archiveId)}
           title='archive'
-          className='w-[100%] h-[224px] bg-[#D7D7D7] rounded-tl-lg rounded-tr-lg'
+          className='w-[100%] h-[100%]'
         />
+        <div className='w-[100%] h-[100%] absolute inset-0' />
       </div>
       <div className='bg-[#FCFCFC] rounded-br-lg rounded-bl-lg py-[36px] px-[24px] box-border flex items-center'>
         <span>
