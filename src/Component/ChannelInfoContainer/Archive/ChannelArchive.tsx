@@ -1,6 +1,11 @@
 import React from 'react';
 
-import type { ArchiveListProps, ArchiveType, ChannelArchiveProps } from './ChannelArchive.type';
+import type {
+  ArchiveListProps,
+  ArchiveType,
+  ChannelArchiveProps,
+  CreateArchiveButtonProps,
+} from './ChannelArchive.type';
 
 import { getElementId } from '@/Util';
 import { useMovePage } from '@Hook/.';
@@ -44,13 +49,12 @@ export const ArchiveList = ({ archiveItems }: ArchiveListProps) => {
   const handleArchiveClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const id = getElementId(e, '#archiveItem');
     if (!id) return;
-    e.preventDefault();
     e.stopPropagation();
     moveArchive(`/archive/${id}`);
   };
   return (
     <div
-      className='flex flex-wrap justify-around items-stretch'
+      className='grid grid-cols-archive-layout gap-2'
       onClickCapture={handleArchiveClick}
       aria-hidden
     >
@@ -63,13 +67,59 @@ export const ArchiveList = ({ archiveItems }: ArchiveListProps) => {
     </div>
   );
 };
+
+const FORMAT_LIST: ({
+  id: number;
+} & CreateArchiveButtonProps)[] = [
+  {
+    id: 1,
+    archiveFormat: 'presentation',
+  },
+  {
+    id: 2,
+    archiveFormat: 'word',
+  },
+];
+const CreateArchiveButton = ({ archiveFormat }: CreateArchiveButtonProps) => {
+  const src = archiveFormat === 'word' ? '/asset/wordFormat.svg' : '/asset/presentationFormat.svg';
+  const name = archiveFormat === 'word' ? '문서 만들기' : '프레젠테이션 만들기';
+  return (
+    <div className='flex bg-[#FCFCFC] w-[362px] h-[100px] px-[36px] py-[24px] box-border rounded-lg mr-4 mt-6 mb-8 items-center justify-between cursor-pointer'>
+      <div className='flex items-center'>
+        <img
+          src={src}
+          alt='문서 아이콘'
+          width='24px'
+          height='24px'
+        />
+        <span className='ml-2'>{name}</span>
+      </div>
+      <div>
+        <img
+          src='/asset/plusIcon.svg'
+          alt='문서 만들기 버튼'
+          width='24px'
+          height='24px'
+        />
+      </div>
+    </div>
+  );
+};
 export const ChannelArchive = ({ archiveItems }: ChannelArchiveProps) => {
   console.log('1');
   return (
-    <div className='px-[48px] py-[50px] box-border'>
-      <div>새 파일 만들기</div>
-      <div>최근문서</div>
+    <>
+      <div className='text-[#403F40] font-extrabold'>새 파일 만들기</div>
+      <div className='flex'>
+        {FORMAT_LIST.map(({ id, archiveFormat }) => (
+          <CreateArchiveButton
+            key={id}
+            archiveFormat={archiveFormat}
+          />
+        ))}
+      </div>
+      <div className='text-[#403F40] font-extrabold'>최근문서</div>
       <ArchiveList archiveItems={archiveItems} />
-    </div>
+    </>
   );
 };

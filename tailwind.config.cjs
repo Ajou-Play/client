@@ -31,6 +31,9 @@ module.exports = {
           correct: '#32C896',
         },
       },
+      gridTemplateColumns: {
+        'archive-layout': 'repeat(auto-fill, minmax(362px, auto))',
+      },
     },
   },
   plugins: [],

@@ -43,7 +43,9 @@ export const ChannelInfoContainer = ({
           </button>
         </div>
       </div>
-      <div className='bg-[#F1F1F1] w-[100%] h-[100%]'>{children}</div>
+      <div className='bg-[#F1F1F1] w-[100%] h-[100%] px-[48px] py-[50px] box-border'>
+        {children}
+      </div>
     </div>
   );
 };

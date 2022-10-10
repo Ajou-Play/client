@@ -11,3 +11,7 @@ export type ArchiveListProps = {
 };
 
 export type ChannelArchiveProps = ArchiveListProps;
+
+export type CreateArchiveButtonProps = {
+  archiveFormat: ArchiveFormat;
+};
