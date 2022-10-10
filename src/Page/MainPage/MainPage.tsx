@@ -2,6 +2,7 @@ import {
   useChannelList,
   useChannelSelect,
   useMemberList,
+  useGetArchiveItems,
   useTeamList,
   useTeamSelect,
 } from './MainPage.hook';
@@ -15,9 +16,11 @@ import {
   ChannelInfoContainer,
   WindowContainer,
   ChannelArchive,
+  // ChannelHome,
 } from '@Component/.';
 import { getChannelInfo } from '@Component/ChannelInfoContainer/ChannelInfoContainer.util';
 import { useMultiSelection, useToggle } from '@Hook/.';
+// import { getItemsOfList } from '@Util/.';
 
 export const MainPage = () => {
   const {
@@ -25,6 +28,7 @@ export const MainPage = () => {
     handleChangeSelect,
     handleInit,
   } = useMultiSelection<windowType>('None');
+  const archiveItems = useGetArchiveItems();
   const { teamList, handleAddTeam, handleDeleteTeam } = useTeamList();
   const { teamSelect, handleChangeTeamSelect } = useTeamSelect();
 
@@ -57,11 +61,13 @@ export const MainPage = () => {
           handleChangeChannelSelect={handleChangeChannelSelect}
         />
       </TeamInfoContainer>
+
       <ChannelInfoContainer
         {...getChannelInfo({ channels: channelList, id: channelSelect })}
         handleClick={handleClick}
       >
-        <ChannelArchive />
+        {/* <ChannelHome archiveItems={getItemsOfList(archiveItems, 3)} /> */}
+        <ChannelArchive archiveItems={archiveItems} />
       </ChannelInfoContainer>
       {windowSelection !== 'None' && (
         <WindowContainer

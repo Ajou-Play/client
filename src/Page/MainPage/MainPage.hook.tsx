@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 
 import { UseTeamSelect, UseTeamList, UseChannelSelect } from './MainPage.type';
-import { getChannels, getTeams, getMembers } from './MainPage.util';
+import { getChannels, getTeams, getMembers, getArchives } from './MainPage.util';
 
 import { ChannelType } from '@Component/TeamInfoContainer/BasicTeamInfo/BasicTeamInfo.type';
 import { TeamType } from '@Component/TeamList/TeamList.type';
@@ -85,4 +85,16 @@ export const useMemberList = ({ teamId }: { teamId: number }) => {
   }, [teamId]);
 
   return memberList;
+};
+
+export const useGetArchiveItems = () => {
+  const [archiveList, setArchiveList] = useState([]);
+
+  useEffect(() => {
+    getArchives()
+      .then(setArchiveList)
+      .catch(() => setArchiveList([]));
+  }, []);
+
+  return archiveList;
 };
