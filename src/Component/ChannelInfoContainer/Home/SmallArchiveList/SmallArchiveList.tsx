@@ -16,17 +16,17 @@ export const SmallArchive = ({
   const dummyTime = updatedAt.toString().split('T')[0];
   return (
     <div
-      className='flex items-center justify-center w-[150px] h-[210px] rounded-2xl hover:bg-[#F1F1F1] cursor-pointer flex-col'
+      className='flex items-center justify-center w-[150px] h-[130px] rounded-2xl hover:bg-[#F1F1F1] cursor-pointer flex-col'
       id='archiveItem'
       data-id={archiveId}
     >
       <img
         src={src}
         alt='icon'
-        className='w-[100px] h-[84px]'
+        className='w-[80px] h-[67px]'
       />
-      <span className='text-primary-point-black text-xl mt-6 mb-3'>{archiveName}</span>
-      <span className='text-grey-label text-base'>{dummyTime}</span>
+      <span className='text-primary-point-black text-base mt-4 mb-1'>{archiveName}</span>
+      <span className='text-grey-label text-xs'>{dummyTime}</span>
     </div>
   );
 };
@@ -41,7 +41,7 @@ export const SmallArchiveList = ({ archiveItems }: SmallArchiveListProps) => {
   };
   return (
     <div
-      className='flex mt-6 w-[100%]'
+      className='flex mt-6 w-[100%] h-[100%]'
       onClickCapture={handleArchiveClick}
       aria-hidden
     >
