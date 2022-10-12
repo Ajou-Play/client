@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { ARCHIVE_FORMAT, ARCHIVE_NAME } from './ChannelArchive.const';
 import type {
   ArchiveListProps,
   ArchiveType,
@@ -11,7 +12,7 @@ import { getElementId } from '@/Util';
 import { useMovePage } from '@Hook/.';
 
 const Archive = ({ archiveId, archiveName, archiveFormat, updatedAt }: ArchiveType) => {
-  const src = archiveFormat === 'word' ? '/asset/wordFormat.svg' : '/asset/presentationFormat.svg';
+  const src = ARCHIVE_FORMAT[archiveFormat];
   return (
     <div
       className='w-[362px] h-[344px] rounded-tl-lg rounded-tr-lg mt-[20px] cursor-pointer'
@@ -81,8 +82,8 @@ const FORMAT_LIST: ({
   },
 ];
 const CreateArchiveButton = ({ archiveFormat }: CreateArchiveButtonProps) => {
-  const src = archiveFormat === 'word' ? '/asset/wordFormat.svg' : '/asset/presentationFormat.svg';
-  const name = archiveFormat === 'word' ? '문서 만들기' : '프레젠테이션 만들기';
+  const src = ARCHIVE_FORMAT[archiveFormat];
+  const name = ARCHIVE_NAME[archiveFormat];
   return (
     <div className='flex bg-[#FCFCFC] w-[362px] h-[100px] px-[36px] py-[24px] box-border rounded-lg mr-4 mt-6 mb-8 items-center justify-between cursor-pointer'>
       <div className='flex items-center'>
