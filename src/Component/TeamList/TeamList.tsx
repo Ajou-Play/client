@@ -32,7 +32,7 @@ export const TeamList = ({
   <div
     onClick={handleChangeTeamSelect}
     aria-hidden
-    className='bg-[#F1F1F1] w-[90px] h-[100vh] flex flex-col items-center space-y-3 pt-4'
+    className='bg-[#F1F1F1] min-w-[90px] h-[100vh] flex flex-col items-center space-y-3 pt-4'
   >
     {list.map((item, idx) => (
       <TeamItem

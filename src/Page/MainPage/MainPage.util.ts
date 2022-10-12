@@ -10,4 +10,9 @@ export const getChannels = async ({ teamId }: { teamId: number }) => {
   return res.data;
 };
 
+export const getMembers = async ({ teamId }: { teamId: number }) => {
+  const res = await axios.get(`/api/v1/teams/${teamId}`, { withCredentials: true });
+  return res.data.members;
+};
+
 export const addChannel = () => {};

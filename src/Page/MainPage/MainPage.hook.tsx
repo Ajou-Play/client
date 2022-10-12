@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 
 import { UseTeamSelect, UseTeamList, UseChannelSelect } from './MainPage.type';
-import { getChannels, getTeams } from './MainPage.util';
+import { getChannels, getTeams, getMembers } from './MainPage.util';
 
 import { ChannelType } from '@Component/TeamInfoContainer/BasicTeamInfo/BasicTeamInfo.type';
 import { TeamType } from '@Component/TeamList/TeamList.type';
@@ -72,4 +72,16 @@ export const useChannelSelect = (deps: number): UseChannelSelect => {
     channelSelect,
     handleChangeChannelSelect,
   };
+};
+
+export const useMemberList = ({ teamId }: { teamId: number }) => {
+  const [memberList, setMemberList] = useState<any>({});
+
+  useEffect(() => {
+    getMembers({ teamId })
+      .then(setMemberList)
+      .catch((e) => setMemberList([]));
+  }, [teamId]);
+
+  return memberList;
 };
