@@ -1,5 +1,6 @@
 import { setupWorker } from 'msw';
 
+import { ArchiveHandler } from './Archive';
 import { ChannelHandler } from './Channel';
 import { DocsHandler } from './Docs';
 import { TeamHandler } from './Team';
@@ -10,4 +11,5 @@ export const worker = setupWorker(
   ...ChannelHandler,
   ...DocsHandler,
   ...UserHandler,
+  ...ArchiveHandler,
 );

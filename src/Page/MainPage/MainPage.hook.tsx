@@ -1,10 +1,11 @@
 import { useState, useCallback, useEffect } from 'react';
 
 import { UseTeamSelect, UseTeamList, UseChannelSelect } from './MainPage.type';
-import { getChannels, getTeams, getMembers } from './MainPage.util';
+import { getChannels, getTeams, getMembers, getArchives } from './MainPage.util';
 
 import { ChannelType } from '@Component/TeamInfoContainer/BasicTeamInfo/BasicTeamInfo.type';
 import { TeamType } from '@Component/TeamList/TeamList.type';
+import { getElementId } from '@Util/.';
 
 export const useTeamList: UseTeamList = () => {
   const [teamList, setTeamList] = useState<TeamType[]>([]);
@@ -19,10 +20,9 @@ export const useTeamList: UseTeamList = () => {
     ]);
   };
   const handleDeleteTeam = (e: any) => {
-    const target = e.target.closest('#TeamOption');
-    if (!target) return;
-    const { id } = target.dataset;
-    setTeamList((prev) => prev.filter((item) => (item?.teamId ?? -1) !== id));
+    const id = getElementId(e, '#TeamOption');
+    if (!id) return;
+    setTeamList((prev) => prev.filter((item) => (item?.teamId ?? -1) !== Number(id)));
   };
 
   useEffect(() => {
@@ -37,9 +37,9 @@ export const useTeamList: UseTeamList = () => {
 export const useTeamSelect = (): UseTeamSelect => {
   const [teamSelect, setTeamSelect] = useState(0);
   const handleChangeTeamSelect = useCallback((e: any) => {
-    const target = e.target.closest('#TeamItem');
-    if (!target) return;
-    setTeamSelect(Number(target.dataset.id));
+    const id = getElementId(e, '#TeamItem');
+    if (!id) return;
+    setTeamSelect(Number(id));
   }, []);
   return { teamSelect, handleChangeTeamSelect };
 };
@@ -56,16 +56,17 @@ export const useChannelList = ({ teamId }: { teamId: number }) => {
   return channelList;
 };
 
+const DONT_SELECT_CHANNEL = -1;
 export const useChannelSelect = (deps: number): UseChannelSelect => {
   const [channelSelect, setChannelSelect] = useState<number>(-1);
   const handleChangeChannelSelect = (e: any) => {
-    const target = e.target.closest('#ChannelItem');
-    if (!target) return;
-    setChannelSelect(Number(target.dataset.id));
+    const id = getElementId(e, '#ChannelItem');
+    if (!id) return;
+    setChannelSelect(Number(id));
   };
 
   useEffect(() => {
-    setChannelSelect(-1);
+    setChannelSelect(DONT_SELECT_CHANNEL);
   }, [deps]);
 
   return {
@@ -80,8 +81,20 @@ export const useMemberList = ({ teamId }: { teamId: number }) => {
   useEffect(() => {
     getMembers({ teamId })
       .then(setMemberList)
-      .catch((e) => setMemberList([]));
+      .catch(() => setMemberList([]));
   }, [teamId]);
 
   return memberList;
+};
+
+export const useGetArchiveItems = () => {
+  const [archiveList, setArchiveList] = useState([]);
+
+  useEffect(() => {
+    getArchives()
+      .then(setArchiveList)
+      .catch(() => setArchiveList([]));
+  }, []);
+
+  return archiveList;
 };

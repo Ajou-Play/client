@@ -21,7 +21,8 @@
       "@Component/*": ["./src/Component/*"],
       "@MSW/*": ["./src/_msw/*"],
       "@Hook/*": ["./src/Hook/*"],
-      "@Page/*": ["./src/Page/*"]
+      "@Page/*": ["./src/Page/*"],
+      "@Util/*": ["./src/Util/*"]
     }
   },
   "include": ["src", "cypress"],

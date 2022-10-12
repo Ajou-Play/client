@@ -16,3 +16,8 @@ export const getMembers = async ({ teamId }: { teamId: number }) => {
 };
 
 export const addChannel = () => {};
+
+export const getArchives = async () => {
+  const res = await axios.get('/api/v1/archives');
+  return res.data;
+};
