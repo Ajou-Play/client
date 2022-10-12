@@ -21,13 +21,14 @@ const Channel = ({ name, select, dataId }: { name: string; select: boolean; data
     </div>
   );
 };
+
 export const BasicTeamInfo = ({
   ChannelList,
   channelSelect,
   handleChangeChannelSelect,
 }: BasicTeamInfoProps) => (
   <div
-    className='mt-6'
+    className='mt-6 w-[100%]'
     onClick={handleChangeChannelSelect}
     aria-hidden
   >
