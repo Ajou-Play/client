@@ -46,7 +46,7 @@ const Archive = ({ archiveId, archiveName, archiveFormat, updatedAt }: ArchiveTy
 };
 
 export const ArchiveList = ({ archiveItems }: ArchiveListProps) => {
-  const moveArchive = useMovePage() as Function;
+  const [moveArchive] = useMovePage();
   const handleArchiveClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const id = getElementId(e, '#archiveItem');
     if (!id) return;
