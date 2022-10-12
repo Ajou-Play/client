@@ -64,7 +64,8 @@
           ["@Component", "./src/Component"],
           ["@MSW", "./src/_msw"],
           ["@Hook", "./src/Hook"],
-          ["@Page", "./src/Page"]
+          ["@Page", "./src/Page"],
+          ["@Util", "./src/Util"]
         ],
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }

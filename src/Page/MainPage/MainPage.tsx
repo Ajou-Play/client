@@ -14,6 +14,7 @@ import {
   TeamCreateModal,
   ChannelInfoContainer,
   WindowContainer,
+  ChannelArchive,
 } from '@Component/.';
 import { getChannelInfo } from '@Component/ChannelInfoContainer/ChannelInfoContainer.util';
 import { useMultiSelection, useToggle } from '@Hook/.';
@@ -60,7 +61,7 @@ export const MainPage = () => {
         {...getChannelInfo({ channels: channelList, id: channelSelect })}
         handleClick={handleClick}
       >
-        <div>1</div>
+        <ChannelArchive />
       </ChannelInfoContainer>
       {windowSelection !== 'None' && (
         <WindowContainer
