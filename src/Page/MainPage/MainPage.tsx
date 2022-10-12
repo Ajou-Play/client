@@ -5,6 +5,7 @@ import {
   useGetArchiveItems,
   useTeamList,
   useTeamSelect,
+  useHandleBodyComponent,
 } from './MainPage.hook';
 
 import type { windowType } from '@/Component/.';
@@ -16,11 +17,10 @@ import {
   ChannelInfoContainer,
   WindowContainer,
   ChannelArchive,
-  // ChannelHome,
+  ChannelHome,
 } from '@Component/.';
 import { getChannelInfo } from '@Component/ChannelInfoContainer/ChannelInfoContainer.util';
 import { useMultiSelection, useToggle } from '@Hook/.';
-// import { getItemsOfList } from '@Util/.';
 
 export const MainPage = () => {
   const {
@@ -28,15 +28,14 @@ export const MainPage = () => {
     handleChangeSelect,
     handleInit,
   } = useMultiSelection<windowType>('None');
-  const archiveItems = useGetArchiveItems();
-  const { teamList, handleAddTeam, handleDeleteTeam } = useTeamList();
   const { teamSelect, handleChangeTeamSelect } = useTeamSelect();
-
-  const channelList = useChannelList({ teamId: teamList[teamSelect]?.teamId });
+  const { teamList, handleAddTeam, handleDeleteTeam } = useTeamList();
   const { channelSelect, handleChangeChannelSelect } = useChannelSelect(teamSelect);
+  const channelList = useChannelList({ teamId: teamList[teamSelect]?.teamId });
 
+  const archiveItems = useGetArchiveItems();
   const memberItems = useMemberList({ teamId: teamList[teamSelect]?.teamId });
-
+  const { body, handleArchiveButtonClick } = useHandleBodyComponent();
   const {
     state: modalState,
     trueState: handleModalOpen,
@@ -65,9 +64,13 @@ export const MainPage = () => {
       <ChannelInfoContainer
         {...getChannelInfo({ channels: channelList, id: channelSelect })}
         handleClick={handleClick}
+        handleArchiveButtonClick={handleArchiveButtonClick}
       >
-        {/* <ChannelHome archiveItems={getItemsOfList(archiveItems, 3)} /> */}
-        <ChannelArchive archiveItems={archiveItems} />
+        {body === 'Home' ? (
+          <ChannelHome archiveItems={archiveItems} />
+        ) : (
+          <ChannelArchive archiveItems={archiveItems} />
+        )}
       </ChannelInfoContainer>
       {windowSelection !== 'None' && (
         <WindowContainer
