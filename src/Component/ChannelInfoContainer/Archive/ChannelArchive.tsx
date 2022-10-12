@@ -54,7 +54,7 @@ export const ArchiveList = ({ archiveItems }: ArchiveListProps) => {
   };
   return (
     <div
-      className='grid grid-cols-archive-layout gap-2'
+      className='grid grid-cols-archive-layout gap-2 h-[100%] overflow-auto'
       onClickCapture={handleArchiveClick}
       aria-hidden
     >
