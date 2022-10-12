@@ -15,3 +15,5 @@ export type UseChannelSelect = {
   channelSelect: number;
   handleChangeChannelSelect: (e: any) => void;
 };
+
+export type MainPageBody = 'Home' | 'Archive';
