@@ -9,7 +9,7 @@ export const TeamInfoContainer = ({ children, teamName }: TeamInfoContainerProps
       </div>
       <div>{children}</div>
     </div>
-    <div className='fixed bottom-0 min-w-[272px]'>
+    <div className='absolute bottom-0 min-w-[272px]'>
       <MeetingController
         userId='aa'
         userLevel={1}
