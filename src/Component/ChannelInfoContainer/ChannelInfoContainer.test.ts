@@ -8,6 +8,12 @@ import {
   getChannelInfo,
 } from './ChannelInfoContainer.util';
 
+const TEMP_ID = 3;
+const TEMP_CHANNEL = {
+  teamId: 1,
+  channelId: 3,
+  name: 'hi',
+};
 const TEMP_ARR: ChannelType[] = [
   {
     teamId: 1,
@@ -19,31 +25,20 @@ const TEMP_ARR: ChannelType[] = [
     channelId: 2,
     name: 'hi',
   },
-  {
-    teamId: 1,
-    channelId: 3,
-    name: 'hi',
-  },
+  TEMP_CHANNEL,
   {
     teamId: 1,
     channelId: 4,
     name: 'hi',
   },
 ];
-const TEMP_ID = 3;
 const DONT_EXIST_ID = 10;
 const GENERAL_CHANNEL_ID = -1;
 
 describe('filterChannelSameId Func Unit Test', () => {
   it('exist channel same id', () => {
     const result = filterChannelSameId({ channels: TEMP_ARR, id: TEMP_ID });
-    const expectResult = [
-      {
-        teamId: 1,
-        channelId: 3,
-        name: 'hi',
-      },
-    ];
+    const expectResult = [TEMP_CHANNEL];
     expect(result).toEqual(expectResult);
   });
 
@@ -57,11 +52,7 @@ describe('filterChannelSameId Func Unit Test', () => {
 describe('getChannelInfo Func Unit Test', () => {
   it('get success by exist channel info', () => {
     const result = getChannelInfo({ channels: TEMP_ARR, id: TEMP_ID });
-    const expectResult = {
-      teamId: 1,
-      channelId: 3,
-      name: 'hi',
-    };
+    const expectResult = TEMP_CHANNEL;
     expect(result).toEqual(expectResult);
   });
 
