@@ -68,6 +68,10 @@
   "jest": {
     "transform": {
       "^.+\\.ts$": "ts-jest"
-    }
+    },
+    "collectCoverageFrom": [
+      "**/*.util.[jt]s?(x)",
+      "!**/*.stories.[jt]s?(x)"
+    ]
   }
 }
