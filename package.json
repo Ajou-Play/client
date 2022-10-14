@@ -8,9 +8,9 @@
     "start": "npm run dev",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "coverage": "jest --coverage",
+    "coverage": "npm run test:unit --coverage",
     "test": "npm run test:unit && npm run test:e2e",
-    "test:unit": "jest",
+    "test:unit": "jest --detectOpenHandles --forceExit --setupFiles",
     "test:e2e": "cypress open",
     "lint-staged": "lint-staged",
     "prepare": "husky install"
@@ -72,6 +72,9 @@
     "collectCoverageFrom": [
       "**/*.util.[jt]s?(x)",
       "!**/*.stories.[jt]s?(x)"
-    ]
+    ],
+    "moduleNameMapper": {
+      "@MSW": "<rootDir>/src/_msw"
+    }
   }
 }

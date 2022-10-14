@@ -4,7 +4,7 @@ type MockMemberList = {
   [key: string]: any;
 };
 
-const tempTeamList = [
+export const MSW_TEAM_LIST = [
   {
     teamId: 1,
     img: '/asset/1.jpeg',
@@ -22,7 +22,7 @@ const tempTeamList = [
   },
 ];
 
-const mockMemberList: MockMemberList = {
+export const MSW_TEAM_MEMBER_LIST: MockMemberList = {
   '1': {
     teamId: 1,
     name: '팀 이름',
@@ -67,11 +67,11 @@ const mockMemberList: MockMemberList = {
   },
 };
 
-export const mockGetTeam: Props = (req, res, ctx) => res(ctx.json(tempTeamList));
+export const mockGetTeam: Props = (req, res, ctx) => res(ctx.json(MSW_TEAM_LIST));
 export const mockGetMemberByTeam: Props = (req, res, ctx) => {
   const {
     params: { teamId },
   } = req;
 
-  return res(ctx.json(mockMemberList[teamId as string] ?? []));
+  return res(ctx.json(MSW_TEAM_MEMBER_LIST[teamId as string] ?? []));
 };
