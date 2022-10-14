@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1665731578851" clover="3.2.0">
+  <project timestamp="1665731578851" name="All files">
+    <metrics statements="8" coveredstatements="8" conditionals="4" coveredconditionals="4" methods="4" coveredmethods="4" elements="16" coveredelements="16" complexity="0" loc="8" ncloc="8" packages="1" files="1" classes="1"/>
+    <file name="ChannelInfoContainer.util.ts" path="/Users/jin-pro/project/aplay-client/src/Component/ChannelInfoContainer/ChannelInfoContainer.util.ts">
+      <metrics statements="8" coveredstatements="8" conditionals="4" coveredconditionals="4" methods="4" coveredmethods="4"/>
+      <line num="3" count="1" type="stmt"/>
+      <line num="16" count="1" type="stmt"/>
+      <line num="17" count="16" type="stmt"/>
+      <line num="19" count="1" type="stmt"/>
+      <line num="20" count="2" type="stmt"/>
+      <line num="21" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="24" count="1" type="stmt"/>
+      <line num="25" count="2" type="cond" truecount="2" falsecount="0"/>
+    </file>
+  </project>
+</coverage>
