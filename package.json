@@ -8,8 +8,9 @@
     "start": "npm run dev",
     "build": "tsc && vite build",
     "preview": "vite preview",
+    "coverage": "jest --coverage",
     "test": "npm run test:unit && npm run test:e2e",
-    "test:unit": "jest",
+    "test:unit": "jest --detectOpenHandles --forceExit --setupFiles",
     "test:e2e": "cypress open",
     "lint-staged": "lint-staged",
     "prepare": "husky install"
@@ -31,6 +32,7 @@
     "@cypress/react": "^6.2.0",
     "@cypress/vite-dev-server": "^3.1.1",
     "@types/axios": "^0.14.0",
+    "@types/jest": "^29.1.2",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@types/react-router-dom": "^5.3.3",
@@ -64,5 +66,17 @@
   },
   "msw": {
     "workerDirectory": "public"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.util.[jt]s?(x)",
+      "!**/*.stories.[jt]s?(x)"
+    ],
+    "moduleNameMapper": {
+      "@MSW": "<rootDir>/src/_msw"
+    }
   }
 }
