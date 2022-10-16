@@ -1,12 +1,28 @@
-import { ArchiveList } from '../Archive';
+import { Calendar } from './Calendar';
+import { useGetHomeArchiveList } from './ChannelHome.hook';
 import { ChannelHomeProps } from './ChannelHome.type';
+import { CharacterInfo } from './CharacterInfo';
+import { SmallArchiveList } from './SmallArchiveList';
+
+const BOX_STYLE = 'rounded-3xl bg-grey-offWhite p-8 box-border';
 
 export const ChannelHome = ({ archiveItems }: ChannelHomeProps) => {
-  console.log('1');
+  const items = useGetHomeArchiveList({ archiveItems });
+
   return (
-    <>
-      <div className='text-[#403F40] font-extrabold'>최근문서</div>
-      <ArchiveList archiveItems={archiveItems} />
-    </>
+    <div className='w-[100%] h-[100%]'>
+      <div className='w-[100%] h-[60%] flex justify-between mb-8'>
+        <div className={`w-[39%] h-[100%] ${BOX_STYLE}`}>
+          <CharacterInfo />
+        </div>
+        <div className={`w-[58%] h-[100%] ${BOX_STYLE}`}>
+          <Calendar />
+        </div>
+      </div>
+      <div className={`w-[100%] h-[35%] ${BOX_STYLE}`}>
+        <div className='text-[#403F40] font-extrabold'>최근문서</div>
+        <SmallArchiveList archiveItems={items} />
+      </div>
+    </div>
   );
 };

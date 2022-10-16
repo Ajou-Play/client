@@ -6,6 +6,7 @@ export const ChannelInfoContainer = ({
   channelId,
   name,
   handleClick,
+  handleArchiveButtonClick,
 }: ChannelInfoContainerType) => {
   const src = getChannelIconSrc({ channelId });
 
@@ -21,6 +22,18 @@ export const ChannelInfoContainer = ({
           <p>{name}</p>
         </div>
         <div className='flex pr-[20px] space-x-4 leading-5.5 font-bold'>
+          <button
+            type='button'
+            onClick={handleArchiveButtonClick}
+            className='bg-primary-lightOrange flex w-[110px] h-[37px] box-border p-[10px] justify-around items-center rounded-lg'
+          >
+            <img
+              src='/asset/ArchiveIcon.svg'
+              className='w-[16px] h-[16px]'
+              alt='Archive'
+            />
+            <span className='text-primary-orange text-base'>아카이브</span>
+          </button>
           <button
             type='button'
             onClick={() => handleClick('Message')}
@@ -43,7 +56,8 @@ export const ChannelInfoContainer = ({
           </button>
         </div>
       </div>
-      <div className='bg-[#F1F1F1] w-[100%] h-[calc(100vh-80px)] px-[48px] py-[50px] box-border'>
+      {/* overflow 되어야함 */}
+      <div className='bg-[#F1F1F1] w-[100%] h-[calc(100vh-80px)] px-[48px] py-[50px] box-border overflow-auto'>
         {children}
       </div>
     </div>

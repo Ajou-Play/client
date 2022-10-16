@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 
-import { UseTeamSelect, UseTeamList, UseChannelSelect } from './MainPage.type';
+import { UseTeamSelect, UseTeamList, UseChannelSelect, MainPageBody } from './MainPage.type';
 import { getChannels, getTeams, getMembers, getArchives } from './MainPage.util';
 
 import { ChannelType } from '@Component/TeamInfoContainer/BasicTeamInfo/BasicTeamInfo.type';
@@ -97,4 +97,16 @@ export const useGetArchiveItems = () => {
   }, []);
 
   return archiveList;
+};
+
+export const useHandleBodyComponent = () => {
+  const [body, setBody] = useState<MainPageBody>('Home');
+  const handleChangeBodyToArchive = () => setBody('Archive');
+  const handleChangeBodyToHome = () => setBody('Home');
+  const handleArchiveButtonClick =
+    body === 'Home' ? handleChangeBodyToArchive : handleChangeBodyToHome;
+  return {
+    body,
+    handleArchiveButtonClick,
+  };
 };
