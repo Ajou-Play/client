@@ -1,5 +1,10 @@
-import type { Socket as type } from 'socket.io-client';
+import type { Client as instance } from 'stompjs';
 
-type SocketType = { instance: null | type };
+export type SocketType = 'chatInstance' | 'webRTCInstance' | 'archiveInstance';
+type Type = Record<SocketType, null | instance>;
 
-export const Socket: SocketType = { instance: null };
+export const Socket: Type = {
+  chatInstance: null,
+  webRTCInstance: null,
+  archiveInstance: null,
+};

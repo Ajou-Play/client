@@ -1,8 +1,19 @@
-import { Socket } from '.';
+import { Message } from 'stompjs';
 
-export const registerSocketEvent = () => {
-  if (!Socket.instance) throw new Error();
-  Socket.instance.on('joinNewUser', () => {});
-  Socket.instance.on('leaveUser', () => {});
-  Socket.instance.on('receiveMessage', () => {});
+import { Socket, SocketType } from '.';
+
+type SubscribeType = {
+  eventName: string;
+  callback: (message: Message) => any;
+};
+
+export const registerSocketEvent = (socketType: SocketType, subscribes: SubscribeType[]) => {
+  const instance = Socket[socketType];
+  if (!instance) throw new Error();
+  instance.connect({}, () => {
+    if (!instance) throw new Error();
+    subscribes.forEach(({ eventName, callback }) => {
+      instance.subscribe(eventName, callback);
+    });
+  });
 };
