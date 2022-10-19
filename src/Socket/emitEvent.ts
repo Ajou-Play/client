@@ -1,10 +1,12 @@
-import { Socket } from '.';
+import { Socket, SocketType } from '.';
 
 type EmitEvent<T> = {
+  socketType: SocketType;
   eventName: string;
   body: T;
 };
-export const emitEvent = <T>({ eventName, body }: EmitEvent<T>) => {
-  if (!Socket.instance) throw new Error();
-  Socket.instance.emit(eventName, body);
+export const emitEvent = <T>({ socketType, eventName, body }: EmitEvent<T>) => {
+  const instance = Socket[socketType];
+  if (!instance) throw new Error();
+  instance.send(eventName, {}, JSON.stringify(body));
 };
