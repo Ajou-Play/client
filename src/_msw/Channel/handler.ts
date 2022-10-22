@@ -3,7 +3,7 @@ import { Props } from '../type';
 type MockChannelList = {
   [key: string]: any[];
 };
-const mockChannelList: MockChannelList = {
+export const MSW_CHANNEL_LIST: MockChannelList = {
   '1': [
     {
       teamId: 1,
@@ -65,5 +65,5 @@ export const mockGetChannels: Props = (req, res, ctx) => {
   const {
     params: { teamId },
   } = req;
-  return res(ctx.json(mockChannelList[teamId as string] ?? []));
+  return res(ctx.json(MSW_CHANNEL_LIST[teamId as string] ?? []));
 };

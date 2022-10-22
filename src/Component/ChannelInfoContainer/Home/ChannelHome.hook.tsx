@@ -1,35 +1,29 @@
 import { useState, useEffect } from 'react';
 
 import { ChannelHomeProps } from './ChannelHome.type';
-import { debounce } from './ChannelHome.util';
+import { debounce, getItewmsLengthByWindowSize } from './ChannelHome.util';
+import { DEBOUNCE_TIME } from './SmallArchiveList/ChannelHome.const';
 
 import { getItemsOfList } from '@Util/.';
 
-const SIDE_BAR_WIDTH = 458;
-const ITEM_WIDTH = 150;
-const DEBOUNCE_TIME = 500;
-
 type UseGetHomeArchiveList = ChannelHomeProps;
 export const useGetHomeArchiveList = ({ archiveItems }: UseGetHomeArchiveList) => {
-  const [items, setItems] = useState(
-    getItemsOfList(archiveItems, Math.floor((window.innerWidth - SIDE_BAR_WIDTH) / ITEM_WIDTH)),
-  );
+  const [items, setItems] = useState(getItemsOfList(archiveItems, getItewmsLengthByWindowSize()));
 
   useEffect(() => {
     window.onresize = debounce(() => {
-      setItems(
-        getItemsOfList(archiveItems, Math.floor((window.innerWidth - SIDE_BAR_WIDTH) / ITEM_WIDTH)),
-      );
+      const prevLength = items.length;
+      const nextLength = getItewmsLengthByWindowSize();
+      if (prevLength === nextLength) return;
+      setItems(getItemsOfList(archiveItems, nextLength));
     }, DEBOUNCE_TIME);
     return () => {
       window.onresize = null;
     };
-  }, [archiveItems]);
+  }, [archiveItems, items]);
 
   useEffect(() => {
-    setItems(
-      getItemsOfList(archiveItems, Math.floor((window.innerWidth - SIDE_BAR_WIDTH) / ITEM_WIDTH)),
-    );
+    setItems(getItemsOfList(archiveItems, getItewmsLengthByWindowSize()));
   }, [archiveItems]);
 
   return items;

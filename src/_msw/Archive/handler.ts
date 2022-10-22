@@ -2,7 +2,7 @@ import { Props } from '../type';
 
 import { ArchiveType } from '@Component/ChannelInfoContainer/Archive/ChannelArchive.type';
 
-const archiveList: ArchiveType[] = [
+export const MSW_ARCHIVE_LIST: ArchiveType[] = [
   {
     archiveId: 1,
     archiveName: '첫 문서~',
@@ -53,4 +53,4 @@ const archiveList: ArchiveType[] = [
   },
 ];
 
-export const mockGetArchive: Props = (req, res, ctx) => res(ctx.json(archiveList));
+export const mockGetArchive: Props = (req, res, ctx) => res(ctx.json(MSW_ARCHIVE_LIST));
