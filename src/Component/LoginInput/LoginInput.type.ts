@@ -3,4 +3,6 @@ export type InputType = {
   titleContent?: string;
   placeholder: HTMLInputElement['placeholder'];
   icon: string;
+  error: boolean;
+  errorMessage?: string;
 };
