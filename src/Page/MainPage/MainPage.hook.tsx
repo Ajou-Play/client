@@ -5,7 +5,7 @@ import { getChannels, getTeams, getMembers, getArchives } from './MainPage.util'
 
 import { ChannelType } from '@Component/TeamInfoContainer/BasicTeamInfo/BasicTeamInfo.type';
 import { TeamType } from '@Component/TeamList/TeamList.type';
-import { getElementId } from '@Util/.';
+import { getElementData } from '@Util/.';
 
 export const useTeamList: UseTeamList = () => {
   const [teamList, setTeamList] = useState<TeamType[]>([]);
@@ -20,7 +20,7 @@ export const useTeamList: UseTeamList = () => {
     ]);
   };
   const handleDeleteTeam = (e: any) => {
-    const id = getElementId(e, '#TeamOption');
+    const id = getElementData(e, '#TeamOption');
     if (!id) return;
     setTeamList((prev) => prev.filter((item) => (item?.teamId ?? -1) !== Number(id)));
   };
@@ -37,7 +37,7 @@ export const useTeamList: UseTeamList = () => {
 export const useTeamSelect = (): UseTeamSelect => {
   const [teamSelect, setTeamSelect] = useState(0);
   const handleChangeTeamSelect = useCallback((e: any) => {
-    const id = getElementId(e, '#TeamItem');
+    const id = getElementData(e, '#TeamItem');
     if (!id) return;
     setTeamSelect(Number(id));
   }, []);
@@ -60,7 +60,7 @@ const DONT_SELECT_CHANNEL = -1;
 export const useChannelSelect = (deps: number): UseChannelSelect => {
   const [channelSelect, setChannelSelect] = useState<number>(-1);
   const handleChangeChannelSelect = (e: any) => {
-    const id = getElementId(e, '#ChannelItem');
+    const id = getElementData(e, '#ChannelItem');
     if (!id) return;
     setChannelSelect(Number(id));
   };

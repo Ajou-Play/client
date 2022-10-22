@@ -10,7 +10,7 @@ const BOX_STYLE = 'rounded-3xl bg-grey-offWhite p-8 box-border';
 export const ChannelHome = ({ archiveItems }: ChannelHomeProps) => {
   const items = useGetHomeArchiveList({ archiveItems });
   const createdDates = getCalendarData({ archiveItems });
-  console.log(createdDates);
+
   return (
     <div className='w-[100%] h-[100%]'>
       <div className='w-[100%] h-[60%] flex justify-between mb-8'>
@@ -18,7 +18,7 @@ export const ChannelHome = ({ archiveItems }: ChannelHomeProps) => {
           <CharacterInfo />
         </div>
         <div className={`w-[58%] h-[100%] ${BOX_STYLE}`}>
-          <Calendar />
+          <Calendar createdDates={createdDates} />
         </div>
       </div>
       <div className={`w-[100%] h-[35%] ${BOX_STYLE}`}>

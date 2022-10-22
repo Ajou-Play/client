@@ -4,7 +4,7 @@ import { SMALL_ARCHIVE_FORMAT } from './SmallArchiveList.const';
 import type { SmallArchiveListProps, SmallArchiveProps } from './SmallArchiveList.type';
 
 import { useMovePage } from '@Hook/.';
-import { getElementId } from '@Util/.';
+import { getElementData } from '@Util/.';
 
 export const SmallArchive = ({
   archiveId,
@@ -34,7 +34,7 @@ export const SmallArchive = ({
 export const SmallArchiveList = ({ archiveItems }: SmallArchiveListProps) => {
   const [moveArchive] = useMovePage();
   const handleArchiveClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const id = getElementId(e, '#archiveItem');
+    const id = getElementData(e, '#archiveItem');
     if (!id) return;
     e.stopPropagation();
     moveArchive(`/archive/${id}`);

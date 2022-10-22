@@ -1,3 +1,5 @@
+import { CalendarDate } from './Calendar/Calendar.type';
+import { REPLACE_INDEX_CALENDAR_KEYWORD } from './ChannelHome.const';
 import type { GetCalendarData } from './ChannelHome.type';
 import { SIDE_BAR_WIDTH, ITEM_WIDTH } from './SmallArchiveList/ChannelHome.const';
 
@@ -19,23 +21,13 @@ export const getItewmsLengthByWindowSize = () =>
 
 const splitStringDate = (stringDate: string) => {
   const splitDate = stringDate.split('-');
-  return splitDate.reduce((acc, cur, i) => {
-    if (i === 0) {
-      return {
-        year: cur,
-      };
-    }
-    if (i === 1) {
-      return {
-        ...acc,
-        month: cur,
-      };
-    }
-    return {
+  return splitDate.reduce(
+    (acc, cur, i) => ({
       ...acc,
-      day: cur,
-    };
-  }, {});
+      [REPLACE_INDEX_CALENDAR_KEYWORD[i]]: cur,
+    }),
+    {},
+  ) as CalendarDate;
 };
-export const getCalendarData = ({ archiveItems }: GetCalendarData) =>
+export const getCalendarData: GetCalendarData = ({ archiveItems }) =>
   archiveItems.map(({ createdAt }) => createdAt.toString().split('T')[0]).map(splitStringDate);
