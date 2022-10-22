@@ -14,12 +14,12 @@ export const NUM_TO_ENG_MONTH = [
 ];
 
 export const NUM_TO_ENG_DAY = [
-  'Friday',
-  'Saturday',
   'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
+  'Saturday',
+  'Friday',
   'Thursday',
+  'Wednesday',
+  'Tuesday',
+  'Monday',
 ];
 export const CALENDAR_HEADER = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];

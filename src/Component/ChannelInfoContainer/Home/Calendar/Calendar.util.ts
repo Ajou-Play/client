@@ -1,4 +1,4 @@
-import { CalendarDate } from './Calendar.type';
+import type { ArchiveCountSet, CalendarDate, CountArchiveInDay, WeekData } from './Calendar.type';
 
 export const settingDate = ({ year, month }: { year: number; month: number }) => {
   if (month > 11) {
@@ -41,7 +41,13 @@ const getCurrentLastDay = ({ year, month }: { year: number; month: number }) => 
 
 const getOtherDay = (props: { year: number; month: number }) => (func: Function) => func(props);
 
-export const getTotalDayOfMonth = ({ year, month }: { year: number; month: number }) => {
+export const getTotalDayOfMonth = ({
+  year,
+  month,
+}: {
+  year: number;
+  month: number;
+}): WeekData[] => {
   const getOtherDayFunc = getOtherDay({ year, month });
   const { curDate } = getOtherDayFunc(getCurrentLastDay);
   const { prevDate, prevDay } = getOtherDayFunc(getPrevLastDay);
@@ -49,14 +55,18 @@ export const getTotalDayOfMonth = ({ year, month }: { year: number; month: numbe
   const prevStartDate = prevDate - prevDay;
   const nowStartDate = 7 - prevDay;
 
-  const days = [];
-  let temp = [];
+  const days: WeekData[] = [];
+  let temp: WeekData = [];
 
   // 첫 주
   for (let i = 0; i < 7; i++) {
     const cur = i + prevStartDate;
     const day = cur > prevDate ? i - prevDay : cur;
-    temp.push({ prev: cur <= prevDate, day, ...settingDate({ year, month: month - 1 }) });
+    temp.push({
+      prev: cur <= prevDate,
+      day,
+      ...settingDate({ year, month: cur > prevDate ? month : month - 1 }),
+    });
   }
   days.push(temp);
 
@@ -82,16 +92,26 @@ export const getTotalDayOfMonth = ({ year, month }: { year: number; month: numbe
   return days;
 };
 
-export const countArchiveInDay = ({
-  year,
-  month,
-  day,
-  createdDates,
-}: {
-  year: number;
-  month: number;
-  day: number;
-  createdDates: CalendarDate[];
-}) => {
-  console.log(createdDates);
+export const makeArchiveCountSetKey = ({ year, month, day }: CalendarDate) => year + month + day;
+
+export const countArchiveInDay = ({ createdDates }: CountArchiveInDay) => {
+  const set: ArchiveCountSet = {};
+  for (let i = createdDates.length - 1; i >= 0; i--) {
+    const target = createdDates[i];
+    const key = makeArchiveCountSetKey(target);
+    if (set[key]) {
+      set[key].count++;
+    } else {
+      set[key] = {
+        ...target,
+        count: 1,
+      };
+    }
+  }
+  return set;
+};
+
+export const getDayIdxByDate = ({ totalDays, day }: { totalDays: WeekData[]; day: number }) => {
+  const standDardDay = totalDays[1][0].day;
+  return Math.abs((standDardDay - (day % 7) + 7) % 7);
 };

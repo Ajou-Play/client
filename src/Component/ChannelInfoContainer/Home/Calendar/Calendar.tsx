@@ -1,16 +1,18 @@
 import { CALENDAR_HEADER, NUM_TO_ENG_DAY, NUM_TO_ENG_MONTH } from './Calendar.const';
 import { useGetDate } from './Calendar.hook';
 import type { CalendarProps } from './Calendar.type';
-import { getTotalDayOfMonth } from './Calendar.util';
+import { countArchiveInDay, getDayIdxByDate, getTotalDayOfMonth } from './Calendar.util';
+import { CellOfCalendar } from './CellOfCalendar';
 
 export const Calendar = ({ createdDates }: CalendarProps) => {
   const { year, month, day, handleDayClick, handlePrevMonthClick, handleNextMonthClick } =
     useGetDate();
   const totalDays = getTotalDayOfMonth({ year, month });
   const monthName = NUM_TO_ENG_MONTH[month];
-  const dayName = NUM_TO_ENG_DAY[day % 7];
+  const dayIdx = getDayIdxByDate({ totalDays, day });
+  const dayName = NUM_TO_ENG_DAY[dayIdx];
+  const countArchiveSet = countArchiveInDay({ createdDates });
 
-  console.log(createdDates);
   return (
     <>
       <div className='flex w-[100%] h-[50px] items-center justify-between'>
@@ -63,17 +65,12 @@ export const Calendar = ({ createdDates }: CalendarProps) => {
             key={i}
             className='text-center cursor-pointer w-[100%]'
           >
-            {week.map(({ prev, day: cellDay, year: cellYear, month: cellMonth }) => (
-              <td
-                key={String(prev) + cellDay}
-                className={`w-[calc(100%/7)] cell ${prev ? 'text-grey-line' : ''}`}
-                data-year={cellYear}
-                data-month={cellMonth}
-                data-day={cellDay}
-                data-prev={prev}
-              >
-                {cellDay}
-              </td>
+            {week.map((props, idx) => (
+              <CellOfCalendar
+                {...props}
+                countArchiveSet={countArchiveSet}
+                key={idx}
+              />
             ))}
           </tr>
         ))}
