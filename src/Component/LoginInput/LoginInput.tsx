@@ -5,12 +5,16 @@ import { LoginInputWrapper, LoginInputTitle, LoginInputStyle } from './LoginInpu
 import type { InputType } from '@Component/.';
 
 export const LoginInput = React.forwardRef<HTMLInputElement, InputType>(
-  ({ titleContent, placeholder, ...rest }, ref) => (
+  ({ type, titleContent, icon, placeholder, ...rest }, ref) => (
     <>
       <p className={LoginInputTitle}>{titleContent}</p>
       <div className={LoginInputWrapper}>
-        <div>icon</div>
+        <img
+          src={icon}
+          alt='아이콘'
+        />
         <input
+          type={type}
           ref={ref}
           {...rest}
           placeholder={placeholder}
