@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import { RegisterFormWrapper, RegisterFormButton, SignUpButton } from './RegisterForm.style';
+import { signUp } from './RegisterForm.util';
 
 import { LoginInput } from '@Component/.';
 import type { RegisterFormType } from '@Component/.';
@@ -15,12 +16,20 @@ export const RegisterForm = () => {
     formState: { errors },
   } = useForm<RegisterFormType>();
 
-  const onSubmit = (data: RegisterFormType) => {
-    if (data.password !== data.passwordCheck)
+  const onSubmit = async (data: RegisterFormType) => {
+    const { name, password, passwordCheck, email } = data;
+    if (password !== passwordCheck)
       setError('passwordCheck', { message: '비밀번호가 일치하지 않습니다.' });
+
+    const { message } = await signUp({
+      name,
+      password,
+      email,
+    });
+    if (message === 201) navigate('/main');
   };
+
   const handleSignInButton = () => {
-    console.log('로그인');
     navigate('/login');
   };
 
@@ -29,6 +38,17 @@ export const RegisterForm = () => {
       className={RegisterFormWrapper}
       onSubmit={handleSubmit(onSubmit)}
     >
+      <LoginInput
+        type='text'
+        icon='/asset/Person.svg'
+        titleContent='이름'
+        placeholder='이름을 입력해주세요'
+        error={!!errors.name}
+        errorMessage={errors.name?.message}
+        {...register('name', {
+          required: true,
+        })}
+      />
       <LoginInput
         type='text'
         icon='/asset/Person.svg'
