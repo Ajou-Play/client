@@ -8,8 +8,7 @@ import {
   useHandleBodyComponent,
 } from './MainPage.hook';
 
-import type { windowType } from '@/Component/.';
-import { TeamContext } from '@/Context';
+import type { windowType } from '@Component/.';
 import {
   TeamInfoContainer,
   BasicTeamInfo,
@@ -21,6 +20,7 @@ import {
   ChannelHome,
 } from '@Component/.';
 import { getChannelInfo } from '@Component/ChannelInfoContainer/ChannelInfoContainer.util';
+import { TeamContext } from '@Context/.';
 import { useMultiSelection, useToggle } from '@Hook/.';
 
 export const MainPage = () => {

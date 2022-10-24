@@ -8,7 +8,7 @@ import type {
   CreateArchiveButtonProps,
 } from './ChannelArchive.type';
 
-import { getElementData } from '@/Util';
+import { getElementData } from '@Util/.';
 import { useMovePage } from '@Hook/.';
 
 const Archive = ({ archiveId, archiveName, archiveFormat, updatedAt }: ArchiveType) => {

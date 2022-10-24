@@ -16,6 +16,7 @@
   "rules": {
     "react/no-array-index-key": "warn",
     "no-plusplus": "warn",
+    "no-undef": "warn",
     "react/jsx-no-constructed-context-values": "warn",
     "no-param-reassign": "warn",
     "no-restricted-syntax": "warn",
