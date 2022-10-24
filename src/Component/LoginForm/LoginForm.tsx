@@ -22,7 +22,7 @@ export const LoginForm = () => {
   const navigate = useNavigate();
 
   const onSubmit = (data: LoginFormType) => {
-    setError('email', {
+    setError('error', {
       message: '이메일 또는 비밀번호를 확인해주세요.',
     });
   };
@@ -45,7 +45,7 @@ export const LoginForm = () => {
         icon='/asset/Person.svg'
         titleContent='이메일'
         placeholder='이메일을 입력해주세요'
-        error={!!errors.email}
+        error={!!errors.error}
         {...register('email', { required: true })}
       />
       <LoginInput
@@ -53,15 +53,15 @@ export const LoginForm = () => {
         icon='/asset/Lock.svg'
         titleContent='비밀번호'
         placeholder='비밀번호를 입력해주세요'
-        error={!!errors.email}
+        error={!!errors.error}
         {...register('password', { required: true })}
       />
       <div
         className={`flex ${
-          errors.email !== undefined ? 'flex-row' : 'flex-row-reverse'
+          errors.error !== undefined ? 'flex-row' : 'flex-row-reverse'
         } items-center mt-[-1rem] justify-between`}
       >
-        {errors.email !== undefined && <p className=' text-system-error'>{errors.email.message}</p>}
+        {errors.error !== undefined && <p className=' text-system-error'>{errors.error.message}</p>}
         <button
           type='button'
           onClick={handleFindPwdButton}
