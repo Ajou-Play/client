@@ -16,6 +16,7 @@
   "rules": {
     "react/no-array-index-key": "warn",
     "no-plusplus": "warn",
+    "react/jsx-no-constructed-context-values": "warn",
     "no-param-reassign": "warn",
     "no-restricted-syntax": "warn",
     "react/function-component-definition": "off",
@@ -63,12 +64,12 @@
       },
       "alias": {
         "map": [
-          ["@", "./src"],
           ["@Component", "./src/Component"],
           ["@MSW", "./src/_msw"],
           ["@Hook", "./src/Hook"],
           ["@Page", "./src/Page"],
-          ["@Util", "./src/Util"]
+          ["@Util", "./src/Util"],
+          ["@Context", "./src/Context"]
         ],
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }

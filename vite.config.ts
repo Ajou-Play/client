@@ -8,12 +8,12 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: [
-      { find: '@', replacement: path.resolve(__dirname, 'src') },
       { find: '@Component', replacement: path.resolve(__dirname, 'src/Component') },
       { find: '@MSW', replacement: path.resolve(__dirname, 'src/_msw') },
       { find: '@Hook', replacement: path.resolve(__dirname, 'src/Hook') },
       { find: '@Page', replacement: path.resolve(__dirname, 'src/Page') },
       { find: '@Util', replacement: path.resolve(__dirname, 'src/Util') },
+      { find: '@Context', replacement: path.resolve(__dirname, 'src/Context') },
     ],
   },
   server: {
