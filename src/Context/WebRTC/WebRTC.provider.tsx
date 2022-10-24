@@ -7,7 +7,13 @@ import { useToggle } from '@Hook/.';
 
 export const WebRTCContext = createContext<WebRTCState>({} as WebRTCState);
 
-export const WebRTCProvider = ({ children }: { children: ReactNode }) => {
+export const WebRTCProvider = ({
+  children,
+  chatRoomId,
+}: {
+  children: ReactNode;
+  chatRoomId: number;
+}) => {
   const { component: MeetingToggleButton, state: meetingState } = useMeetingController();
   const { state: micState, toggleState: handleMicToggle } = useToggle();
   const { state: windowState, toggleState: handleWindowToggle } = useToggle();
