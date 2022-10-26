@@ -23,3 +23,5 @@ export const NUM_TO_ENG_DAY = [
   'Monday',
 ];
 export const CALENDAR_HEADER = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+
+export const CELL_DATA = ['year', 'month', 'day'];

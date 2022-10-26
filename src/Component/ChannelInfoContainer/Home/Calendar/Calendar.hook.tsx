@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { CELL_DATA } from './Calendar.const';
 import { getToday, settingDate } from './Calendar.util';
 
 import { getElementData } from '@Util/.';
@@ -12,13 +13,12 @@ export const useGetDate = () => {
   const [day, setDay] = useState(todayDay);
 
   const handleDayClick = (e: React.MouseEvent<HTMLTableElement, MouseEvent>) => {
-    const cellYear = getElementData(e, '.cell', 'year');
-    const cellMonth = getElementData(e, '.cell', 'month');
-    const cellDay = getElementData(e, '.cell', 'day');
+    const getCellData = (key: string) => getElementData(e, '.cell', key);
+    const [cellYear, cellMonth, cellDay] = CELL_DATA.map(getCellData).map(Number);
     if (cellDay === undefined || cellMonth === undefined || cellYear === undefined) return;
-    setYear(Number(cellYear));
-    setMonth(Number(cellMonth));
-    setDay(Number(cellDay));
+    setYear(cellYear);
+    setMonth(cellMonth);
+    setDay(cellDay);
   };
 
   const handleMonthClick = (up: boolean) => {

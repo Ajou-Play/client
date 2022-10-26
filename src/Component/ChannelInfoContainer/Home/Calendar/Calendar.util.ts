@@ -1,12 +1,8 @@
 import type { ArchiveCountSet, CalendarDate, CountArchiveInDay, WeekData } from './Calendar.type';
 
 export const settingDate = ({ year, month }: { year: number; month: number }) => {
-  if (month > 11) {
-    return { year: year + 1, month: month % 12 };
-  }
-  if (month < 0) {
-    return { year: year - 1, month: (month + 12) % 12 };
-  }
+  if (month > 11) return { year: year + 1, month: month % 12 };
+  if (month < 0) return { year: year - 1, month: (month + 12) % 12 };
   return { year, month };
 };
 
@@ -19,23 +15,28 @@ export const getToday = () => {
   };
 };
 
-const getPrevLastDay = ({ year, month }: { year: number; month: number }) => {
-  const startDay = new Date(year, month, 0);
-  const prevDate = startDay.getDate();
-  const prevDay = startDay.getDay();
+const getLastDay = ({ year, month, isPrev }: { year: number; month: number; isPrev: boolean }) => {
+  const inputDay = new Date(year, month + (isPrev ? 0 : 1), 0);
+  const date = inputDay.getDate();
+  const day = inputDay.getDay();
   return {
-    prevDate,
-    prevDay,
+    date,
+    day,
+  };
+};
+const getPrevLastDay = (props: { year: number; month: number }) => {
+  const { date, day } = getLastDay({ ...props, isPrev: true });
+  return {
+    prevDate: date,
+    prevDay: day,
   };
 };
 
-const getCurrentLastDay = ({ year, month }: { year: number; month: number }) => {
-  const endDay = new Date(year, month + 1, 0);
-  const curDate = endDay.getDate();
-  const curDay = endDay.getDay();
+const getCurrentLastDay = (props: { year: number; month: number }) => {
+  const { date, day } = getLastDay({ ...props, isPrev: false });
   return {
-    curDate,
-    curDay,
+    curDate: date,
+    curDay: day,
   };
 };
 
