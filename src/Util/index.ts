@@ -1,2 +1,2 @@
-export { getElementId } from './getElementId';
+export { getElementData } from './getElementData';
 export { getItemsOfList } from './getItemsOfList';

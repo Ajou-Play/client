@@ -4,6 +4,7 @@ export type ArchiveType = {
   archiveName: string;
   archiveFormat: ArchiveFormat;
   updatedAt: Date;
+  createdAt: Date;
 };
 
 export type ArchiveListProps = {
