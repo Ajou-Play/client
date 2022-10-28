@@ -1,10 +1,27 @@
 import { motion } from 'framer-motion';
-import { useContext, useEffect, useMemo } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 
+import ClientSocket from '../../Socket/WebRTC/socket';
 import { WebRTCContext } from './WebRTC.provider';
-import { muteCam, muteMic, muteWindow } from './WebRTC.util';
+import { WebRTCUser } from './WebRTC.type';
+import {
+  connection,
+  getReceiverAnswerEvent,
+  getReceiverCandidateEvent,
+  getSenderAnswerEvent,
+  getSenderCandidateEvent,
+  handleAllUserEvent,
+  handleUserEnterEvent,
+  handleUserExitEvent,
+  muteCam,
+  muteMic,
+  muteWindow,
+} from './WebRTC.util';
 
 import { useToggle } from '@Hook/.';
+
+const nickName = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'];
+const myId = nickName[Math.floor(Math.random() * nickName.length)];
 
 const getUrlByMeetingState = (flag: boolean) => (flag ? 'mettingOn' : 'mettingOff');
 export const useMeetingController = () => {
@@ -28,6 +45,18 @@ export const useMeetingController = () => {
     </div>
   );
 
+  useEffect(() => {
+    if (meetingState) {
+      const clientSocket = new ClientSocket(myId);
+    }
+    return () => {
+      if (meetingState) {
+        const clientSocket = new ClientSocket(myId);
+        clientSocket.socket!.disconnect();
+        ClientSocket.instance = null;
+      }
+    };
+  }, [meetingState]);
   return {
     state: meetingState,
     component: MeetingToggleButton,
@@ -42,12 +71,46 @@ export const useMicController = (ref: React.MutableRefObject<MediaStream | undef
   return { micState, handleMicToggle };
 };
 
-export const useCamController = (ref: React.MutableRefObject<MediaStream | undefined>) => {
+export const useCamController = (
+  streamRef: React.MutableRefObject<MediaStream | undefined>,
+  videoRef: React.RefObject<HTMLVideoElement>,
+  chatRoomId: number,
+) => {
+  const { users, addUser, deleteUser } = useUsersHandler();
   const { state: camState, toggleState: handleCamToggle } = useToggle();
+
   useEffect(() => {
-    muteCam(ref);
+    if (camState) {
+      const clientSocket = new ClientSocket('싱글톤');
+      connection({ streamRef, videoRef, addUser, chatRoomId });
+      clientSocket.socket!.on('getSenderAnswer', getSenderAnswerEvent(ClientSocket.sendPC));
+      clientSocket.socket!.on('getReceiverAnswer', getReceiverAnswerEvent);
+      clientSocket.socket!.on('getSenderCandidate', getSenderCandidateEvent);
+      clientSocket.socket!.on('getReceiverCandidate', getReceiverCandidateEvent);
+      clientSocket.socket!.on('allUsers', handleAllUserEvent(addUser, chatRoomId));
+      clientSocket.socket!.on('userEnter', handleUserEnterEvent(addUser, chatRoomId));
+      clientSocket.socket!.on('userExit', handleUserExitEvent(deleteUser));
+    }
+    return () => {
+      if (camState) {
+        const clientSocket = new ClientSocket(myId);
+        ClientSocket.sendPC.close();
+        users.forEach((user) => handleUserExitEvent(deleteUser)(user.id));
+        clientSocket.socket!.emit('leaveRoom');
+        clientSocket.socket!.off('getSenderAnswer', getSenderAnswerEvent(ClientSocket.sendPC));
+        clientSocket.socket!.off('getReceiverAnswer', getReceiverAnswerEvent);
+        clientSocket.socket!.off('getSenderCandidate', getSenderCandidateEvent);
+        clientSocket.socket!.off('getReceiverCandidate', getReceiverCandidateEvent);
+        clientSocket.socket!.off('allUsers', handleAllUserEvent(addUser, chatRoomId));
+        clientSocket.socket!.off('userEnter', handleUserEnterEvent);
+        clientSocket.socket!.off('userExit', handleUserExitEvent(deleteUser));
+        muteCam(streamRef);
+        // streamRef.current?.getTracks().forEach((track) => track.stop());
+      }
+    };
   }, [camState]);
-  return { camState, handleCamToggle };
+
+  return { camState, handleCamToggle, users };
 };
 
 export const useWindowController = (ref: React.MutableRefObject<MediaStream | undefined>) => {
@@ -56,6 +119,23 @@ export const useWindowController = (ref: React.MutableRefObject<MediaStream | un
     muteWindow(ref);
   }, [windowState]);
   return { windowState, handleWindowToggle };
+};
+
+export const useUsersHandler = () => {
+  const [users, setUsers] = useState<WebRTCUser[]>([]);
+  const addUser = (userId: string, e: RTCTrackEvent) => {
+    setUsers((oldUsers) =>
+      oldUsers
+        .filter((user) => user.id !== userId)
+        .concat({
+          id: userId,
+          stream: e.streams[0],
+        }),
+    );
+  };
+  const deleteUser = (id: string) => setUsers((prev) => prev.filter((user) => user.id !== id));
+
+  return { users, addUser, deleteUser };
 };
 
 export const useCamState = () => {

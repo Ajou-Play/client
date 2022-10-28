@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useEffect, useRef, useState } from 'react';
+import { createContext, ReactNode, useRef } from 'react';
 
 import {
   useCamController,
@@ -6,14 +6,7 @@ import {
   useMicController,
   useWindowController,
 } from './WebRTC.hook';
-import type { WebRTCState, WebRTCUser } from './WebRTC.type';
-import {
-  createReceiverOffer,
-  getLocalStream,
-  receivePC,
-  registerSdpToPC,
-  senderPC,
-} from './WebRTC.util';
+import type { WebRTCState } from './WebRTC.type';
 
 export const WebRTCContext = createContext<WebRTCState>({} as WebRTCState);
 
@@ -24,14 +17,13 @@ export const WebRTCProvider = ({
   children: ReactNode;
   chatRoomId: number;
 }) => {
-  const [users, setUsers] = useState<WebRTCUser[]>([]);
   const streamRef = useRef<MediaStream>();
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  const { users, camState, handleCamToggle } = useCamController(streamRef, videoRef, chatRoomId);
   const { component: MeetingToggleButton, state: meetingState } = useMeetingController();
   const { micState, handleMicToggle } = useMicController(streamRef);
   const { windowState, handleWindowToggle } = useWindowController(streamRef);
-  const { camState, handleCamToggle } = useCamController(streamRef);
 
   const value = {
     users,
@@ -45,30 +37,6 @@ export const WebRTCProvider = ({
     camState,
     handleCamToggle,
   } as WebRTCState;
-
-  useEffect(() => {
-    if (meetingState) {
-      // 나의 MediaStream 만들기 getLocalStream({videoRef,streamRef})
-      getLocalStream({ streamRef, videoRef });
-      // Peer Connection 생성하기 pc = senderPC(localStreamRef.current) => candidate 전송해야함
-      const sendPc = senderPC(streamRef.current!);
-      // offer 만들기 offer = registerSdpToPC(pc)
-      const offer = registerSdpToPC(sendPc);
-      // 참여 event 보내기 => offer, roomid 보내기
-      // 응답 event 받아서 pc 생성 pc = receivePC()
-      const receive = receivePC();
-      // answer 만들기 answer = createReceiverOffer(pc)
-      const answer = createReceiverOffer(receive);
-      // 응답 event 보내기 => answer, roomid 보내기
-
-      // candidate 수신하면
-      // pc에 stream 저장 상대 접속 발생하면 ,
-      console.log('webRTC 온', chatRoomId);
-    } else {
-      // leave event 보내기
-      console.log('webRTC 오프', chatRoomId);
-    }
-  }, [meetingState]);
 
   return <WebRTCContext.Provider value={value}>{children}</WebRTCContext.Provider>;
 };
