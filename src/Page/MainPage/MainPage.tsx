@@ -16,10 +16,8 @@ import {
   TeamCreateModal,
   ChannelInfoContainer,
   WindowContainer,
-  ChannelArchive,
-  ChannelHome,
+  MainView,
 } from '@Component/.';
-import { CamChat } from '@Component/CamChat';
 import { getChannelInfo } from '@Component/ChannelInfoContainer/ChannelInfoContainer.util';
 import { TeamContext } from '@Context/.';
 import { WebRTCProvider } from '@Context/WebRTC';
@@ -63,14 +61,10 @@ export const MainPage = () => {
           handleClickWindow={handleClickWindow}
           handleArchiveButtonClick={handleArchiveButtonClick}
         >
-          <div className='h-[100%]'>
-            {body === 'Home' ? (
-              <ChannelHome archiveItems={archiveItems} />
-            ) : (
-              <ChannelArchive archiveItems={archiveItems} />
-            )}
-          </div>
-          <CamChat />
+          <MainView
+            archiveItems={archiveItems}
+            body={body}
+          />
         </ChannelInfoContainer>
       </WebRTCProvider>
       <TeamContext.Provider value={teamSelect.toString()}>

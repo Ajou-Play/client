@@ -1,17 +1,16 @@
 import { Video } from './Video';
 
-import { useCamChatState, useCamState, useMeetingToggleState } from '@Context/WebRTC';
+import { useCamChatState, useCamState } from '@Context/WebRTC';
 
 export const CamChat = () => {
   const { users, videoRef } = useCamChatState();
-  const { meetingState } = useMeetingToggleState();
   const { camState } = useCamState();
 
-  if (!meetingState) return null;
   return (
-    <div>
+    <div className='w-[100%] h-[100%]'>
       {camState && (
         <video
+          className='rounded-md'
           ref={videoRef}
           muted
           autoPlay

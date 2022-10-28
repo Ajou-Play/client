@@ -10,12 +10,11 @@ export const Video = ({ stream }: VideoProps) => {
   }, [stream]);
 
   return (
-    <div>
-      <video
-        muted
-        autoPlay
-        ref={videoRef}
-      />
-    </div>
+    <video
+      className='rounded-md'
+      muted
+      autoPlay
+      ref={videoRef}
+    />
   );
 };
