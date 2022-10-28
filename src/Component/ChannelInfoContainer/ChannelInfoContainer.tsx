@@ -57,7 +57,7 @@ export const ChannelInfoContainer = ({
         </div>
       </div>
       {/* overflow 되어야함 */}
-      <div className='bg-[#F1F1F1] w-[100%] h-[calc(100vh-80px)] px-[48px] py-[50px] box-border overflow-auto'>
+      <div className='bg-[#F1F1F1] w-[100%] h-[calc(100vh-80px)] px-[48px] py-[50px] box-border flex'>
         {children}
       </div>
     </div>

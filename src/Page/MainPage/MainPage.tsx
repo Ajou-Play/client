@@ -63,11 +63,13 @@ export const MainPage = () => {
           handleClickWindow={handleClickWindow}
           handleArchiveButtonClick={handleArchiveButtonClick}
         >
-          {body === 'Home' ? (
-            <ChannelHome archiveItems={archiveItems} />
-          ) : (
-            <ChannelArchive archiveItems={archiveItems} />
-          )}
+          <div className='h-[100%]'>
+            {body === 'Home' ? (
+              <ChannelHome archiveItems={archiveItems} />
+            ) : (
+              <ChannelArchive archiveItems={archiveItems} />
+            )}
+          </div>
           <CamChat />
         </ChannelInfoContainer>
       </WebRTCProvider>

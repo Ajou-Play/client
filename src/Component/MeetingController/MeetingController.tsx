@@ -1,7 +1,7 @@
 import { CHARACTER_LEVEL } from './MeetingController.const';
 import { MeetingControllerProps } from './MeetingController.type';
 
-import { useMeetingToggleState, useMicState, useWindowState } from '@Context/WebRTC';
+import { useCamState, useMeetingToggleState, useMicState, useWindowState } from '@Context/WebRTC';
 import { useToggle } from '@Hook/.';
 
 const iconOnStyle =
@@ -80,6 +80,25 @@ const ShareDisplayButton = () => {
   );
 };
 
+const CamButton = () => {
+  const { camState, handleCamToggle } = useCamState();
+
+  return (
+    <div className='flex justify-between camButton'>
+      <div className={camState ? iconOnStyle : iconOffStyle}>
+        <img
+          src={camState ? '/asset/windowOff.svg' : '/asset/windowOn.svg'}
+          alt='mic'
+          className={iconStyle}
+          title={camState ? '화상채팅 중단' : '화상채팅'}
+          onClick={handleCamToggle}
+          aria-hidden
+        />
+      </div>
+    </div>
+  );
+};
+
 export const MeetingController = ({ userId, userLevel }: MeetingControllerProps) => {
   const src = CHARACTER_LEVEL[userLevel];
   const { MeetingToggleButton, meetingState } = useMeetingToggleState();
@@ -97,6 +116,7 @@ export const MeetingController = ({ userId, userLevel }: MeetingControllerProps)
         </div>
         {meetingState && <MuteButton />}
         {meetingState && <ShareDisplayButton />}
+        {meetingState && <CamButton />}
         <MeetingToggleButton />
       </div>
     </div>

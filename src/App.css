@@ -38,6 +38,9 @@
 .shareButton {
   grid-area: share;
 }
+.camButton {
+  grid-area: cam;
+}
 .mettingToggleButton {
   grid-area: mettingToggle;
 }
