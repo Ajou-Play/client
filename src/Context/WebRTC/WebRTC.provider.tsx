@@ -7,6 +7,13 @@ import {
   useWindowController,
 } from './WebRTC.hook';
 import type { WebRTCState, WebRTCUser } from './WebRTC.type';
+import {
+  createReceiverOffer,
+  getLocalStream,
+  receivePC,
+  registerSdpToPC,
+  senderPC,
+} from './WebRTC.util';
 
 export const WebRTCContext = createContext<WebRTCState>({} as WebRTCState);
 
@@ -18,15 +25,17 @@ export const WebRTCProvider = ({
   chatRoomId: number;
 }) => {
   const [users, setUsers] = useState<WebRTCUser[]>([]);
-  const localStreamRef = useRef<MediaStream>();
+  const streamRef = useRef<MediaStream>();
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const { component: MeetingToggleButton, state: meetingState } = useMeetingController();
-  const { micState, handleMicToggle } = useMicController(localStreamRef);
-  const { windowState, handleWindowToggle } = useWindowController(localStreamRef);
-  const { camState, handleCamToggle } = useCamController(localStreamRef);
+  const { micState, handleMicToggle } = useMicController(streamRef);
+  const { windowState, handleWindowToggle } = useWindowController(streamRef);
+  const { camState, handleCamToggle } = useCamController(streamRef);
 
   const value = {
     users,
+    videoRef,
     MeetingToggleButton,
     meetingState,
     micState,
@@ -40,11 +49,16 @@ export const WebRTCProvider = ({
   useEffect(() => {
     if (meetingState) {
       // 나의 MediaStream 만들기 getLocalStream({videoRef,streamRef})
+      getLocalStream({ streamRef, videoRef });
       // Peer Connection 생성하기 pc = senderPC(localStreamRef.current) => candidate 전송해야함
+      const sendPc = senderPC(streamRef.current!);
       // offer 만들기 offer = registerSdpToPC(pc)
+      const offer = registerSdpToPC(sendPc);
       // 참여 event 보내기 => offer, roomid 보내기
       // 응답 event 받아서 pc 생성 pc = receivePC()
+      const receive = receivePC();
       // answer 만들기 answer = createReceiverOffer(pc)
+      const answer = createReceiverOffer(receive);
       // 응답 event 보내기 => answer, roomid 보내기
 
       // candidate 수신하면

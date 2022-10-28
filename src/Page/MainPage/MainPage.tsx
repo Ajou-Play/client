@@ -19,6 +19,7 @@ import {
   ChannelArchive,
   ChannelHome,
 } from '@Component/.';
+import { CamChat } from '@Component/CamChat';
 import { getChannelInfo } from '@Component/ChannelInfoContainer/ChannelInfoContainer.util';
 import { TeamContext } from '@Context/.';
 import { WebRTCProvider } from '@Context/WebRTC';
@@ -67,6 +68,7 @@ export const MainPage = () => {
           ) : (
             <ChannelArchive archiveItems={archiveItems} />
           )}
+          <CamChat />
         </ChannelInfoContainer>
       </WebRTCProvider>
       <TeamContext.Provider value={teamSelect.toString()}>

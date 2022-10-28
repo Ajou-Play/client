@@ -59,9 +59,11 @@ const makePeerConnection = (stream?: MediaStream) => {
 
 export const senderPC = (stream: MediaStream) => {
   const pc = makePeerConnection(stream);
+  return pc;
 };
 export const receivePC = () => {
   const pc = makePeerConnection();
+  return pc;
 };
 
 const createOffer = async (pc: RTCPeerConnection, isOffer: boolean) => {
@@ -78,11 +80,13 @@ const createOffer = async (pc: RTCPeerConnection, isOffer: boolean) => {
 export const registerSdpToPC = async (pc: RTCPeerConnection) => {
   const offer = await createOffer(pc, false);
   // 등록후 offer와 chatRoomID에 소켓 이벤트 발생
+  return offer;
 };
 
 export const createReceiverOffer = async (pc: RTCPeerConnection) => {
   const answer = await createOffer(pc, true);
   // answer를 chatRoomId에 소켓 이벤트 발생
+  return answer;
 };
 
 const getCandidateEvent = (pc: RTCPeerConnection, candidate: RTCIceCandidateInit) => {

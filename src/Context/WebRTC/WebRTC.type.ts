@@ -13,6 +13,7 @@ export type WebRTCState = {
   handleWindowToggle: () => void;
   handleCamToggle: () => void;
   users: WebRTCUser[];
+  videoRef: React.RefObject<HTMLVideoElement>;
 };
 
 export type GetLocalStream = {

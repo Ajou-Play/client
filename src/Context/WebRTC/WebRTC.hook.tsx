@@ -73,12 +73,12 @@ export const useWindowState = () => {
   return useMemo(() => ({ windowState, handleWindowToggle }), [windowState, handleWindowToggle]);
 };
 
+export const useCamChatState = () => {
+  const { users, videoRef } = useContext(WebRTCContext);
+  return { users, videoRef };
+};
+
 export const useMeetingToggleState = () => {
   const { MeetingToggleButton, meetingState } = useContext(WebRTCContext);
   return { MeetingToggleButton, meetingState };
-};
-
-export const useWebRTCUser = () => {
-  const { users } = useContext(WebRTCContext);
-  return useMemo(() => users, [users]);
 };
