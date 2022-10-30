@@ -43,7 +43,7 @@ export const MainPage = () => {
     falseState: handleModalClose,
   } = useToggle(false);
 
-  const handleClick = (selectState: windowType) =>
+  const handleClickWindow = (selectState: windowType) =>
     selectState === windowSelection ? handleInit() : handleChangeSelect(selectState);
 
   return (
@@ -64,7 +64,7 @@ export const MainPage = () => {
 
       <ChannelInfoContainer
         {...getChannelInfo({ channels: channelList, id: channelSelect })}
-        handleClick={handleClick}
+        handleClickWindow={handleClickWindow}
         handleArchiveButtonClick={handleArchiveButtonClick}
       >
         {body === 'Home' ? (
