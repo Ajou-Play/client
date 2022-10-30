@@ -1,13 +1,13 @@
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 
 import { RegisterFormWrapper, RegisterFormButton, SignUpButton } from './RegisterForm.style';
 
+import { useMovePage } from '@/Hook';
 import { LoginInput } from '@Component/.';
 import type { RegisterFormType } from '@Component/.';
 
 export const RegisterForm = () => {
-  const navigate = useNavigate();
+  const [moveLogin] = useMovePage('/login');
   const {
     register,
     setError,
@@ -21,7 +21,7 @@ export const RegisterForm = () => {
   };
   const handleSignInButton = () => {
     console.log('로그인');
-    navigate('/login');
+    moveLogin();
   };
 
   return (
