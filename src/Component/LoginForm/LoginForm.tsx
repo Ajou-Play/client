@@ -1,5 +1,4 @@
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 
 import {
   LoginFormWrapper,
@@ -8,6 +7,7 @@ import {
   SignUpButton,
 } from './LoginForm.style';
 
+import { useMovePage } from '@/Hook';
 import { LoginInput } from '@Component/.';
 import type { LoginFormType } from '@Component/.';
 
@@ -19,7 +19,7 @@ export const LoginForm = () => {
     formState: { errors },
   } = useForm<LoginFormType>();
 
-  const navigate = useNavigate();
+  const [moveRegister] = useMovePage('/register');
 
   const onSubmit = (data: LoginFormType) => {
     setError('error', {
@@ -28,7 +28,7 @@ export const LoginForm = () => {
   };
   const handleSignUpButton = () => {
     console.log('회원가입');
-    navigate('/register');
+    moveRegister();
   };
 
   const handleFindPwdButton = () => {

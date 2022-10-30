@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-export const useMovePage = (src?: string | string[]) => {
+export const useMovePage = (src?: string | string[]): Array<Function> => {
   const navigate = useNavigate();
   if (typeof src === 'undefined') return [(args: string) => navigate(args)];
   if (typeof src === 'string') src = [src];
