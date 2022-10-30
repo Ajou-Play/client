@@ -9,6 +9,7 @@ import {
 } from './MainPage.hook';
 
 import type { windowType } from '@/Component/.';
+import { TeamContext } from '@/Context';
 import {
   TeamInfoContainer,
   BasicTeamInfo,
@@ -46,45 +47,47 @@ export const MainPage = () => {
     selectState === windowSelection ? handleInit() : handleChangeSelect(selectState);
 
   return (
-    <div className='flex '>
-      <TeamList
-        list={teamList}
-        teamSelect={teamSelect}
-        handleChangeTeamSelect={handleChangeTeamSelect}
-        handleModalOpen={handleModalOpen}
-      />
-      <TeamInfoContainer teamName={teamList[teamSelect]?.name}>
-        <BasicTeamInfo
-          ChannelList={channelList}
-          channelSelect={channelSelect}
-          handleChangeChannelSelect={handleChangeChannelSelect}
+    <TeamContext.Provider value={teamSelect.toString()}>
+      <div className='flex '>
+        <TeamList
+          list={teamList}
+          teamSelect={teamSelect}
+          handleChangeTeamSelect={handleChangeTeamSelect}
+          handleModalOpen={handleModalOpen}
         />
-      </TeamInfoContainer>
+        <TeamInfoContainer teamName={teamList[teamSelect]?.name}>
+          <BasicTeamInfo
+            ChannelList={channelList}
+            channelSelect={channelSelect}
+            handleChangeChannelSelect={handleChangeChannelSelect}
+          />
+        </TeamInfoContainer>
 
-      <ChannelInfoContainer
-        {...getChannelInfo({ channels: channelList, id: channelSelect })}
-        handleClick={handleClick}
-        handleArchiveButtonClick={handleArchiveButtonClick}
-      >
-        {body === 'Home' ? (
-          <ChannelHome archiveItems={archiveItems} />
-        ) : (
-          <ChannelArchive archiveItems={archiveItems} />
+        <ChannelInfoContainer
+          {...getChannelInfo({ channels: channelList, id: channelSelect })}
+          handleClick={handleClick}
+          handleArchiveButtonClick={handleArchiveButtonClick}
+        >
+          {body === 'Home' ? (
+            <ChannelHome archiveItems={archiveItems} />
+          ) : (
+            <ChannelArchive archiveItems={archiveItems} />
+          )}
+        </ChannelInfoContainer>
+        {windowSelection !== 'None' && (
+          <WindowContainer
+            windowSelection={windowSelection}
+            memberItems={memberItems}
+            handleInit={handleInit}
+          />
         )}
-      </ChannelInfoContainer>
-      {windowSelection !== 'None' && (
-        <WindowContainer
-          windowSelection={windowSelection}
-          memberItems={memberItems}
-          handleInit={handleInit}
-        />
-      )}
-      {modalState && (
-        <TeamCreateModal
-          handleAddTeam={handleAddTeam}
-          handleModalClose={handleModalClose}
-        />
-      )}
-    </div>
+        {modalState && (
+          <TeamCreateModal
+            handleAddTeam={handleAddTeam}
+            handleModalClose={handleModalClose}
+          />
+        )}
+      </div>
+    </TeamContext.Provider>
   );
 };
