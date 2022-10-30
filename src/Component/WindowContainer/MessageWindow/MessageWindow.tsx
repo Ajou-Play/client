@@ -1,6 +1,8 @@
 import { useContext } from 'react';
 
-import { ReceiverMessageContent, SenderMessageContent } from '@/Component/MessageCotent';
+import { compareSenderReceiverType } from './MessageWindow.util';
+
+import { MessageContent } from '@/Component';
 import { TeamContext } from '@/Context';
 import { registerChatSocketEvent } from '@/Socket';
 import { sendMessage } from '@/Socket/Chat';
@@ -31,21 +33,16 @@ export const MessageWindow = () => {
         {error && <p>네트워크가 원활하지 않습니다.</p>}
         {!error && (
           <div>
-            {messageData.map(({ sender, content, createAt }) =>
-              sender.senderId === userId ? (
-                <SenderMessageContent
-                  content={content}
-                  createAt={createAt}
-                />
-              ) : (
-                <ReceiverMessageContent
-                  name={sender.name}
-                  profileImage={sender.profileImage}
-                  content={content}
-                  createAt={createAt}
-                />
-              ),
-            )}
+            {messageData.map(({ sender, content, createAt }) => (
+              <MessageContent
+                key={content + createAt}
+                type={compareSenderReceiverType(sender.senderId === userId)}
+                name={sender.name}
+                content={content}
+                createAt={createAt}
+                profileImage={sender.profileImage}
+              />
+            ))}
           </div>
         )}
       </div>
