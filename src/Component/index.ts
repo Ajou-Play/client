@@ -6,3 +6,4 @@ export * from './ChannelInfoContainer';
 export * from './TeamInfoContainer';
 export * from './MessageCotent';
 export * from './WindowContainer';
+export * from './ProfileImage';
