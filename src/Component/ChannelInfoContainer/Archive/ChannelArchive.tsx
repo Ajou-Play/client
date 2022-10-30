@@ -8,7 +8,7 @@ import type {
   CreateArchiveButtonProps,
 } from './ChannelArchive.type';
 
-import { getElementId } from '@/Util';
+import { getElementData } from '@/Util';
 import { useMovePage } from '@Hook/.';
 
 const Archive = ({ archiveId, archiveName, archiveFormat, updatedAt }: ArchiveType) => {
@@ -48,7 +48,7 @@ const Archive = ({ archiveId, archiveName, archiveFormat, updatedAt }: ArchiveTy
 export const ArchiveList = ({ archiveItems }: ArchiveListProps) => {
   const [moveArchive] = useMovePage();
   const handleArchiveClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const id = getElementId(e, '#archiveItem');
+    const id = getElementData(e, '#archiveItem');
     if (!id) return;
     e.stopPropagation();
     moveArchive(`/archive/${id}`);

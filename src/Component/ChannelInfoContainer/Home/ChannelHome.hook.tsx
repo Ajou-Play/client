@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 
-import { ChannelHomeProps } from './ChannelHome.type';
+import { UseGetHomeArchiveList } from './ChannelHome.type';
 import { debounce, getItewmsLengthByWindowSize } from './ChannelHome.util';
 import { DEBOUNCE_TIME } from './SmallArchiveList/ChannelHome.const';
 
 import { getItemsOfList } from '@Util/.';
 
-type UseGetHomeArchiveList = ChannelHomeProps;
 export const useGetHomeArchiveList = ({ archiveItems }: UseGetHomeArchiveList) => {
   const [items, setItems] = useState(getItemsOfList(archiveItems, getItewmsLengthByWindowSize()));
 
