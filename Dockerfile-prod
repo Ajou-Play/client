@@ -1,18 +1,18 @@
 # node-stage
-FROM node:16.16 as builder
+FROM node:16.17.1 as builder
 
 WORKDIR '/usr/src/app'
 
 COPY package.json .
 COPY package-lock.json ./
 
-RUN yarn
+RUN npm install -g npm@8.19.2
+RUN npm install -f
 
 COPY ./ ./
 
-RUN npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch
-RUN yarn build
-
+RUN printf "y\n" | npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch
+RUN npm run build
 
 # nginx-stage
 FROM nginx:1.13
