@@ -1,6 +1,6 @@
 import ClientSocket from '../../Socket/WebRTC/socket';
 import { PC_CONFIG } from './WebRTC.const';
-import { GetLocalStream } from './WebRTC.type';
+import { GetLocalStream, GetWindowShareStream } from './WebRTC.type';
 
 export const muteMic = (ref: React.MutableRefObject<MediaStream | undefined>) => {
   if (!ref || !ref.current) return;
@@ -21,6 +21,21 @@ export const muteWindow = (ref: React.MutableRefObject<MediaStream | undefined>)
   console.log('1');
 };
 
+// 화면 공유 stream 만들기
+
+export const getWindowShareStream = async ({ videoRef, streamRef }: GetWindowShareStream) => {
+  if (!videoRef.current) return;
+  const stream = await navigator.mediaDevices.getDisplayMedia({
+    audio: true,
+    video: {
+      width: 240,
+      height: 240,
+    },
+  });
+  videoRef.current.srcObject = stream;
+  streamRef.current = stream;
+};
+
 // 나의 MediaStream 만들기 getLocalStream
 export const getLocalStream = async ({ videoRef, streamRef }: GetLocalStream) => {
   if (!videoRef.current) return;
@@ -31,7 +46,7 @@ export const getLocalStream = async ({ videoRef, streamRef }: GetLocalStream) =>
       height: 240,
     },
   });
-  if (videoRef) videoRef.current.srcObject = stream;
+  videoRef.current.srcObject = stream;
   streamRef.current = stream;
 };
 
@@ -156,6 +171,38 @@ export const handleUserExitEvent = (deleteUser: Function) => (id: string) => {
   deleteUser(id);
 };
 
+// 사용자 화면 공유 연결하기
+export const windowShareConnection = async ({
+  streamRef,
+  videoRef,
+  addUser,
+  chatRoomId,
+}: {
+  streamRef: React.MutableRefObject<MediaStream | undefined>;
+  videoRef: React.RefObject<HTMLVideoElement>;
+  addUser: Function;
+  chatRoomId: number;
+}) => {
+  const clientSocket = new ClientSocket('싱글톤');
+  if (!clientSocket.socket) return;
+  getWindowShareStream({ videoRef, streamRef });
+  const sendPc = senderPC(streamRef.current!, addUser);
+  if (!sendPc) return;
+
+  ClientSocket.sendPC = sendPc;
+  const offer = await registerSdpToPC(sendPc);
+  clientSocket.socket!.emit('senderOffer', {
+    sdp: offer,
+    // senderSocketID: clientSocket.socket.id,
+    roomId: chatRoomId,
+  });
+  clientSocket.socket!.emit('joinRoom', {
+    // id: clientSocket.socket!.id,
+    chatRoomId,
+  });
+};
+
+// 사용자 화면 연결하기
 export const connection = async ({
   streamRef,
   videoRef,

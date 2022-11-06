@@ -16,6 +16,7 @@ import {
   muteCam,
   muteMic,
   muteWindow,
+  windowShareConnection,
 } from './WebRTC.util';
 
 import { useToggle } from '@Hook/.';
@@ -81,7 +82,7 @@ export const useCamController = (
 
   useEffect(() => {
     if (camState) {
-      const clientSocket = new ClientSocket('싱글톤');
+      const clientSocket = new ClientSocket(myId);
       connection({ streamRef, videoRef, addUser, chatRoomId });
       clientSocket.socket!.on('getSenderAnswer', getSenderAnswerEvent(ClientSocket.sendPC));
       clientSocket.socket!.on('getReceiverAnswer', getReceiverAnswerEvent);
@@ -110,13 +111,26 @@ export const useCamController = (
     };
   }, [camState]);
 
-  return { camState, handleCamToggle, users };
+  return { camState, handleCamToggle, users, addUser };
 };
 
-export const useWindowController = (ref: React.MutableRefObject<MediaStream | undefined>) => {
+export const useWindowController = ({
+  streamRef,
+  videoRef,
+  chatRoomId,
+  addUser,
+}: {
+  streamRef: React.MutableRefObject<MediaStream | undefined>;
+  videoRef: React.RefObject<HTMLVideoElement>;
+  chatRoomId: number;
+  addUser: Function;
+}) => {
   const { state: windowState, toggleState: handleWindowToggle } = useToggle();
   useEffect(() => {
-    muteWindow(ref);
+    if (windowState) {
+      windowShareConnection({ streamRef, videoRef, addUser, chatRoomId });
+      muteWindow(streamRef);
+    }
   }, [windowState]);
   return { windowState, handleWindowToggle };
 };
@@ -154,8 +168,8 @@ export const useWindowState = () => {
 };
 
 export const useCamChatState = () => {
-  const { users, videoRef } = useContext(WebRTCContext);
-  return { users, videoRef };
+  const { users, videoRef, windowShareVideoRef } = useContext(WebRTCContext);
+  return { users, videoRef, windowShareVideoRef };
 };
 
 export const useMeetingToggleState = () => {
