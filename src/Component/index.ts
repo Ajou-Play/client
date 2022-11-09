@@ -11,3 +11,4 @@ export * from './ProfileImage';
 export * from './RegisterForm';
 export * from './ProfileImage';
 export * from './CamChat';
+export * from './Channel';
