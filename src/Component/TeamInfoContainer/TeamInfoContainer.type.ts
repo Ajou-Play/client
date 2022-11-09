@@ -1,6 +1,8 @@
-import React from 'react';
+import { ChannelType } from './BasicTeamInfo/BasicTeamInfo.type';
 
 export type TeamInfoContainerProps = {
-  children: React.ReactNode;
+  channelList: ChannelType[];
+  channelSelect: number;
+  handleChangeChannelSelect: (e: any) => void;
   teamName: string;
 };

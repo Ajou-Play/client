@@ -8,10 +8,9 @@ import {
   useHandleBodyComponent,
 } from './MainPage.hook';
 
-import type { windowType } from '@Component/.';
 import {
+  windowType,
   TeamInfoContainer,
-  BasicTeamInfo,
   TeamList,
   TeamCreateModal,
   ChannelInfoContainer,
@@ -20,7 +19,6 @@ import {
 } from '@Component/.';
 import { getChannelInfo } from '@Component/ChannelInfoContainer/ChannelInfoContainer.util';
 import { TeamContext } from '@Context/.';
-import { WebRTCProvider } from '@Context/WebRTC';
 import { useMultiSelection, useToggle } from '@Hook/.';
 
 export const MainPage = () => {
@@ -55,18 +53,23 @@ export const MainPage = () => {
         handleModalOpen={handleModalOpen}
       />
 
-      <WebRTCProvider chatRoomId={channelSelect}>
-        <ChannelInfoContainer
-          {...getChannelInfo({ channels: channelList, id: channelSelect })}
-          handleClickWindow={handleClickWindow}
-          handleArchiveButtonClick={handleArchiveButtonClick}
-        >
-          <MainView
-            archiveItems={archiveItems}
-            body={body}
-          />
-        </ChannelInfoContainer>
-      </WebRTCProvider>
+      <TeamInfoContainer
+        channelList={channelList}
+        channelSelect={channelSelect}
+        handleChangeChannelSelect={handleChangeChannelSelect}
+        teamName={teamList[teamSelect]?.name}
+      />
+
+      <ChannelInfoContainer
+        {...getChannelInfo({ channels: channelList, id: channelSelect })}
+        handleClickWindow={handleClickWindow}
+        handleArchiveButtonClick={handleArchiveButtonClick}
+      >
+        <MainView
+          archiveItems={archiveItems}
+          body={body}
+        />
+      </ChannelInfoContainer>
       <TeamContext.Provider value={teamSelect.toString()}>
         {windowSelection !== 'None' && (
           <WindowContainer

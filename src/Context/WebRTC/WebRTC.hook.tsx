@@ -176,3 +176,8 @@ export const useMeetingToggleState = () => {
   const { MeetingToggleButton, meetingState } = useContext(WebRTCContext);
   return { MeetingToggleButton, meetingState };
 };
+
+export const useCheckCamChat = () => {
+  const { users, camState, windowState } = useContext(WebRTCContext);
+  return !!users.length || camState || windowState;
+};
