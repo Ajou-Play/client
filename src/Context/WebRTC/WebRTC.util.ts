@@ -28,8 +28,8 @@ export const getWindowShareStream = async ({ videoRef, streamRef }: GetWindowSha
   const stream = await navigator.mediaDevices.getDisplayMedia({
     audio: true,
     video: {
-      width: 240,
-      height: 240,
+      width: 76,
+      height: 76,
     },
   });
   videoRef.current.srcObject = stream;
@@ -42,8 +42,8 @@ export const getLocalStream = async ({ videoRef, streamRef }: GetLocalStream) =>
   const stream = await navigator.mediaDevices.getUserMedia({
     audio: true,
     video: {
-      width: 240,
-      height: 240,
+      width: 76,
+      height: 76,
     },
   });
   videoRef.current.srcObject = stream;

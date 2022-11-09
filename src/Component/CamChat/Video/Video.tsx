@@ -11,7 +11,7 @@ export const Video = ({ stream }: VideoProps) => {
 
   return (
     <video
-      className='rounded-md'
+      className='rounded-md w-[76px] h-[76px]'
       muted
       autoPlay
       ref={videoRef}
