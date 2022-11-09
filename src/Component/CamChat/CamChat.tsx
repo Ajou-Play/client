@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/media-has-caption */
 import { Video } from './Video';
 
 import { useCamChatState, useCamState, useWindowState } from '@Context/WebRTC';
@@ -8,7 +9,7 @@ export const CamChat = () => {
   const { windowState } = useWindowState();
 
   return (
-    <div className='w-[100%] h-[100%] flex'>
+    <div className='w-[640px] h-[100%] flex overflow-auto'>
       {camState && (
         <video
           className='rounded-full  w-[100px] h-[100px] mr-2'
@@ -17,9 +18,6 @@ export const CamChat = () => {
           autoPlay
         />
       )}
-      <div className='rounded-full  w-[100px] h-[100px] mr-2 bg-black'>1</div>
-      <div className='rounded-full  w-[100px] h-[100px] mr-2 bg-black'>1</div>
-      <div className='rounded-full  w-[100px] h-[100px] mr-2 bg-black'>1</div>
       {windowState && (
         <video
           className='rounded-md'
@@ -28,6 +26,16 @@ export const CamChat = () => {
           autoPlay
         />
       )}
+      <div className='rounded-full  min-w-[100px] h-[100px] mr-2 bg-black'>1</div>
+      <div className='rounded-full  min-w-[100px] h-[100px] mr-2 bg-black'>1</div>
+      <div className='rounded-full  min-w-[100px] h-[100px] mr-2 bg-black'>1</div>
+      <div className='rounded-full  min-w-[100px] h-[100px] mr-2 bg-black'>1</div>
+      <div className='rounded-full  min-w-[100px] h-[100px] mr-2 bg-black'>1</div>
+      <div className='rounded-full  min-w-[100px] h-[100px] mr-2 bg-black'>1</div>
+      <div className='rounded-full  min-w-[100px] h-[100px] mr-2 bg-black'>1</div>
+      <div className='rounded-full  min-w-[100px] h-[100px] mr-2 bg-black'>1</div>
+      <div className='rounded-full  min-w-[100px] h-[100px] mr-2 bg-black'>1</div>
+
       {users?.map((user) => (
         <Video
           stream={user.stream}
