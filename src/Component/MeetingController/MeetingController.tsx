@@ -3,9 +3,6 @@ import { MeetingControllerProps } from './MeetingController.type';
 
 import { useCamState, useMeetingToggleState, useMicState, useWindowState } from '@Context/WebRTC';
 
-const iconOnStyle =
-  'flex justify-center items-center w-[36px] h-[36px] rounded-lg bg-primary-point-black';
-const iconOffStyle = 'w-[36px] h-[36px] flex justify-center items-center';
 const iconStyle = 'w-[20px] h-[20px] cursor-pointer';
 const MuteButton = () => {
   const { micState, handleMicToggle } = useMicState();
@@ -13,10 +10,10 @@ const MuteButton = () => {
   return (
     <div className='flex items-center muteButton'>
       <div
-        className={`mr-4 ${micState ? ` ${iconOffStyle}` : `${iconOnStyle}`}`}
+        className='mr-4'
         onClick={handleMicToggle}
         aria-hidden
-        title={micState ? '음소거 해제' : '음소거'}
+        title={micState ? '음소거' : '음소거 해제'}
       >
         <img
           src={micState ? '/asset/meeting/micOn.svg' : '/asset/meeting/micOff.svg'}
@@ -33,9 +30,9 @@ const ShareDisplayButton = () => {
 
   return (
     <div className='flex justify-between shareButton'>
-      <div className={windowState ? iconOnStyle : iconOffStyle}>
+      <div>
         <img
-          src={windowState ? '/asset/meeting/windowOff.svg' : '/asset/meeting/windowOn.svg'}
+          src={windowState ? '/asset/meeting/windowOn.svg' : '/asset/meeting/windowOff.svg'}
           alt='mic'
           className={iconStyle}
           title={windowState ? '화면공유 중단' : '화면공유'}
@@ -52,11 +49,10 @@ const CamButton = () => {
 
   return (
     <div className='flex justify-between camButton'>
-      <div className={camState ? iconOnStyle : iconOffStyle}>
+      <div>
         <img
           src={camState ? '/asset/meeting/camOn.svg' : '/asset/meeting/camOff.svg'}
           alt='mic'
-          className={iconStyle}
           title={camState ? '화상채팅 중단' : '화상채팅'}
           onClick={handleCamToggle}
           aria-hidden

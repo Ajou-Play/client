@@ -65,7 +65,7 @@ export const useMeetingController = () => {
 };
 
 export const useMicController = (ref: React.MutableRefObject<MediaStream | undefined>) => {
-  const { state: micState, toggleState: handleMicToggle } = useToggle();
+  const { state: micState, toggleState: handleMicToggle } = useToggle(false);
   useEffect(() => {
     muteMic(ref);
   }, [micState]);
@@ -78,7 +78,7 @@ export const useCamController = (
   chatRoomId: number,
 ) => {
   const { users, addUser, deleteUser } = useUsersHandler();
-  const { state: camState, toggleState: handleCamToggle } = useToggle();
+  const { state: camState, toggleState: handleCamToggle } = useToggle(false);
 
   useEffect(() => {
     if (camState) {
@@ -125,7 +125,7 @@ export const useWindowController = ({
   chatRoomId: number;
   addUser: Function;
 }) => {
-  const { state: windowState, toggleState: handleWindowToggle } = useToggle();
+  const { state: windowState, toggleState: handleWindowToggle } = useToggle(false);
   useEffect(() => {
     if (windowState) {
       windowShareConnection({ streamRef, videoRef, addUser, chatRoomId });
