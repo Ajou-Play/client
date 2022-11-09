@@ -51,7 +51,7 @@ const MuteButton = () => {
         title={micState ? '음소거 해제' : '음소거'}
       >
         <img
-          src={micState ? '/asset/micOn.svg' : '/asset/micOff.svg'}
+          src={micState ? '/asset/meeting/micOn.svg' : '/asset/meeting/micOff.svg'}
           alt='mic'
           className={iconStyle}
         />
@@ -67,7 +67,7 @@ const ShareDisplayButton = () => {
     <div className='flex justify-between shareButton'>
       <div className={windowState ? iconOnStyle : iconOffStyle}>
         <img
-          src={windowState ? '/asset/windowOff.svg' : '/asset/windowOn.svg'}
+          src={windowState ? '/asset/meeting/windowOff.svg' : '/asset/meeting/windowOn.svg'}
           alt='mic'
           className={iconStyle}
           title={windowState ? '화면공유 중단' : '화면공유'}
@@ -86,7 +86,7 @@ const CamButton = () => {
     <div className='flex justify-between camButton'>
       <div className={camState ? iconOnStyle : iconOffStyle}>
         <img
-          src={camState ? '/asset/windowOff.svg' : '/asset/windowOn.svg'}
+          src={camState ? '/asset/meeting/camOn.svg' : '/asset/meeting/camOff.svg'}
           alt='mic'
           className={iconStyle}
           title={camState ? '화상채팅 중단' : '화상채팅'}

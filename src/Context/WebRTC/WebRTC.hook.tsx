@@ -24,7 +24,7 @@ import { useToggle } from '@Hook/.';
 const nickName = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'];
 const myId = nickName[Math.floor(Math.random() * nickName.length)];
 
-const getUrlByMeetingState = (flag: boolean) => (flag ? 'mettingOn' : 'mettingOff');
+const getUrlByMeetingState = (flag: boolean) => (flag ? 'Meeting/meetingOn' : 'Meeting/meetingOff');
 export const useMeetingController = () => {
   const { state: meetingState, toggleState } = useToggle();
 
