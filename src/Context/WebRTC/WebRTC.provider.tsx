@@ -22,18 +22,22 @@ export const WebRTCProvider = ({
   const windowShareRef = useRef<MediaStream>();
   const windowShareVideoRef = useRef<HTMLVideoElement>(null);
 
-  const { component: MeetingToggleButton, state: meetingState } = useMeetingController();
-  const { users, camState, handleCamToggle, addUser } = useCamController(
+  const { users, camState, handleCamToggle, addUser, handleCamFalse } = useCamController(
     streamRef,
     videoRef,
     chatRoomId,
   );
-  const { micState, handleMicToggle } = useMicController(streamRef);
-  const { windowState, handleWindowToggle } = useWindowController({
+  const { micState, handleMicToggle, handleMicFalse } = useMicController(streamRef);
+  const { windowState, handleWindowToggle, handleWindowFalse } = useWindowController({
     streamRef: windowShareRef,
     videoRef: windowShareVideoRef,
     chatRoomId,
     addUser,
+  });
+  const { component: MeetingToggleButton, state: meetingState } = useMeetingController(() => {
+    handleCamFalse();
+    handleMicFalse();
+    handleWindowFalse();
   });
 
   const value = {

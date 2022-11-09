@@ -25,7 +25,7 @@ const nickName = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'];
 const myId = nickName[Math.floor(Math.random() * nickName.length)];
 
 const getUrlByMeetingState = (flag: boolean) => (flag ? 'Meeting/meetingOn' : 'Meeting/meetingOff');
-export const useMeetingController = () => {
+export const useMeetingController = (cb: Function) => {
   const { state: meetingState, toggleState } = useToggle();
 
   const MeetingToggleButton = () => (
@@ -49,6 +49,8 @@ export const useMeetingController = () => {
   useEffect(() => {
     if (meetingState) {
       const clientSocket = new ClientSocket(myId);
+    } else {
+      cb();
     }
     return () => {
       if (meetingState) {
@@ -58,6 +60,7 @@ export const useMeetingController = () => {
       }
     };
   }, [meetingState]);
+
   return {
     state: meetingState,
     component: MeetingToggleButton,
@@ -65,11 +68,15 @@ export const useMeetingController = () => {
 };
 
 export const useMicController = (ref: React.MutableRefObject<MediaStream | undefined>) => {
-  const { state: micState, toggleState: handleMicToggle } = useToggle(false);
+  const {
+    state: micState,
+    toggleState: handleMicToggle,
+    falseState: handleMicFalse,
+  } = useToggle(false);
   useEffect(() => {
     muteMic(ref);
   }, [micState]);
-  return { micState, handleMicToggle };
+  return { micState, handleMicToggle, handleMicFalse };
 };
 
 export const useCamController = (
@@ -78,7 +85,11 @@ export const useCamController = (
   chatRoomId: number,
 ) => {
   const { users, addUser, deleteUser } = useUsersHandler();
-  const { state: camState, toggleState: handleCamToggle } = useToggle(false);
+  const {
+    state: camState,
+    toggleState: handleCamToggle,
+    falseState: handleCamFalse,
+  } = useToggle(false);
 
   useEffect(() => {
     if (camState) {
@@ -111,7 +122,7 @@ export const useCamController = (
     };
   }, [camState]);
 
-  return { camState, handleCamToggle, users, addUser };
+  return { camState, handleCamToggle, users, addUser, handleCamFalse };
 };
 
 export const useWindowController = ({
@@ -125,14 +136,18 @@ export const useWindowController = ({
   chatRoomId: number;
   addUser: Function;
 }) => {
-  const { state: windowState, toggleState: handleWindowToggle } = useToggle(false);
+  const {
+    state: windowState,
+    toggleState: handleWindowToggle,
+    falseState: handleWindowFalse,
+  } = useToggle(false);
   useEffect(() => {
     if (windowState) {
       windowShareConnection({ streamRef, videoRef, addUser, chatRoomId });
       muteWindow(streamRef);
     }
   }, [windowState]);
-  return { windowState, handleWindowToggle };
+  return { windowState, handleWindowToggle, handleWindowFalse };
 };
 
 export const useUsersHandler = () => {
