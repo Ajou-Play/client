@@ -67,8 +67,8 @@ export const MeetingController = ({ userId, userLevel }: MeetingControllerProps)
   const { MeetingToggleButton, meetingState } = useMeetingToggleState();
 
   return (
-    <div className='p-[10px] box-border mt-[10px] border-t-2'>
-      <div className={`border-t-grey-background  ${meetingState ? 'meetingOn' : 'meetingOff'}`}>
+    <div className='absolute left-[90px] bottom-0 min-w-[272px] border-t-grey-background border-t-2 p-4 box-border'>
+      <div className={`${meetingState ? 'meetingOn' : 'meetingOff'}  p-4 box-border`}>
         <div className='flex items-center title'>
           <img
             src={src}
