@@ -42,8 +42,8 @@ export const getLocalStream = async ({ videoRef, streamRef }: GetLocalStream) =>
   const stream = await navigator.mediaDevices.getUserMedia({
     audio: true,
     video: {
-      width: 76,
-      height: 76,
+      width: 100,
+      height: 100,
     },
   });
   videoRef.current.srcObject = stream;

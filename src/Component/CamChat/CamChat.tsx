@@ -8,18 +8,18 @@ export const CamChat = () => {
   const { windowState } = useWindowState();
 
   return (
-    <div className='w-[100%] h-[100%] grid grid-cols-video-layout gap-1'>
+    <div className='w-[100%] h-[100%] flex'>
       {camState && (
         <video
-          className='rounded-md  w-[76px] h-[76px]'
+          className='rounded-full  w-[100px] h-[100px] mr-2'
           ref={videoRef}
           muted
           autoPlay
         />
       )}
-      <div className='rounded-md  w-[76px] h-[76px] bg-black'>1</div>
-      <div className='rounded-md  w-[76px] h-[76px] bg-black'>1</div>
-      <div className='rounded-md  w-[76px] h-[76px] bg-black'>1</div>
+      <div className='rounded-full  w-[100px] h-[100px] mr-2 bg-black'>1</div>
+      <div className='rounded-full  w-[100px] h-[100px] mr-2 bg-black'>1</div>
+      <div className='rounded-full  w-[100px] h-[100px] mr-2 bg-black'>1</div>
       {windowState && (
         <video
           className='rounded-md'

@@ -16,6 +16,8 @@ import {
   ChannelInfoContainer,
   WindowContainer,
   MainView,
+  MeetingContainer,
+  BasicTeamInfo,
 } from '@Component/.';
 import { getChannelInfo } from '@Component/ChannelInfoContainer/ChannelInfoContainer.util';
 import { TeamContext } from '@Context/.';
@@ -53,12 +55,13 @@ export const MainPage = () => {
         handleModalOpen={handleModalOpen}
       />
 
-      <TeamInfoContainer
-        channelList={channelList}
-        channelSelect={channelSelect}
-        handleChangeChannelSelect={handleChangeChannelSelect}
-        teamName={teamList[teamSelect]?.name}
-      />
+      <TeamInfoContainer teamName={teamList[teamSelect]?.name}>
+        <BasicTeamInfo
+          ChannelList={channelList}
+          channelSelect={channelSelect}
+          handleChangeChannelSelect={handleChangeChannelSelect}
+        />
+      </TeamInfoContainer>
 
       <ChannelInfoContainer
         {...getChannelInfo({ channels: channelList, id: channelSelect })}
@@ -70,6 +73,7 @@ export const MainPage = () => {
           body={body}
         />
       </ChannelInfoContainer>
+      <MeetingContainer chatRoomId={channelSelect} />
       <TeamContext.Provider value={teamSelect.toString()}>
         {windowSelection !== 'None' && (
           <WindowContainer

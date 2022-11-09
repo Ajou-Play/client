@@ -33,7 +33,6 @@ module.exports = {
       },
       gridTemplateColumns: {
         'archive-layout': 'repeat(auto-fill, minmax(362px, auto))',
-        'video-layout': 'repeat(auto-fill, minmax(76px, auto))',
       },
     },
   },

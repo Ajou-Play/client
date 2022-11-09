@@ -13,3 +13,4 @@ export * from './ProfileImage';
 export * from './CamChat';
 export * from './Channel';
 export * from './CamChatContainer';
+export * from './MeetingContainer';
