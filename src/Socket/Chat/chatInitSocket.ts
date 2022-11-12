@@ -5,7 +5,7 @@ import Stomp from 'stompjs';
 import { Socket } from '..';
 import { registerChatSocketEvent } from './registerChatSocketEvent';
 
-const SOCKET_SERVER = 'http://localhost:4000';
+const SOCKET_SERVER = 'https://localhost:4000';
 const TEMP_CHANNEL_ID = '1';
 
 const initSocket = (chatJoinState: boolean) => {

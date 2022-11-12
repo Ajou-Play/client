@@ -1,10 +1,8 @@
-import { Message } from 'stompjs';
-
 import { Socket, SocketType } from '.';
 
 type SubscribeType = {
   eventName: string;
-  callback: (message: Message) => any;
+  callback: any;
 };
 
 export const registerSocketEvent = (socketType: SocketType, subscribes: SubscribeType[]) => {
