@@ -1,3 +1,4 @@
+import { useAddTeamModal } from '../Modal';
 import { TeamItemProps, TeamAddItemProps, TeamListProps } from './TeamList.type';
 
 const TeamItem = ({ select, img, idx }: TeamItemProps) => {
@@ -23,25 +24,25 @@ const TeamAddItem = ({ onClick }: TeamAddItemProps) => (
   </button>
 );
 
-export const TeamList = ({
-  list,
-  teamSelect,
-  handleChangeTeamSelect,
-  handleModalOpen,
-}: TeamListProps) => (
-  <div
-    onClick={handleChangeTeamSelect}
-    aria-hidden
-    className='bg-[#F1F1F1] min-w-[90px] h-[100vh] flex flex-col items-center space-y-3 pt-4'
-  >
-    {list.map((item, idx) => (
-      <TeamItem
-        key={item.teamId}
-        select={teamSelect === idx}
-        img={item.profileImage}
-        idx={idx}
-      />
-    ))}
-    <TeamAddItem onClick={handleModalOpen} />
-  </div>
-);
+export const TeamList = ({ list, teamSelect, handleChangeTeamSelect }: TeamListProps) => {
+  const { Component: AddTeamModal, handleOpen } = useAddTeamModal();
+
+  return (
+    <div
+      onClick={handleChangeTeamSelect}
+      aria-hidden
+      className='bg-[#F1F1F1] min-w-[90px] h-[100vh] flex flex-col items-center space-y-3 pt-4'
+    >
+      {list.map((item, idx) => (
+        <TeamItem
+          key={item.teamId}
+          select={teamSelect === idx}
+          img={item.profileImage}
+          idx={idx}
+        />
+      ))}
+      <TeamAddItem onClick={handleOpen} />
+      <AddTeamModal />
+    </div>
+  );
+};

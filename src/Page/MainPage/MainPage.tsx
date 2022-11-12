@@ -30,17 +30,12 @@ export const MainPage = () => {
   } = useMultiSelection<windowType>('None');
   const { teamSelect, handleChangeTeamSelect } = useTeamSelect();
   const { teamList, handleAddTeam, handleDeleteTeam } = useTeamList();
+
   const { channelSelect, handleChangeChannelSelect } = useChannelSelect(teamSelect);
   const channelList = useChannelList({ teamId: teamList[teamSelect]?.teamId });
-
   const archiveItems = useGetArchiveItems();
   const memberItems = useMemberList({ teamId: teamList[teamSelect]?.teamId });
   const { body, handleArchiveButtonClick } = useHandleBodyComponent();
-  const {
-    state: modalState,
-    trueState: handleModalOpen,
-    falseState: handleModalClose,
-  } = useToggle(false);
 
   const handleClick = (selectState: windowType) =>
     selectState === windowSelection ? handleInit() : handleChangeSelect(selectState);
@@ -51,7 +46,6 @@ export const MainPage = () => {
         list={teamList}
         teamSelect={teamSelect}
         handleChangeTeamSelect={handleChangeTeamSelect}
-        handleModalOpen={handleModalOpen}
       />
       <TeamInfoContainer teamName={teamList[teamSelect]?.name}>
         <BasicTeamInfo
@@ -77,12 +71,6 @@ export const MainPage = () => {
           windowSelection={windowSelection}
           memberItems={memberItems}
           handleInit={handleInit}
-        />
-      )}
-      {modalState && (
-        <TeamCreateModal
-          handleAddTeam={handleAddTeam}
-          handleModalClose={handleModalClose}
         />
       )}
     </div>
