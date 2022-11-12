@@ -38,7 +38,7 @@ export const TeamList = ({
       <TeamItem
         key={item.teamId}
         select={teamSelect === idx}
-        img={item.img}
+        img={item.profileImage}
         idx={idx}
       />
     ))}
