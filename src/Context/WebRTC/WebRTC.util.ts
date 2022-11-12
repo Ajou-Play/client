@@ -1,4 +1,5 @@
-import ClientSocket from '../../Socket/WebRTC/socket';
+import { WebRTCPC } from '../../Socket';
+import { sendCandidate, sendJoin, sendVideo } from '../../Socket/WebRTC/webRTCSendEvent';
 import { PC_CONFIG } from './WebRTC.const';
 import { GetLocalStream, GetWindowShareStream } from './WebRTC.type';
 
@@ -21,9 +22,78 @@ export const muteWindow = (ref: React.MutableRefObject<MediaStream | undefined>)
   console.log('1');
 };
 
-// 화면 공유 stream 만들기
+export const getCandidateEvent = (pc: RTCPeerConnection, candidate: RTCIceCandidateInit) => {
+  if (!candidate) return;
+  pc.addIceCandidate(new RTCIceCandidate(candidate));
+};
 
-export const getWindowShareStream = async ({ videoRef, streamRef }: GetWindowShareStream) => {
+export const registerRemoteDescriptionToPc = async (
+  pc: RTCPeerConnection,
+  sdp: RTCSessionDescription,
+) => {
+  await pc.setRemoteDescription(new RTCSessionDescription(sdp));
+};
+
+export const handleAllUserEvent = (
+  addUser: Function,
+  { users }: { users: { userId: string }[] },
+  myId: number,
+) => users.forEach((user) => registerUser(user.userId, addUser, myId));
+
+export const handleUserEnterEvent = (addUser: Function, data: { id: string }, myId: number) =>
+  registerUser(data.id, addUser, myId);
+
+const registerUser = async (id: string, addUser: Function, myId: number) => {
+  const pc = receivePC(id, addUser, myId);
+  const answer = await createReceiverOffer(pc as RTCPeerConnection);
+  sendVideo({ eventType: 'receiveVideoFrom', userId: 0, sdpOffer: answer });
+};
+
+const receivePC = (id: string, addUser: Function, myId: number) => {
+  const callback = (e: RTCPeerConnectionIceEvent) =>
+    sendCandidate({ eventType: 'onIceCandidate', candidate: e.candidate, userId: myId });
+  const trackCallback = (e: RTCTrackEvent) => addUser(id, e);
+  const pc = makePeerConnection(callback, trackCallback);
+  WebRTCPC.receivePCs[id] = pc;
+  return pc;
+};
+
+export const createReceiverOffer = async (pc: RTCPeerConnection) => {
+  const answer = await createOffer(pc, true);
+  return answer;
+};
+
+export const handleUserExitEvent = (deleteUser: Function, id: string) => {
+  WebRTCPC.receivePCs[id].close();
+  delete WebRTCPC.receivePCs[id];
+  deleteUser(id);
+};
+
+// 사용자 화면 공유 연결하기
+export const windowShareConnection = async ({
+  streamRef,
+  videoRef,
+  addUser,
+  chatRoomId,
+  userId,
+}: {
+  streamRef: React.MutableRefObject<MediaStream | undefined>;
+  videoRef: React.RefObject<HTMLVideoElement>;
+  addUser: Function;
+  chatRoomId: string;
+  userId: number;
+}) => {
+  getWindowShareStream({ videoRef, streamRef });
+  const sendPc = senderPC(streamRef.current!, addUser, userId);
+  if (!sendPc) return;
+  WebRTCPC.sendPC = sendPc;
+  const offer = await registerSdpToPC(sendPc);
+  // sendJoin({ eventType: 'joinMeeting', userId, channelId: chatRoomId });
+  sendVideo({ eventType: 'receiveVideoFrom', userId, sdpOffer: offer });
+};
+
+// 화면 공유 stream 만들기
+const getWindowShareStream = async ({ videoRef, streamRef }: GetWindowShareStream) => {
   if (!videoRef.current) return;
   const stream = await navigator.mediaDevices.getDisplayMedia({
     audio: true,
@@ -36,8 +106,31 @@ export const getWindowShareStream = async ({ videoRef, streamRef }: GetWindowSha
   streamRef.current = stream;
 };
 
+// 사용자 화면 연결하기
+export const connection = async ({
+  streamRef,
+  videoRef,
+  addUser,
+  chatRoomId,
+  userId,
+}: {
+  streamRef: React.MutableRefObject<MediaStream | undefined>;
+  videoRef: React.RefObject<HTMLVideoElement>;
+  addUser: Function;
+  chatRoomId: string;
+  userId: number;
+}) => {
+  getLocalStream({ streamRef, videoRef });
+  const sendPc = senderPC(streamRef.current!, addUser, userId);
+  if (!sendPc) return;
+  WebRTCPC.sendPC = sendPc;
+  const offer = await registerSdpToPC(sendPc);
+  // sendJoin({ eventType: 'joinMeeting', userId, channelId: chatRoomId });
+  sendVideo({ eventType: 'receiveVideoFrom', userId, sdpOffer: offer });
+};
+
 // 나의 MediaStream 만들기 getLocalStream
-export const getLocalStream = async ({ videoRef, streamRef }: GetLocalStream) => {
+const getLocalStream = async ({ videoRef, streamRef }: GetLocalStream) => {
   if (!videoRef.current) return;
   const stream = await navigator.mediaDevices.getUserMedia({
     audio: true,
@@ -48,6 +141,30 @@ export const getLocalStream = async ({ videoRef, streamRef }: GetLocalStream) =>
   });
   videoRef.current.srcObject = stream;
   streamRef.current = stream;
+};
+
+export const registerSdpToPC = async (pc: RTCPeerConnection) => {
+  const offer = await createOffer(pc, false);
+  return offer;
+};
+
+const createOffer = async (pc: RTCPeerConnection, isOffer: boolean) => {
+  const offer = await pc.createOffer({
+    offerToReceiveAudio: !isOffer,
+    offerToReceiveVideo: !isOffer,
+  });
+  const sdp = new RTCSessionDescription(offer);
+  // ontrack 발생
+  await pc.setLocalDescription(sdp);
+  return offer;
+};
+
+const senderPC = (stream: MediaStream, addUser: Function, myId: number) => {
+  const callback = (e: RTCPeerConnectionIceEvent) =>
+    sendCandidate({ eventType: 'onIceCandidate', candidate: e.candidate, userId: myId });
+  const trackCallback = (e: RTCTrackEvent) => addUser(myId, e); // 내가 쏘는건데 동작을 해야해?
+  const pc = makePeerConnection(callback, trackCallback, stream);
+  return pc;
 };
 
 const makePeerConnection = (cb: Function, trackCallback: Function, stream?: MediaStream) => {
@@ -63,172 +180,4 @@ const makePeerConnection = (cb: Function, trackCallback: Function, stream?: Medi
   // e.streams[0]을 user의 stream으로 저장해야함
   pc.ontrack = (e) => trackCallback(e);
   return pc;
-};
-
-export const senderPC = (stream: MediaStream, addUser: Function) => {
-  const { socket } = new ClientSocket('싱글톤');
-  if (!socket) return null;
-  const callback = (e: RTCPeerConnectionIceEvent) =>
-    socket.emit('senderCandidate', {
-      candidate: e.candidate,
-      // senderSocketID: socket.id,
-    });
-  const trackCallback = (e: RTCTrackEvent) => addUser(socket.id, e);
-  const pc = makePeerConnection(callback, trackCallback, stream);
-  return pc;
-};
-export const receivePC = (id: string, addUser: Function) => {
-  const { socket } = new ClientSocket('싱글톤');
-  if (!socket) return null;
-  const callback = (e: RTCPeerConnectionIceEvent) =>
-    socket.emit('receiverCandidate', {
-      candidate: e.candidate,
-      receiverSocketID: socket.id,
-      senderSocketID: id,
-    });
-  const trackCallback = (e: RTCTrackEvent) => addUser(id, e);
-  const pc = makePeerConnection(callback, trackCallback);
-  ClientSocket.receivePCs = { ...ClientSocket.receivePCs, [id]: pc };
-  return pc;
-};
-
-const createOffer = async (pc: RTCPeerConnection, isOffer: boolean) => {
-  const offer = await pc.createOffer({
-    offerToReceiveAudio: !isOffer,
-    offerToReceiveVideo: !isOffer,
-  });
-  const sdp = new RTCSessionDescription(offer);
-  // ontrack 발생
-  await pc.setLocalDescription(sdp);
-  return offer;
-};
-
-export const registerSdpToPC = async (pc: RTCPeerConnection) => {
-  const offer = await createOffer(pc, false);
-  return offer;
-};
-
-export const createReceiverOffer = async (pc: RTCPeerConnection) => {
-  const answer = await createOffer(pc, true);
-  return answer;
-};
-
-const getCandidateEvent = (pc: RTCPeerConnection, candidate: RTCIceCandidateInit) => {
-  if (!candidate) return;
-  pc.addIceCandidate(new RTCIceCandidate(candidate));
-};
-
-export const getReceiverCandidateEvent = (data: { id: string; candidate: RTCIceCandidateInit }) => {
-  const { receivePCs } = ClientSocket;
-  const pc: RTCPeerConnection = receivePCs[data.id];
-  getCandidateEvent(pc, data.candidate);
-};
-
-export const getSenderCandidateEvent = (data: { candidate: RTCIceCandidateInit }) => {
-  getCandidateEvent(ClientSocket.sendPC, data.candidate);
-};
-
-const registerRemoteDescriptionToPc = async (pc: RTCPeerConnection, sdp: RTCSessionDescription) => {
-  await pc.setRemoteDescription(new RTCSessionDescription(sdp));
-};
-
-export const getSenderAnswerEvent =
-  (pc: RTCPeerConnection) => async (data: { sdp: RTCSessionDescription }) => {
-    await registerRemoteDescriptionToPc(pc, data.sdp);
-  };
-
-export const getReceiverAnswerEvent = async (data: { id: string; sdp: RTCSessionDescription }) => {
-  const { receivePCs } = ClientSocket;
-  const pc: RTCPeerConnection = receivePCs[data.id];
-  await registerRemoteDescriptionToPc(pc, data.sdp);
-};
-
-const registerUser = async (id: string, addUser: Function, chatRoomId: number) => {
-  const pc = receivePC(id, addUser);
-  const clientSocket = new ClientSocket('싱글톤');
-  const answer = await createReceiverOffer(pc as RTCPeerConnection);
-  clientSocket.socket!.emit('receiverOffer', {
-    sdp: new RTCSessionDescription(answer),
-    // receiverSocketID: clientSocket.socket!.id,
-    senderSocketID: id,
-    roomID: chatRoomId,
-  });
-};
-
-export const handleAllUserEvent =
-  (addUser: Function, chatRoomId: number) =>
-  ({ users }: { users: { id: string }[] }) =>
-    users.forEach((user) => registerUser(user.id, addUser, chatRoomId));
-
-export const handleUserEnterEvent =
-  (addUser: Function, chatRoomId: number) => async (data: { id: string }) =>
-    registerUser(data.id, addUser, chatRoomId);
-
-export const handleUserExitEvent = (deleteUser: Function) => (id: string) => {
-  const { receivePCs } = ClientSocket;
-  if (!receivePCs[id]) receivePCs[id].close();
-  delete receivePCs[id];
-  deleteUser(id);
-};
-
-// 사용자 화면 공유 연결하기
-export const windowShareConnection = async ({
-  streamRef,
-  videoRef,
-  addUser,
-  chatRoomId,
-}: {
-  streamRef: React.MutableRefObject<MediaStream | undefined>;
-  videoRef: React.RefObject<HTMLVideoElement>;
-  addUser: Function;
-  chatRoomId: number;
-}) => {
-  const clientSocket = new ClientSocket('싱글톤');
-  if (!clientSocket.socket) return;
-  getWindowShareStream({ videoRef, streamRef });
-  const sendPc = senderPC(streamRef.current!, addUser);
-  if (!sendPc) return;
-
-  ClientSocket.sendPC = sendPc;
-  const offer = await registerSdpToPC(sendPc);
-  clientSocket.socket!.emit('senderOffer', {
-    sdp: offer,
-    // senderSocketID: clientSocket.socket.id,
-    roomId: chatRoomId,
-  });
-  clientSocket.socket!.emit('joinRoom', {
-    // id: clientSocket.socket!.id,
-    chatRoomId,
-  });
-};
-
-// 사용자 화면 연결하기
-export const connection = async ({
-  streamRef,
-  videoRef,
-  addUser,
-  chatRoomId,
-}: {
-  streamRef: React.MutableRefObject<MediaStream | undefined>;
-  videoRef: React.RefObject<HTMLVideoElement>;
-  addUser: Function;
-  chatRoomId: number;
-}) => {
-  const clientSocket = new ClientSocket('싱글톤');
-  if (!clientSocket.socket) return;
-  getLocalStream({ streamRef, videoRef });
-  const sendPc = senderPC(streamRef.current!, addUser);
-  if (!sendPc) return;
-
-  ClientSocket.sendPC = sendPc;
-  const offer = await registerSdpToPC(sendPc);
-  clientSocket.socket!.emit('senderOffer', {
-    sdp: offer,
-    // senderSocketID: clientSocket.socket.id,
-    roomId: chatRoomId,
-  });
-  clientSocket.socket!.emit('joinRoom', {
-    // id: clientSocket.socket!.id,
-    chatRoomId,
-  });
 };

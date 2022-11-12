@@ -10,23 +10,22 @@ import type { WebRTCState } from './WebRTC.type';
 
 export const WebRTCContext = createContext<WebRTCState>({} as WebRTCState);
 
+const userId = 0;
+
 export const WebRTCProvider = ({
   children,
   chatRoomId,
 }: {
   children: ReactNode;
-  chatRoomId: number;
+  chatRoomId: string;
 }) => {
   const streamRef = useRef<MediaStream>();
   const videoRef = useRef<HTMLVideoElement>(null);
   const windowShareRef = useRef<MediaStream>();
   const windowShareVideoRef = useRef<HTMLVideoElement>(null);
 
-  const { users, camState, handleCamToggle, addUser, handleCamFalse } = useCamController(
-    streamRef,
-    videoRef,
-    chatRoomId,
-  );
+  const { users, camState, handleCamToggle, addUser, handleCamFalse, deleteUser } =
+    useCamController(streamRef, videoRef, chatRoomId, userId);
   const { micState, handleMicToggle, handleMicFalse } = useMicController(streamRef);
   const { windowState, handleWindowToggle, handleWindowFalse } = useWindowController({
     streamRef: windowShareRef,
@@ -34,11 +33,17 @@ export const WebRTCProvider = ({
     chatRoomId,
     addUser,
   });
-  const { component: MeetingToggleButton, state: meetingState } = useMeetingController(() => {
-    handleCamFalse();
-    handleMicFalse();
-    handleWindowFalse();
-  });
+  const { component: MeetingToggleButton, state: meetingState } = useMeetingController(
+    () => {
+      handleCamFalse();
+      handleMicFalse();
+      handleWindowFalse();
+    },
+    addUser,
+    deleteUser,
+    userId,
+    chatRoomId,
+  );
 
   const value = {
     users,
