@@ -28,7 +28,8 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.1",
     "sockjs-client": "^1.6.1",
-    "stompjs": "^2.3.3"
+    "stompjs": "^2.3.3",
+    "vite-plugin-mkcert": "^1.10.1"
   },
   "devDependencies": {
     "@cypress/react": "^6.2.0",
