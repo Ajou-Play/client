@@ -2,8 +2,14 @@ import { useEffect, useState } from 'react';
 
 import { registerSocketEvent } from '../registerSocketEvent';
 
+type SenderType = {
+  senderId: number;
+  name: string;
+  profileImage: string;
+};
+
 type MessageType = {
-  sender: any;
+  sender: SenderType;
   content: string;
   createAt: Date;
 };

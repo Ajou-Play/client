@@ -1,23 +1,29 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { preloadImg } from '@/Util';
 
 export const ProfileImage = ({ imgPath }: { imgPath: string }) => {
-  const [loaded, setLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  const onError = () => {
+    if (imgRef.current === null) return;
+    imgRef.current.src = '/asset/ChatProfile.svg';
+  };
 
   useEffect(() => {
-    preloadImg(['/asset/ChatProfile.svg', imgPath], () => setLoaded(true));
+    preloadImg([imgPath], () => {
+      if (imgRef.current === null) return;
+      imgRef.current.src = imgPath;
+    });
   }, []);
 
-  return loaded ? (
+  return (
     <img
+      className='bg-grey-line w-[30px] h-[30px] rounded-[10rem]'
       src={imgPath}
+      onError={onError}
       alt='프로필 이미지'
-    />
-  ) : (
-    <img
-      src='/asset/ChatProfile.svg'
-      alt='대체 이미지'
+      ref={imgRef}
     />
   );
 };
