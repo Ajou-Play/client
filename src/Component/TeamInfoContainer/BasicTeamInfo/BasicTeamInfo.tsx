@@ -1,6 +1,8 @@
 import { BasicTeamInfoProps } from './BasicTeamInfo.type';
 import { getChannelIconSrc } from './BasicTeamInfo.util';
 
+import { useAddChannelModal } from '@/Component/Modal';
+
 const imgSize = 'w-4 h-4';
 const ChannelBasicClassName =
   'flex items-center space-x-2 p-[10px] h-8 box-border mb-2 cursor-pointer';
@@ -26,24 +28,41 @@ export const BasicTeamInfo = ({
   ChannelList,
   channelSelect,
   handleChangeChannelSelect,
-}: BasicTeamInfoProps) => (
-  <div
-    className='mt-6 w-[100%]'
-    onClick={handleChangeChannelSelect}
-    aria-hidden
-  >
-    <Channel
-      name='General'
-      dataId={-1}
-      select={channelSelect === -1}
-    />
-    {ChannelList.map(({ name, channelId }) => (
+}: BasicTeamInfoProps) => {
+  const { handleOpen, Component: AddChannelModal } = useAddChannelModal();
+
+  return (
+    <div
+      className='mt-6 w-[100%]'
+      onClick={handleChangeChannelSelect}
+      aria-hidden
+    >
       <Channel
-        name={name}
-        key={channelId}
-        dataId={channelId}
-        select={channelSelect === channelId}
+        name='General'
+        dataId={-1}
+        select={channelSelect === -1}
       />
-    ))}
-  </div>
-);
+      {ChannelList.map(({ name, channelId }) => (
+        <Channel
+          name={name}
+          key={channelId}
+          dataId={channelId}
+          select={channelSelect === channelId}
+        />
+      ))}
+      <button
+        type='button'
+        className={ChannelBasicClassName}
+        onClick={handleOpen}
+      >
+        <img
+          src='/asset/Add.svg'
+          alt='Channel Icon'
+          className={imgSize}
+        />
+        <p className='text-[#888888]'>채널 추가하기</p>
+      </button>
+      <AddChannelModal />
+    </div>
+  );
+};
