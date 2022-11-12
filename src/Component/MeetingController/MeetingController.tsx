@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import Switch from 'react-switch';
 
 import { CHARACTER_LEVEL } from './MeetingController.const';
 import { MeetingControllerProps } from './MeetingController.type';
@@ -10,29 +10,31 @@ const iconOnStyle =
 const iconOffStyle = 'w-[36px] h-[36px] flex justify-center items-center';
 const iconStyle = 'w-[20px] h-[20px] cursor-pointer';
 
-// type MeetingProps = MeetingControllerProps & { toggleState: () => void };
-
-const getUrlByMeetingState = (flag: boolean) => (flag ? 'mettingOn' : 'mettingOff');
-
 const MeetingToggle = () => {
   const { state: meetingState, toggleState } = useToggle();
 
   const MeetingToggleButton = () => (
-    <div
-      className={`w-[70px] h-[40px] rounded-[30px] border border-primary-lightOrange flex items-center cursor-pointer bg-primary-${
-        meetingState ? 'orange' : 'lightOrange'
-      } mettingToggleButton`}
-      onClick={toggleState}
-      aria-hidden
-      title='회의 나가기'
-    >
-      <motion.img
-        animate={{ x: meetingState ? 33 : 5 }}
-        src={`/asset/${getUrlByMeetingState(meetingState)}.svg`}
-        alt='meetingImg'
-        className='w-[30px] h-[30px]'
-      />
-    </div>
+    <Switch
+      className='mettingToggleButton'
+      checked={meetingState}
+      onChange={toggleState}
+      uncheckedIcon={false}
+      checkedIcon={false}
+      uncheckedHandleIcon={
+        <img
+          src='/asset/mettingOff.svg'
+          alt='미팅off'
+        />
+      }
+      checkedHandleIcon={
+        <img
+          src='/asset/mettingOn.svg'
+          alt='미팅on'
+        />
+      }
+      onColor='#FF6C47'
+      offColor='#FFE4D8'
+    />
   );
 
   return {
