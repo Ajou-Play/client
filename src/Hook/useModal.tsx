@@ -33,11 +33,7 @@ export const useModal = () => {
   );
 
   const ModalFooter = ({ buttons }: { buttons: any[] }) => (
-    <div
-      className={`p-[1rem] border-t-[1px] border-grey-line flex justify-between ${
-        buttons.length > 1 ? '' : ' flex-row-reverse'
-      }`}
-    >
+    <div className='p-[1rem] border-t-[1px] border-grey-line flex flex-row-reverse gap-[1rem]'>
       {buttons.map((button) => cloneElement(button))}
     </div>
   );
@@ -76,5 +72,6 @@ export const useModal = () => {
     ModalHeader,
     ModalContent,
     ModalFooter,
+    isOpen,
   };
 };
