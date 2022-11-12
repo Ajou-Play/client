@@ -9,6 +9,7 @@ import {
 } from './MainPage.hook';
 
 import type { windowType } from '@/Component/.';
+import { TeamContext } from '@/Context';
 import {
   TeamInfoContainer,
   BasicTeamInfo,
@@ -42,7 +43,7 @@ export const MainPage = () => {
     falseState: handleModalClose,
   } = useToggle(false);
 
-  const handleClick = (selectState: windowType) =>
+  const handleClickWindow = (selectState: windowType) =>
     selectState === windowSelection ? handleInit() : handleChangeSelect(selectState);
 
   return (
@@ -63,7 +64,7 @@ export const MainPage = () => {
 
       <ChannelInfoContainer
         {...getChannelInfo({ channels: channelList, id: channelSelect })}
-        handleClick={handleClick}
+        handleClickWindow={handleClickWindow}
         handleArchiveButtonClick={handleArchiveButtonClick}
       >
         {body === 'Home' ? (
@@ -72,13 +73,15 @@ export const MainPage = () => {
           <ChannelArchive archiveItems={archiveItems} />
         )}
       </ChannelInfoContainer>
-      {windowSelection !== 'None' && (
-        <WindowContainer
-          windowSelection={windowSelection}
-          memberItems={memberItems}
-          handleInit={handleInit}
-        />
-      )}
+      <TeamContext.Provider value={teamSelect.toString()}>
+        {windowSelection !== 'None' && (
+          <WindowContainer
+            windowSelection={windowSelection}
+            memberItems={memberItems}
+            handleInit={handleInit}
+          />
+        )}
+      </TeamContext.Provider>
       {modalState && (
         <TeamCreateModal
           handleAddTeam={handleAddTeam}
