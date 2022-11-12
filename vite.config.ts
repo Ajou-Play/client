@@ -14,6 +14,7 @@ export default defineConfig({
       { find: '@Page', replacement: path.resolve(__dirname, 'src/Page') },
       { find: '@Util', replacement: path.resolve(__dirname, 'src/Util') },
       { find: '@Context', replacement: path.resolve(__dirname, 'src/Context') },
+      { find: '@Socket', replacement: path.resolve(__dirname, 'src/Socket') },
     ],
   },
   server: {

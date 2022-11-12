@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
-import { preloadImg } from '@/Util';
+import { preloadImg } from '@Util/.';
 
 export const ProfileImage = ({ imgPath }: { imgPath: string }) => {
   const imgRef = useRef<HTMLImageElement>(null);

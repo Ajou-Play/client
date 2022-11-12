@@ -73,7 +73,8 @@
           ["@Hook", "./src/Hook"],
           ["@Page", "./src/Page"],
           ["@Util", "./src/Util"],
-          ["@Context", "./src/Context"]
+          ["@Context", "./src/Context"],
+          ["@Socket", "./src/Socket"]
         ],
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }

@@ -1,6 +1,6 @@
 import { DateTransHm } from '../MessageContent.util';
 
-import { ProfileImage } from '@/Component/ProfileImage';
+import { ProfileImage } from '@Component/ProfileImage';
 
 export const ReceiverMessageContent = ({
   name,
