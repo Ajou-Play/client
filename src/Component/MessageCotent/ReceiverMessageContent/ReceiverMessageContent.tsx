@@ -1,5 +1,7 @@
 import { DateTransHm } from '../MessageContent.util';
 
+import { ProfileImage } from '@/Component/ProfileImage';
+
 export const ReceiverMessageContent = ({
   name,
   profileImage,
@@ -11,15 +13,14 @@ export const ReceiverMessageContent = ({
   profileImage: string;
   createAt: Date;
 }) => (
-  <div>
-    <div>
-      <img
-        src={profileImage}
-        alt='아이콘'
-      />
+  <div className='flex flex-col p-[1rem] gap-1'>
+    <div className='flex gap-1'>
+      <ProfileImage imgPath={profileImage} />
       <p>{name}</p>
     </div>
-    <div className=''>{content}</div>
-    <p>{DateTransHm(createAt)}</p>
+    <div className='flex items-end gap-1'>
+      <div className='bg-grey-background p-[1rem] w-screen rounded-[10px]'>{content}</div>
+      <p className='text-grey-label'>{DateTransHm(createAt)}</p>
+    </div>
   </div>
 );

@@ -5,7 +5,7 @@ export const ChannelInfoContainer = ({
   children,
   channelId,
   name,
-  handleClick,
+  handleClickWindow,
   handleArchiveButtonClick,
 }: ChannelInfoContainerType) => {
   const src = getChannelIconSrc({ channelId });
@@ -36,7 +36,7 @@ export const ChannelInfoContainer = ({
           </button>
           <button
             type='button'
-            onClick={() => handleClick('Message')}
+            onClick={() => handleClickWindow('Message')}
           >
             <img
               src='/asset/Message.svg'
@@ -46,7 +46,7 @@ export const ChannelInfoContainer = ({
           </button>
           <button
             type='button'
-            onClick={() => handleClick('Member')}
+            onClick={() => handleClickWindow('Member')}
           >
             <img
               src='/asset/Member.svg'

@@ -7,4 +7,7 @@ export * from './TeamInfoContainer';
 export * from './MessageCotent';
 export * from './WindowContainer';
 export * from './RegisterForm';
+export * from './ProfileImage';
+export * from './RegisterForm';
+export * from './ProfileImage';
 export * from './Button';

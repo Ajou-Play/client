@@ -7,8 +7,10 @@ export const SenderMessageContent = ({
   content: string;
   createAt: Date;
 }) => (
-  <div>
-    <p>{DateTransHm(createAt)}</p>
-    <div className=''>{content}</div>
+  <div className='flex items-end gap-1 p-[1rem]'>
+    <p className='text-grey-label'>{DateTransHm(createAt)}</p>
+    <div className='bg-[linear-gradient(180deg,#FF6C47_0%,#FFA06A_100%)] p-[1rem] w-screen rounded-[10px] text-grey-offWhite'>
+      {content}
+    </div>
   </div>
 );
