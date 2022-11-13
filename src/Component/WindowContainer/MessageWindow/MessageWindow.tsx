@@ -15,13 +15,10 @@ export const MessageWindow = () => {
   const handleSendMessage = (event: any) => {
     if (event.code === 'Enter' && !error) {
       sendMessage({
-        userId: '1',
-        message: JSON.stringify({
-          channelId: teamSelect,
-          senderId: 1,
-          content: event.target.value,
-          createAt: new Date(),
-        }),
+        type: 'TALK',
+        channelId: Number(teamSelect),
+        senderId: userId,
+        content: event.target.value,
       });
       event.target.value = '';
     }
@@ -33,13 +30,13 @@ export const MessageWindow = () => {
         {error && <p>네트워크가 원활하지 않습니다.</p>}
         {!error && (
           <div>
-            {messageData.map(({ sender, content, createAt }) => (
+            {messageData.map(({ sender, content, createdAt }) => (
               <MessageContent
-                key={content + createAt}
+                key={content + createdAt}
                 type={compareSenderReceiverType(sender.senderId === userId)}
                 name={sender.name}
                 content={content}
-                createAt={createAt}
+                createAt={createdAt}
                 profileImage={sender.profileImage}
               />
             ))}
