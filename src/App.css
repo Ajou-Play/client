@@ -10,9 +10,9 @@
   border-radius: 10px;
   margin-top: 1rem;
   grid-template:
-    'title title .' 1fr
-    'mute share mettingToggle' 1fr
-    /0.6fr 1.4fr 1fr;
+    'title title title .' 1fr
+    'mute cam share mettingToggle' 1fr
+    /0.6fr 0.6fr 0.6fr 1fr;
 }
 
 .meetingOff {

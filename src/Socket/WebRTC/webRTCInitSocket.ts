@@ -5,7 +5,7 @@ import { Socket } from '..';
 import { webRTCReceiveEvent } from './webRTCReceiveEvent';
 import { sendJoin, sendLeave } from './webRTCSendEvent';
 
-const SOCKET_SERVER = 'https://localhost:4000';
+const SOCKET_SERVER = 'https://www.aplay.n-e.kr/api/socket/meeting';
 
 const webRTCInitSocket = (
   webRTCJoinState: boolean,
@@ -15,10 +15,11 @@ const webRTCInitSocket = (
   chatRoomId: string,
 ) => {
   if (webRTCJoinState) {
-    const sockJS = new SockJS(`${SOCKET_SERVER}/socket/meeting`);
+    const sockJS = new SockJS(`${SOCKET_SERVER}`);
     Socket.webRTCInstance = Stomp.over(sockJS);
-    webRTCReceiveEvent(userId, addUser, deleteUser);
-    sendJoin({ eventType: 'joinMeeting', userId, channelId: chatRoomId });
+    webRTCReceiveEvent(userId, addUser, deleteUser, () =>
+      sendJoin({ eventType: 'joinMeeting', userId, channelId: chatRoomId }),
+    );
   } else {
     if (!Socket.webRTCInstance) return;
     sendLeave({ eventType: 'leaveMeeting' });
