@@ -27,7 +27,7 @@ export const CellOfCalendar = ({
       data-day={day}
       data-prev={prev}
     >
-      <span className={`${count !== 0 ? `p-[12px] bg-${color} text-white rounded-3xl` : ''}`}>
+      <span className={`${count !== 0 ? `p-[12px] ${color} text-white rounded-3xl` : ''}`}>
         {day}
       </span>
       {!prev && count !== 0 && (

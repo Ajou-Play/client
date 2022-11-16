@@ -8,19 +8,19 @@ import {
   useHandleBodyComponent,
 } from './MainPage.hook';
 
-import type { windowType } from '@/Component/.';
-import { TeamContext } from '@/Context';
 import {
+  windowType,
   TeamInfoContainer,
-  BasicTeamInfo,
   TeamList,
   TeamCreateModal,
   ChannelInfoContainer,
   WindowContainer,
-  ChannelArchive,
-  ChannelHome,
+  MainView,
+  MeetingContainer,
+  BasicTeamInfo,
 } from '@Component/.';
 import { getChannelInfo } from '@Component/ChannelInfoContainer/ChannelInfoContainer.util';
+import { TeamContext } from '@Context/.';
 import { useMultiSelection, useToggle } from '@Hook/.';
 
 export const MainPage = () => {
@@ -54,6 +54,7 @@ export const MainPage = () => {
         handleChangeTeamSelect={handleChangeTeamSelect}
         handleModalOpen={handleModalOpen}
       />
+
       <TeamInfoContainer teamName={teamList[teamSelect]?.name}>
         <BasicTeamInfo
           ChannelList={channelList}
@@ -67,12 +68,12 @@ export const MainPage = () => {
         handleClickWindow={handleClickWindow}
         handleArchiveButtonClick={handleArchiveButtonClick}
       >
-        {body === 'Home' ? (
-          <ChannelHome archiveItems={archiveItems} />
-        ) : (
-          <ChannelArchive archiveItems={archiveItems} />
-        )}
+        <MainView
+          archiveItems={archiveItems}
+          body={body}
+        />
       </ChannelInfoContainer>
+      <MeetingContainer chatRoomId={channelSelect} />
       <TeamContext.Provider value={teamSelect.toString()}>
         {windowSelection !== 'None' && (
           <WindowContainer

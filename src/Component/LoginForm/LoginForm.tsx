@@ -1,5 +1,4 @@
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 
 import {
   LoginFormWrapper,
@@ -8,9 +7,9 @@ import {
   SignUpButton,
 } from './LoginForm.style';
 
-import { useMovePage } from '@/Hook';
 import { LoginInput } from '@Component/.';
 import type { LoginFormType } from '@Component/.';
+import { useMovePage } from '@Hook/.';
 
 export const LoginForm = () => {
   const {

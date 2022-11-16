@@ -17,12 +17,13 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "paths": {
-      "@/*": ["./src/*"],
       "@Component/*": ["./src/Component/*"],
       "@MSW/*": ["./src/_msw/*"],
       "@Hook/*": ["./src/Hook/*"],
       "@Page/*": ["./src/Page/*"],
-      "@Util/*": ["./src/Util/*"]
+      "@Util/*": ["./src/Util/*"],
+      "@Context/*": ["./src/Context/*"],
+      "@Socket/*": ["./src/Socket/*"]
     }
   },
   "include": ["src", "cypress"],

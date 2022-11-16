@@ -14,8 +14,13 @@
   },
   "plugins": ["react", "@typescript-eslint", "prettier"],
   "rules": {
+    "react/jsx-no-useless-fragment": "warn",
     "react/no-array-index-key": "warn",
     "no-plusplus": "warn",
+    "no-constructor-return": "warn",
+    "no-use-before-define": "warn",
+    "no-undef": "warn",
+    "react/jsx-no-constructed-context-values": "warn",
     "no-param-reassign": "warn",
     "no-restricted-syntax": "warn",
     "react/function-component-definition": "off",
@@ -63,12 +68,13 @@
       },
       "alias": {
         "map": [
-          ["@", "./src"],
           ["@Component", "./src/Component"],
           ["@MSW", "./src/_msw"],
           ["@Hook", "./src/Hook"],
           ["@Page", "./src/Page"],
-          ["@Util", "./src/Util"]
+          ["@Util", "./src/Util"],
+          ["@Context", "./src/Context"],
+          ["@Socket", "./src/Socket"]
         ],
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }

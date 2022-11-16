@@ -1,59 +1,22 @@
-import { motion } from 'framer-motion';
-
 import { CHARACTER_LEVEL } from './MeetingController.const';
 import { MeetingControllerProps } from './MeetingController.type';
 
-import { useToggle } from '@/Hook';
+import { useCamState, useMeetingToggleState, useMicState, useWindowState } from '@Context/WebRTC';
 
-const iconOnStyle =
-  'flex justify-center items-center w-[36px] h-[36px] rounded-lg bg-primary-point-black';
-const iconOffStyle = 'w-[36px] h-[36px] flex justify-center items-center';
 const iconStyle = 'w-[20px] h-[20px] cursor-pointer';
-
-// type MeetingProps = MeetingControllerProps & { toggleState: () => void };
-
-const getUrlByMeetingState = (flag: boolean) => (flag ? 'mettingOn' : 'mettingOff');
-
-const MeetingToggle = () => {
-  const { state: meetingState, toggleState } = useToggle();
-
-  const MeetingToggleButton = () => (
-    <div
-      className={`w-[70px] h-[40px] rounded-[30px] border border-primary-lightOrange flex items-center cursor-pointer bg-primary-${
-        meetingState ? 'orange' : 'lightOrange'
-      } mettingToggleButton`}
-      onClick={toggleState}
-      aria-hidden
-      title='회의 나가기'
-    >
-      <motion.img
-        animate={{ x: meetingState ? 33 : 5 }}
-        src={`/asset/${getUrlByMeetingState(meetingState)}.svg`}
-        alt='meetingImg'
-        className='w-[30px] h-[30px]'
-      />
-    </div>
-  );
-
-  return {
-    state: meetingState,
-    component: MeetingToggleButton,
-  };
-};
-
 const MuteButton = () => {
-  const { state: micState, toggleState: handleMicToggle } = useToggle();
+  const { micState, handleMicToggle } = useMicState();
 
   return (
     <div className='flex items-center muteButton'>
       <div
-        className={`mr-4 ${micState ? ` ${iconOffStyle}` : `${iconOnStyle}`}`}
+        className='mr-4'
         onClick={handleMicToggle}
         aria-hidden
-        title={micState ? '음소거 해제' : '음소거'}
+        title={micState ? '음소거' : '음소거 해제'}
       >
         <img
-          src={micState ? '/asset/micOn.svg' : '/asset/micOff.svg'}
+          src={micState ? '/asset/meeting/micOn.svg' : '/asset/meeting/micOff.svg'}
           alt='mic'
           className={iconStyle}
         />
@@ -63,13 +26,13 @@ const MuteButton = () => {
 };
 
 const ShareDisplayButton = () => {
-  const { state: windowState, toggleState: handleWindowToggle } = useToggle();
+  const { windowState, handleWindowToggle } = useWindowState();
 
   return (
     <div className='flex justify-between shareButton'>
-      <div className={windowState ? iconOnStyle : iconOffStyle}>
+      <div>
         <img
-          src={windowState ? '/asset/windowOff.svg' : '/asset/windowOn.svg'}
+          src={windowState ? '/asset/meeting/windowOn.svg' : '/asset/meeting/windowOff.svg'}
           alt='mic'
           className={iconStyle}
           title={windowState ? '화면공유 중단' : '화면공유'}
@@ -81,13 +44,31 @@ const ShareDisplayButton = () => {
   );
 };
 
-export const MeetingController = ({ userId, userLevel }: MeetingControllerProps) => {
-  const src = CHARACTER_LEVEL[userLevel];
-  const { component: MeetingToggleButton, state: meetingState } = MeetingToggle();
+const CamButton = () => {
+  const { camState, handleCamToggle } = useCamState();
 
   return (
-    <div className='p-[10px] box-border mt-[10px] border-t-2'>
-      <div className={`border-t-grey-background  ${meetingState ? 'meetingOn' : 'meetingOff'}`}>
+    <div className='flex justify-between camButton'>
+      <div>
+        <img
+          src={camState ? '/asset/meeting/camOn.svg' : '/asset/meeting/camOff.svg'}
+          alt='mic'
+          title={camState ? '화상채팅 중단' : '화상채팅'}
+          onClick={handleCamToggle}
+          aria-hidden
+        />
+      </div>
+    </div>
+  );
+};
+
+export const MeetingController = ({ userId, userLevel }: MeetingControllerProps) => {
+  const src = CHARACTER_LEVEL[userLevel];
+  const { MeetingToggleButton, meetingState } = useMeetingToggleState();
+
+  return (
+    <div className='absolute left-[90px] bottom-0 min-w-[272px] border-t-grey-background border-t-2 p-4 box-border'>
+      <div className={`${meetingState ? 'meetingOn' : 'meetingOff'}  p-4 box-border`}>
         <div className='flex items-center title'>
           <img
             src={src}
@@ -98,6 +79,7 @@ export const MeetingController = ({ userId, userLevel }: MeetingControllerProps)
         </div>
         {meetingState && <MuteButton />}
         {meetingState && <ShareDisplayButton />}
+        {meetingState && <CamButton />}
         <MeetingToggleButton />
       </div>
     </div>

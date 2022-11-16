@@ -6,22 +6,19 @@
   display: grid;
   background: #ffe4d8;
   height: 160px;
-  padding: 1rem;
-  box-sizing: border-box;
   align-items: flex-end;
   border-radius: 10px;
+  margin-top: 1rem;
   grid-template:
-    'title title .' 1fr
-    'mute share mettingToggle' 1fr
-    /0.6fr 1.4fr 1fr;
+    'title title title .' 1fr
+    'mute cam share mettingToggle' 1fr
+    /0.6fr 0.6fr 0.6fr 1fr;
 }
 
 .meetingOff {
   display: grid;
   height: 100px;
-  padding: 1rem;
-  box-sizing: border-box;
-  align-items: flex-end;
+  align-items: center;
   grid-template:
     'title  mettingToggle' 1fr
     /2fr 1fr;
@@ -37,6 +34,9 @@
 
 .shareButton {
   grid-area: share;
+}
+.camButton {
+  grid-area: cam;
 }
 .mettingToggleButton {
   grid-area: mettingToggle;
