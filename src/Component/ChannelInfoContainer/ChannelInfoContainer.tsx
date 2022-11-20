@@ -11,7 +11,7 @@ export const ChannelInfoContainer = ({
   const src = getChannelIconSrc({ channelId });
 
   return (
-    <div className='w-[100%] h-[100%]'>
+    <div className='max-w-[calc(100vw-362px)] min-w-[calc(100vw-662px)] h-[100%]'>
       <div className='flex w-[100%] h-[80px] items-center justify-between'>
         <div className='flex pl-[20px] space-x-4 leading-5.5 font-bold'>
           <img
