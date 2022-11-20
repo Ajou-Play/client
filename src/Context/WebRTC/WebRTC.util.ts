@@ -46,12 +46,16 @@ export const handleUserEnterEvent = (addUser: Function, data: { id: string }, my
 const registerUser = async (id: string, addUser: Function, myId: number) => {
   const pc = receivePC(id, addUser, myId);
   const answer = await createReceiverOffer(pc as RTCPeerConnection);
-  sendVideo({ eventType: 'receiveVideoFrom', userId: 0, sdpOffer: answer });
+  sendVideo({ eventType: '/pub/meeting/receiveVideoFrom', userId: 0, sdpOffer: answer });
 };
 
 const receivePC = (id: string, addUser: Function, myId: number) => {
   const callback = (e: RTCPeerConnectionIceEvent) =>
-    sendCandidate({ eventType: 'onIceCandidate', candidate: e.candidate, userId: myId });
+    sendCandidate({
+      eventType: '/pub/meeting/onIceCadidate',
+      candidate: e.candidate,
+      userId: myId,
+    });
   const trackCallback = (e: RTCTrackEvent) => addUser(id, e);
   const pc = makePeerConnection(callback, trackCallback);
   WebRTCPC.receivePCs[id] = pc;
@@ -89,7 +93,7 @@ export const windowShareConnection = async ({
   WebRTCPC.sendPC = sendPc;
   const offer = await registerSdpToPC(sendPc);
   // sendJoin({ eventType: 'joinMeeting', userId, channelId: chatRoomId });
-  sendVideo({ eventType: 'receiveVideoFrom', userId, sdpOffer: offer });
+  sendVideo({ eventType: '/pub/meeting/receiveVideoFrom', userId, sdpOffer: offer });
 };
 
 // 화면 공유 stream 만들기
@@ -126,7 +130,7 @@ export const connection = async ({
   WebRTCPC.sendPC = sendPc;
   const offer = await registerSdpToPC(sendPc);
   // sendJoin({ eventType: 'joinMeeting', userId, channelId: chatRoomId });
-  sendVideo({ eventType: 'receiveVideoFrom', userId, sdpOffer: offer });
+  sendVideo({ eventType: '/pub/meeting/receiveVideoFrom', userId, sdpOffer: offer });
 };
 
 // 나의 MediaStream 만들기 getLocalStream
@@ -161,7 +165,11 @@ const createOffer = async (pc: RTCPeerConnection, isOffer: boolean) => {
 
 const senderPC = (stream: MediaStream, addUser: Function, myId: number) => {
   const callback = (e: RTCPeerConnectionIceEvent) =>
-    sendCandidate({ eventType: 'onIceCandidate', candidate: e.candidate, userId: myId });
+    sendCandidate({
+      eventType: '/pub/meeting/onIceCadidate',
+      candidate: e.candidate,
+      userId: myId,
+    });
   const trackCallback = (e: RTCTrackEvent) => addUser(myId, e); // 내가 쏘는건데 동작을 해야해?
   const pc = makePeerConnection(callback, trackCallback, stream);
   return pc;

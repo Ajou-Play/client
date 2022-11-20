@@ -6,10 +6,7 @@ import { WebRTCProvider } from '@Context/WebRTC';
 
 export const MeetingContainer = ({ chatRoomId }: MeetingContainerProps) => (
   <WebRTCProvider chatRoomId={String(chatRoomId)}>
-    <MeetingController
-      userId='aa'
-      userLevel={1}
-    />
+    <MeetingController userLevel={1} />
     <CamChatContainer />
   </WebRTCProvider>
 );

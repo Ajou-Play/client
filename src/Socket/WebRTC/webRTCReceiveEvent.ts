@@ -19,38 +19,39 @@ export const webRTCReceiveEvent = (
   myId: number,
   addUser: Function,
   deleteUser: Function,
+  channelId: string,
   cb: Function,
 ) => {
   registerSocketEvent(
     'webRTCInstance',
     [
       {
-        eventName: 'existingUsers',
+        eventName: `/sub/meeting/${channelId}/existingUsers`,
         callback: ({ data: users }: any) => {
           handleAllUserEvent(addUser, users, myId);
         },
       },
       {
-        eventName: 'newUserArrived',
+        eventName: `/sub/meeting/${channelId}/newUserArrived`,
         callback: ({ user }: any) => {
           handleUserEnterEvent(addUser, user, myId);
         },
       },
       {
-        eventName: 'userLeft',
+        eventName: `/sub/meeting/${channelId}/userLeft`,
         callback: ({ user: { userId } }: any) => {
           handleUserExitEvent(deleteUser, userId);
         },
       },
       {
-        eventName: 'receiveVideoAnswer',
+        eventName: `/sub/meeting/${channelId}/receiveVideoAnswer`,
         callback: ({ user: { userId }, sdpAnswer }: receiveVideoAnswerType) => {
           const pc = myId === Number(userId) ? WebRTCPC.sendPC : WebRTCPC.receivePCs[userId];
           registerRemoteDescriptionToPc(pc as RTCPeerConnection, sdpAnswer);
         },
       },
       {
-        eventName: 'iceCandidate',
+        eventName: `/sub/meeting/${channelId}/iceCandidate`,
         callback: ({ userId, candidate }: any) => {
           const pc = myId === Number(userId) ? WebRTCPC.sendPC : WebRTCPC.receivePCs[userId];
           getCandidateEvent(pc as RTCPeerConnection, candidate);
