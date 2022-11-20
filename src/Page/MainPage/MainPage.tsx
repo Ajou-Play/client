@@ -12,7 +12,6 @@ import {
   windowType,
   TeamInfoContainer,
   TeamList,
-  TeamCreateModal,
   ChannelInfoContainer,
   WindowContainer,
   MainView,
@@ -21,7 +20,7 @@ import {
 } from '@Component/.';
 import { getChannelInfo } from '@Component/ChannelInfoContainer/ChannelInfoContainer.util';
 import { TeamContext } from '@Context/.';
-import { useMultiSelection, useToggle } from '@Hook/.';
+import { useMultiSelection } from '@Hook/.';
 
 export const MainPage = () => {
   const {
@@ -31,18 +30,12 @@ export const MainPage = () => {
   } = useMultiSelection<windowType>('None');
   const { teamSelect, handleChangeTeamSelect } = useTeamSelect();
   const { teamList, handleAddTeam, handleDeleteTeam } = useTeamList();
+
   const { channelSelect, handleChangeChannelSelect } = useChannelSelect(teamSelect);
   const channelList = useChannelList({ teamId: teamList[teamSelect]?.teamId });
-
   const archiveItems = useGetArchiveItems();
   const memberItems = useMemberList({ teamId: teamList[teamSelect]?.teamId });
   const { body, handleArchiveButtonClick } = useHandleBodyComponent();
-  const {
-    state: modalState,
-    trueState: handleModalOpen,
-    falseState: handleModalClose,
-  } = useToggle(false);
-
   const handleClickWindow = (selectState: windowType) =>
     selectState === windowSelection ? handleInit() : handleChangeSelect(selectState);
 
@@ -52,7 +45,6 @@ export const MainPage = () => {
         list={teamList}
         teamSelect={teamSelect}
         handleChangeTeamSelect={handleChangeTeamSelect}
-        handleModalOpen={handleModalOpen}
       />
 
       <TeamInfoContainer teamName={teamList[teamSelect]?.name}>
@@ -61,6 +53,7 @@ export const MainPage = () => {
           channelSelect={channelSelect}
           handleChangeChannelSelect={handleChangeChannelSelect}
         />
+        <MeetingContainer chatRoomId={channelSelect} />
       </TeamInfoContainer>
 
       <ChannelInfoContainer
@@ -82,13 +75,6 @@ export const MainPage = () => {
           />
         )}
       </TeamContext.Provider>
-
-      {modalState && (
-        <TeamCreateModal
-          handleAddTeam={handleAddTeam}
-          handleModalClose={handleModalClose}
-        />
-      )}
     </div>
   );
 };

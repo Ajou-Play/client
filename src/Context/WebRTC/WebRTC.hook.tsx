@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion';
 import React, { useContext, useEffect, useMemo, useState } from 'react';
+import Switch from 'react-switch';
 
 import { WebRTCPC } from '../../Socket';
 import webRTCInitSocket from '../../Socket/WebRTC/webRTCInitSocket';
@@ -24,21 +24,31 @@ export const useMeetingController = (
   const { state: meetingState, toggleState } = useToggle();
 
   const MeetingToggleButton = () => (
-    <div
-      className={`w-[70px] h-[40px] rounded-[30px] border border-primary-lightOrange flex items-center cursor-pointer bg-primary-${
-        meetingState ? 'orange' : 'lightOrange'
-      } mettingToggleButton`}
-      onClick={toggleState}
-      aria-hidden
-      title='회의 나가기'
-    >
-      <motion.img
-        animate={{ x: meetingState ? 33 : 5 }}
-        src={`/asset/${getUrlByMeetingState(meetingState)}.svg`}
-        alt='meetingImg'
-        className='w-[30px] h-[30px]'
-      />
-    </div>
+    <Switch
+      height={40}
+      width={75}
+      className='mettingToggleButton'
+      checked={meetingState}
+      onChange={toggleState}
+      uncheckedIcon={false}
+      checkedIcon={false}
+      uncheckedHandleIcon={
+        <img
+          src='/asset/Meeting/meetingOff.svg'
+          width={38}
+          alt='미팅off'
+        />
+      }
+      checkedHandleIcon={
+        <img
+          src='/asset/Meeting/meetingOn.svg'
+          width={38}
+          alt='미팅on'
+        />
+      }
+      onColor='#FF6C47'
+      offColor='#FFE4D8'
+    />
   );
 
   useEffect(() => {
