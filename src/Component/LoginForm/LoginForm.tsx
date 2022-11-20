@@ -40,10 +40,7 @@ export const LoginForm = () => {
         });
       });
   };
-  const handleSignUpButton = () => {
-    console.log('회원가입');
-    moveRegister();
-  };
+  const handleSignUpButton = () => moveRegister();
 
   const handleFindPwdButton = () => {
     console.log('비밀번호 찾기');
