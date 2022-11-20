@@ -13,7 +13,6 @@ export const MessageWindow = () => {
   const teamSelect = useContext(TeamContext);
   const messageHistory = useGetMessageHistory(teamSelect);
   const { messageData, error } = registerChatSocketEvent(teamSelect);
-
   const userId = getStorageItem('userId');
 
   const handleSendMessage = (event: any) => {

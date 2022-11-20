@@ -2,8 +2,6 @@ import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 import { getStorageItem, setStorageItem } from './storage';
 
-import { getStorageItem, setStorageItem } from './storage';
-
 const _: AxiosInstance = axios.create({
   baseURL: 'https://www.aplay.n-e.kr/api/v1',
   withCredentials: true,
