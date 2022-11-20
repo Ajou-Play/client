@@ -73,7 +73,6 @@ export const MainPage = () => {
           body={body}
         />
       </ChannelInfoContainer>
-      <MeetingContainer chatRoomId={channelSelect} />
       <TeamContext.Provider value={teamSelect.toString()}>
         {windowSelection !== 'None' && (
           <WindowContainer
@@ -83,6 +82,7 @@ export const MainPage = () => {
           />
         )}
       </TeamContext.Provider>
+
       {modalState && (
         <TeamCreateModal
           handleAddTeam={handleAddTeam}

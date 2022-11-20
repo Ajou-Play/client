@@ -1,10 +1,10 @@
 import { emitEvent } from '..';
 
 const socketType = 'webRTCInstance';
-const SEND_CANDIDATE = 'onIceCandidate';
-const SEND_JOIN = 'joinMeeting';
-const SEND_VIDEO = 'receiveVideoFrom';
-const SEND_LEAVE = 'leaveMeeting';
+const SEND_CANDIDATE = '/pub/meeting/onIceCadidate';
+const SEND_JOIN = '/pub/meeting/joinMeeting';
+const SEND_VIDEO = '/pub/meeting/receiveVideoFrom';
+const SEND_LEAVE = '/pub/meeting/leaveMeeting';
 
 type SendCandidate = {
   eventType: typeof SEND_CANDIDATE;
