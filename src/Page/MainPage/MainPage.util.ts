@@ -6,8 +6,7 @@ export const getTeams = async () => {
 };
 
 export const getChannels = async ({ teamId }: { teamId: number }) => {
-  const res = await axios.get(`/teams/1/channels`);
-  // const res = await axios.get(`/teams/${teamId}/channels`);
+  const res = await axios.get(`/teams/${teamId}/channels`);
   return res.data;
 };
 
