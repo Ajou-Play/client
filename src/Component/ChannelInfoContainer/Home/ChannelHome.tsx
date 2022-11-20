@@ -12,12 +12,12 @@ export const ChannelHome = ({ archiveItems }: ChannelHomeProps) => {
   const createdDates = getCalendarData({ archiveItems });
 
   return (
-    <div className='w-[100%] h-[100%]'>
-      <div className='w-[100%] h-[60%] flex justify-between mb-8'>
-        <div className={`w-[39%] h-[100%] ${BOX_STYLE}`}>
+    <div className='w-[100%] h-[100%] flex flex-col'>
+      <div className='w-[100%] h-[60%] flex justify-between mb-8 min-h-[400px]'>
+        <div className={`w-[39%] h-[100%] ${BOX_STYLE} min-w-[300px]`}>
           <CharacterInfo />
         </div>
-        <div className={`w-[58%] h-[100%] ${BOX_STYLE}`}>
+        <div className={`w-[58%] h-[100%] ${BOX_STYLE} min-w-[500px]`}>
           <Calendar createdDates={createdDates} />
         </div>
       </div>

@@ -2,10 +2,10 @@ import { useContext } from 'react';
 
 import { compareSenderReceiverType } from './MessageWindow.util';
 
-import { MessageContent } from '@/Component';
-import { TeamContext } from '@/Context';
-import { registerChatSocketEvent } from '@/Socket';
-import { sendMessage } from '@/Socket/Chat';
+import { MessageContent } from '@Component/.';
+import { TeamContext } from '@Context/.';
+import { registerChatSocketEvent } from '@Socket/.';
+import { sendMessage } from '@Socket/Chat';
 
 export const MessageWindow = () => {
   const teamSelect = useContext(TeamContext);

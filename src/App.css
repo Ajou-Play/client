@@ -6,11 +6,13 @@
   display: grid;
   background: #ffe4d8;
   /* height: 160px; */
+  width: 100%;
   padding: 1rem;
   justify-self: center;
   box-sizing: border-box;
   align-items: center;
   border-radius: 10px;
+  margin-top: 1rem;
   grid-template:
     'title title title .' 1fr
     'users users users users' 1fr
@@ -19,6 +21,7 @@
 }
 
 .meetingOff {
+  width: 100%;
   display: grid;
   /* height: 78px; */
   padding: 1rem;
@@ -52,6 +55,9 @@
 
 .shareButton {
   grid-area: share;
+}
+.camButton {
+  grid-area: cam;
 }
 .mettingToggleButton {
   width: 56px;

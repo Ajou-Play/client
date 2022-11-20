@@ -8,3 +8,12 @@ export const Socket: Type = {
   webRTCInstance: null,
   archiveInstance: null,
 };
+
+type WebRTCPCType = {
+  sendPC: RTCPeerConnection | null;
+  receivePCs: { [index: string]: RTCPeerConnection };
+};
+export const WebRTCPC: WebRTCPCType = {
+  sendPC: null,
+  receivePCs: {},
+};
