@@ -1,6 +1,6 @@
 import { emitEvent } from '../emitEvent';
 
-const eventName = 'pub/chat/message';
+const eventName = '/pub/chat/message';
 const socketType = 'chatInstance';
 type SendMessage = {
   type: 'TALK' | 'JOIN' | 'QUIT';
