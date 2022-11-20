@@ -2,9 +2,9 @@ import { useForm } from 'react-hook-form';
 
 import { RegisterFormWrapper, RegisterFormButton, SignUpButton } from './RegisterForm.style';
 
-import { useMovePage } from '@/Hook';
 import { LoginInput } from '@Component/.';
 import type { RegisterFormType } from '@Component/.';
+import { useMovePage } from '@Hook/.';
 
 export const RegisterForm = () => {
   const [moveLogin] = useMovePage('/login');

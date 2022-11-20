@@ -1,7 +1,7 @@
 import { BasicTeamInfoProps } from './BasicTeamInfo.type';
-import { getChannelIconSrc } from './BasicTeamInfo.util';
 
-import { useAddChannelModal } from '@/Component/Modal';
+import { getChannelIconSrc } from '@Component/Channel/Channel.util';
+import { useAddChannelModal } from '@Component/Modal';
 
 const imgSize = 'w-4 h-4';
 const ChannelBasicClassName =
@@ -33,7 +33,7 @@ export const BasicTeamInfo = ({
 
   return (
     <div
-      className='mt-6 w-[100%]'
+      className='mt-6 w-[100%] px-4'
       onClick={handleChangeChannelSelect}
       aria-hidden
     >

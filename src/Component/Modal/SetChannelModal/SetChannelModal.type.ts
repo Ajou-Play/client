@@ -1,4 +1,4 @@
-import { MemberType, TeamType } from '@/Component/TeamList/TeamList.type';
+import { MemberType, TeamType } from '@Component/TeamList/TeamList.type';
 
 export type ChannelDetailItemType = TeamType & {
   members: MemberType[];

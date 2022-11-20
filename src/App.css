@@ -5,26 +5,44 @@
 .meetingOn {
   display: grid;
   background: #ffe4d8;
-  height: 160px;
+  /* height: 160px; */
+  width: 100%;
   padding: 1rem;
+  justify-self: center;
   box-sizing: border-box;
-  align-items: flex-end;
+  align-items: center;
   border-radius: 10px;
+  margin-top: 1rem;
   grid-template:
-    'title title .' 1fr
-    'mute share mettingToggle' 1fr
-    /0.6fr 1.4fr 1fr;
+    'title title title .' 1fr
+    'users users users users' 1fr
+    'mute cam share mettingToggle' 40px
+    /0.6fr 0.6fr 0.6fr 75px;
 }
 
 .meetingOff {
+  width: 100%;
   display: grid;
-  height: 100px;
+  /* height: 78px; */
   padding: 1rem;
+  justify-self: center;
   box-sizing: border-box;
   align-items: flex-end;
   grid-template:
-    'title  mettingToggle' 1fr
-    /2fr 1fr;
+    'title  mettingToggle' 40px
+    /1.8fr 75px;
+}
+
+.users {
+  grid-area: users;
+}
+
+.users div > * {
+  margin-left: -0.5rem;
+}
+
+.users div > *:first-of-type {
+  margin-left: 0;
 }
 
 .title {
@@ -38,6 +56,14 @@
 .shareButton {
   grid-area: share;
 }
+.camButton {
+  grid-area: cam;
+}
 .mettingToggleButton {
+  width: 56px;
   grid-area: mettingToggle;
+}
+
+.react-switch-bg {
+  margin: 0px;
 }

@@ -8,20 +8,19 @@ import {
   useHandleBodyComponent,
 } from './MainPage.hook';
 
-import type { windowType } from '@/Component/.';
-import { TeamContext } from '@/Context';
 import {
+  windowType,
   TeamInfoContainer,
-  BasicTeamInfo,
   TeamList,
-  TeamCreateModal,
   ChannelInfoContainer,
   WindowContainer,
-  ChannelArchive,
-  ChannelHome,
+  MainView,
+  MeetingContainer,
+  BasicTeamInfo,
 } from '@Component/.';
 import { getChannelInfo } from '@Component/ChannelInfoContainer/ChannelInfoContainer.util';
-import { useMultiSelection, useToggle } from '@Hook/.';
+import { TeamContext } from '@Context/.';
+import { useMultiSelection } from '@Hook/.';
 
 export const MainPage = () => {
   const {
@@ -37,7 +36,6 @@ export const MainPage = () => {
   const archiveItems = useGetArchiveItems();
   const memberItems = useMemberList({ teamId: teamList[teamSelect]?.teamId });
   const { body, handleArchiveButtonClick } = useHandleBodyComponent();
-
   const handleClickWindow = (selectState: windowType) =>
     selectState === windowSelection ? handleInit() : handleChangeSelect(selectState);
 
@@ -48,12 +46,14 @@ export const MainPage = () => {
         teamSelect={teamSelect}
         handleChangeTeamSelect={handleChangeTeamSelect}
       />
+
       <TeamInfoContainer teamName={teamList[teamSelect]?.name}>
         <BasicTeamInfo
           ChannelList={channelList}
           channelSelect={channelSelect}
           handleChangeChannelSelect={handleChangeChannelSelect}
         />
+        <MeetingContainer chatRoomId={channelSelect} />
       </TeamInfoContainer>
 
       <ChannelInfoContainer
@@ -61,12 +61,12 @@ export const MainPage = () => {
         handleClickWindow={handleClickWindow}
         handleArchiveButtonClick={handleArchiveButtonClick}
       >
-        {body === 'Home' ? (
-          <ChannelHome archiveItems={archiveItems} />
-        ) : (
-          <ChannelArchive archiveItems={archiveItems} />
-        )}
+        <MainView
+          archiveItems={archiveItems}
+          body={body}
+        />
       </ChannelInfoContainer>
+
       <TeamContext.Provider value={teamSelect.toString()}>
         {windowSelection !== 'None' && (
           <WindowContainer

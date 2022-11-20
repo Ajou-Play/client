@@ -1,6 +1,6 @@
 import { cloneElement, ReactNode, useState } from 'react';
 
-import Portal from '@/portal';
+import Portal from '../portal';
 
 export const useModal = () => {
   const [isOpen, setIsOpen] = useState(false);

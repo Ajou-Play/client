@@ -11,7 +11,7 @@ export const ChannelInfoContainer = ({
   const src = getChannelIconSrc({ channelId });
 
   return (
-    <div className='w-[100%] h-[100%]'>
+    <div className='max-w-[calc(100vw-362px)] min-w-[calc(100vw-662px)] h-[100%]'>
       <div className='flex w-[100%] h-[80px] items-center justify-between'>
         <div className='flex pl-[20px] space-x-4 leading-5.5 font-bold'>
           <img
@@ -57,7 +57,7 @@ export const ChannelInfoContainer = ({
         </div>
       </div>
       {/* overflow 되어야함 */}
-      <div className='bg-[#F1F1F1] w-[100%] h-[calc(100vh-80px)] px-[48px] py-[50px] box-border overflow-auto'>
+      <div className='bg-[#F1F1F1] w-[100%] h-[calc(100vh-80px)] px-[48px] py-[36px] box-border flex'>
         {children}
       </div>
     </div>
