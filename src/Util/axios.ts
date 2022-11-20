@@ -11,19 +11,21 @@ const reIssueToken = () => {
   const userId = getStorageItem('userId');
   const accessToken = document.cookie;
   const refreshToken = getStorageItem('refresh');
-  return _.post('/users/token/reissue', {
-    userId,
-    accessToken,
-    refreshToken,
-  }).then((res) => {
-    const {
-      // eslint-disable-next-line no-shadow
-      data: { userId, accessToken, refreshToken },
-    } = res;
-    document.cookie = accessToken;
-    setStorageItem('refresh', refreshToken);
-    setStorageItem('userId', userId);
-  });
+  return customAxios
+    .post('/users/token/reissue', {
+      userId,
+      accessToken,
+      refreshToken,
+    })
+    .then((res) => {
+      const {
+        // eslint-disable-next-line no-shadow
+        data: { userId, accessToken, refreshToken },
+      } = res;
+      document.cookie = accessToken;
+      setStorageItem('refresh', refreshToken);
+      setStorageItem('userId', userId);
+    });
 };
 
 const customAxios = {
@@ -34,10 +36,7 @@ const customAxios = {
         accessToken: cookie,
       },
     }).catch((e) => {
-      console.log(e);
-      console.log(e.code);
-      console.log(e.code === 'U005');
-      if (e.code === 'U005') reIssueToken().then(() => _.get(url));
+      if (e.response.data.code === 'U005') reIssueToken().then(() => _.get(url));
     }) as Promise<AxiosResponse<any, any>>;
   },
   post: (url: string, body: any) =>
@@ -46,10 +45,7 @@ const customAxios = {
         accessToken: document.cookie,
       },
     }).catch((e) => {
-      console.log(e);
-      console.log(e.code);
-      console.log(e.code === 'U005');
-      if (e.code === 'U005') reIssueToken().then(() => _.post(url, body));
+      if (e.response.data.code === 'U005') reIssueToken().then(() => _.post(url, body));
     }) as Promise<AxiosResponse<any, any>>,
 };
 export default customAxios;
