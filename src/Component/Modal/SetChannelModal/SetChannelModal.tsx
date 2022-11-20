@@ -58,7 +58,7 @@ export const useSetChannelModal = (channelDetailItem: ChannelDetailItemType) => 
               </div>
             </div>
             <div className='w-[100%] p-[1rem] grid grid-cols-2'>
-              {members?.map(({ name, userId }) => (
+              {members?.map(({ name, userId }: any) => (
                 <div
                   key={userId}
                   className='flex gap-1 items-center'

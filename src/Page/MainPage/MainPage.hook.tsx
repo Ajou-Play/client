@@ -9,12 +9,12 @@ import { getElementData } from '@Util/.';
 
 export const useTeamList: UseTeamList = () => {
   const [teamList, setTeamList] = useState<TeamType[]>([]);
-  const handleAddTeam = ({ teamId, img, name }: TeamType) => {
+  const handleAddTeam = ({ teamId, profileImage, name }: TeamType) => {
     setTeamList((prev) => [
       ...prev,
       {
         teamId,
-        img,
+        profileImage,
         name,
       },
     ]);

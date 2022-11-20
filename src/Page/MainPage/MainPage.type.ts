@@ -2,7 +2,7 @@ import { TeamType } from '@Component/TeamList/TeamList.type';
 
 export type UseTeamListResult = {
   teamList: TeamType[];
-  handleAddTeam: ({ teamId, img, name }: TeamType) => void;
+  handleAddTeam: ({ teamId, profileImage, name }: TeamType) => void;
   handleDeleteTeam: (e: any) => void;
 };
 export type UseTeamList = () => UseTeamListResult;

@@ -7,9 +7,9 @@ export const TeamCreateModal = ({ handleAddTeam, handleModalClose }: TeamCreateM
   const imgRef = useRef<HTMLInputElement>(null);
   const handleClickButton = () => {
     const teamId = 1;
-    const name = nameRef.current!.value;
-    const img = imgRef.current!.value;
-    handleAddTeam({ teamId, name, img });
+    const name = nameRef.current!.value as string;
+    const img = imgRef.current!.value as string;
+    handleAddTeam({ teamId, name, profileImage: img });
     handleModalClose();
   };
   return (
