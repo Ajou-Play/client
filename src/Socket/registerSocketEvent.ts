@@ -2,7 +2,7 @@ import { Socket, SocketType } from '.';
 
 type SubscribeType = {
   eventName: string;
-  callback: any;
+  callback: (data: any) => any;
 };
 
 export const registerSocketEvent = (
