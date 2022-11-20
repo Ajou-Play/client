@@ -1,21 +1,22 @@
 import axios from '@Util/axios';
 
 export const getTeams = async () => {
-  const res = await axios.get(`/api/v1/teams`);
+  const res = await axios.get(`/teams`);
   return res.data;
 };
 
 export const getChannels = async ({ teamId }: { teamId: number }) => {
-  const res = await axios.get(`/api/v1/teams/${teamId}/channels`);
+  const res = await axios.get(`/teams/1/channels`);
+  // const res = await axios.get(`/teams/${teamId}/channels`);
   return res.data;
 };
 
 export const getMembers = async ({ teamId }: { teamId: number }) => {
-  const res = await axios.get(`/api/v1/teams/${teamId}`);
+  const res = await axios.get(`/teams/${teamId}`);
   return res.data.members;
 };
 
 export const getArchives = async () => {
-  const res = await axios.get(`/api/v1/archives`);
+  const res = await axios.get(`/archives`);
   return res.data;
 };

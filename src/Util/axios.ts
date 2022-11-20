@@ -27,13 +27,29 @@ const reIssueToken = () => {
 };
 
 const customAxios = {
-  get: (url: string) =>
-    _.get(url).catch((e) => {
-      if (e.statusCode === 400) reIssueToken().then(() => _.get(url));
-    }) as Promise<AxiosResponse<any, any>>,
+  get: (url: string) => {
+    const { cookie } = document;
+    return _.get(url, {
+      headers: {
+        accessToken: cookie,
+      },
+    }).catch((e) => {
+      console.log(e);
+      console.log(e.code);
+      console.log(e.code === 'U005');
+      if (e.code === 'U005') reIssueToken().then(() => _.get(url));
+    }) as Promise<AxiosResponse<any, any>>;
+  },
   post: (url: string, body: any) =>
-    _.post(url, body).catch((e) => {
-      if (e.statusCode === 400) reIssueToken().then(() => _.post(url, body));
+    _.post(url, body, {
+      headers: {
+        accessToken: document.cookie,
+      },
+    }).catch((e) => {
+      console.log(e);
+      console.log(e.code);
+      console.log(e.code === 'U005');
+      if (e.code === 'U005') reIssueToken().then(() => _.post(url, body));
     }) as Promise<AxiosResponse<any, any>>,
 };
 export default customAxios;
