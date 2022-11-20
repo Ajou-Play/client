@@ -48,7 +48,7 @@ export const MessageWindow = () => {
           <input
             className='rounded bg-grey-background  placeholder:text-center w-[100%] h-[100%]'
             placeholder='내용을 입력해주세요...'
-            onKeyDown={handleSendMessage}
+            onKeyUp={handleSendMessage}
           />
           <img
             className='w-[24px] h-[24px] absolute right-[1rem] top-[50%] translate-y-[-50%] cursor-pointer'
