@@ -6,16 +6,17 @@ import { MessageContent } from '@Component/.';
 import { TeamContext } from '@Context/.';
 import { registerChatSocketEvent } from '@Socket/.';
 import { sendMessage } from '@Socket/Chat';
+import { getStorageItem } from '@Util/storage';
 
 export const MessageWindow = () => {
   const teamSelect = useContext(TeamContext);
   const { messageData, error } = registerChatSocketEvent(teamSelect);
-  const userId = 1; // 임시 데이터 입니다.
+  const userId = getStorageItem('userId');
 
   const handleSendMessage = (event: any) => {
     if (event.code === 'Enter' && !error) {
       sendMessage({
-        userId: '1',
+        userId: userId as string,
         message: JSON.stringify({
           channelId: teamSelect,
           senderId: 1,
@@ -36,7 +37,7 @@ export const MessageWindow = () => {
             {messageData.map(({ sender, content, createAt }) => (
               <MessageContent
                 key={content + createAt}
-                type={compareSenderReceiverType(sender.senderId === userId)}
+                type={compareSenderReceiverType(sender.senderId === Number(userId))}
                 name={sender.name}
                 content={content}
                 createAt={createAt}

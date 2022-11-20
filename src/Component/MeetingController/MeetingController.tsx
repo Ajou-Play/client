@@ -2,6 +2,7 @@ import { CHARACTER_LEVEL } from './MeetingController.const';
 import { MeetingControllerProps } from './MeetingController.type';
 
 import { useCamState, useMeetingToggleState, useMicState, useWindowState } from '@Context/WebRTC';
+import { getStorageItem } from '@Util/storage';
 
 const iconStyle = 'w-[20px] h-[20px] cursor-pointer';
 const MuteButton = () => {
@@ -62,8 +63,9 @@ const CamButton = () => {
   );
 };
 
-export const MeetingController = ({ userId, userLevel }: MeetingControllerProps) => {
+export const MeetingController = ({ userLevel }: MeetingControllerProps) => {
   const src = CHARACTER_LEVEL[userLevel];
+  const userId = getStorageItem('userId');
   const { MeetingToggleButton, meetingState } = useMeetingToggleState();
 
   return (

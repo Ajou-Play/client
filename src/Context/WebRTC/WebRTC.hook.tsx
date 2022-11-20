@@ -8,6 +8,7 @@ import { WebRTCUser } from './WebRTC.type';
 import { connection, muteCam, muteMic, muteWindow, windowShareConnection } from './WebRTC.util';
 
 import { useToggle } from '@Hook/.';
+import { getStorageItem } from '@Util/storage';
 
 const nickName = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'];
 const myId = nickName[Math.floor(Math.random() * nickName.length)];
@@ -101,7 +102,13 @@ export const useWindowController = ({
   } = useToggle(false);
   useEffect(() => {
     if (windowState) {
-      windowShareConnection({ streamRef, videoRef, addUser, chatRoomId, userId: 0 });
+      windowShareConnection({
+        streamRef,
+        videoRef,
+        addUser,
+        chatRoomId,
+        userId: Number(getStorageItem('userId')),
+      });
       muteWindow(streamRef);
     }
   }, [windowState]);
