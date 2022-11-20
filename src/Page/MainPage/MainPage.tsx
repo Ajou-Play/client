@@ -66,7 +66,6 @@ export const MainPage = () => {
           body={body}
         />
       </ChannelInfoContainer>
-
       <TeamContext.Provider value={teamSelect.toString()}>
         {windowSelection !== 'None' && (
           <WindowContainer

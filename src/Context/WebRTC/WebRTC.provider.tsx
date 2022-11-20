@@ -8,9 +8,9 @@ import {
 } from './WebRTC.hook';
 import type { WebRTCState } from './WebRTC.type';
 
-export const WebRTCContext = createContext<WebRTCState>({} as WebRTCState);
+import { getStorageItem } from '@Util/storage';
 
-const userId = 0;
+export const WebRTCContext = createContext<WebRTCState>({} as WebRTCState);
 
 export const WebRTCProvider = ({
   children,
@@ -25,7 +25,7 @@ export const WebRTCProvider = ({
   const windowShareVideoRef = useRef<HTMLVideoElement>(null);
 
   const { users, camState, handleCamToggle, addUser, handleCamFalse, deleteUser } =
-    useCamController(streamRef, videoRef, chatRoomId, userId);
+    useCamController(streamRef, videoRef, chatRoomId, Number(getStorageItem('userId')));
   const { micState, handleMicToggle, handleMicFalse } = useMicController(streamRef);
   const { windowState, handleWindowToggle, handleWindowFalse } = useWindowController({
     streamRef: windowShareRef,
@@ -41,7 +41,7 @@ export const WebRTCProvider = ({
     },
     addUser,
     deleteUser,
-    userId,
+    Number(getStorageItem('userId')),
     chatRoomId,
   );
 

@@ -6,10 +6,12 @@ import {
   LoginFormButton,
   SignUpButton,
 } from './LoginForm.style';
+import { postLogin } from './LoginForm.util';
 
 import { LoginInput } from '@Component/.';
 import type { LoginFormType } from '@Component/.';
 import { useMovePage } from '@Hook/.';
+import { setStorageItem } from '@Util/storage';
 
 export const LoginForm = () => {
   const {
@@ -19,17 +21,26 @@ export const LoginForm = () => {
     formState: { errors },
   } = useForm<LoginFormType>();
 
-  const [moveRegister] = useMovePage('/register');
+  const [moveRegister, moveHome] = useMovePage(['/register', '/main']);
 
   const onSubmit = (data: LoginFormType) => {
-    setError('error', {
-      message: '이메일 또는 비밀번호를 확인해주세요.',
-    });
+    postLogin({ ...data })
+      .then((res) => {
+        const {
+          data: { userId, accessToken, refreshToken },
+        } = res;
+        document.cookie = accessToken;
+        setStorageItem('refresh', refreshToken);
+        setStorageItem('userId', userId);
+        moveHome();
+      })
+      .catch((e) => {
+        setError('error', {
+          message: '이메일 또는 비밀번호를 확인해주세요.',
+        });
+      });
   };
-  const handleSignUpButton = () => {
-    console.log('회원가입');
-    moveRegister();
-  };
+  const handleSignUpButton = () => moveRegister();
 
   const handleFindPwdButton = () => {
     console.log('비밀번호 찾기');
