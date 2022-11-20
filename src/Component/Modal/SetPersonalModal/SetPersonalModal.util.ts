@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '@Util/axios';
 
 export const getMyInfo = async ({ userId }: { userId: number }) => {
   const res = await axios.get(`/api/v1/users/${userId}/info`);
