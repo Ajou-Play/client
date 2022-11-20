@@ -1,5 +1,6 @@
 import Switch from 'react-switch';
 
+import { ProfileImage } from '../ProfileImage';
 import { CHARACTER_LEVEL } from './MeetingController.const';
 import { MeetingControllerProps } from './MeetingController.type';
 
@@ -15,6 +16,8 @@ const MeetingToggle = () => {
 
   const MeetingToggleButton = () => (
     <Switch
+      height={40}
+      width={75}
       className='mettingToggleButton'
       checked={meetingState}
       onChange={toggleState}
@@ -23,12 +26,14 @@ const MeetingToggle = () => {
       uncheckedHandleIcon={
         <img
           src='/asset/mettingOff.svg'
+          width={38}
           alt='미팅off'
         />
       }
       checkedHandleIcon={
         <img
           src='/asset/mettingOn.svg'
+          width={38}
           alt='미팅on'
         />
       }
@@ -42,6 +47,22 @@ const MeetingToggle = () => {
     component: MeetingToggleButton,
   };
 };
+
+const UserViewer = () => (
+  <div className='users flex py-2 w-[100%] justify-between items-center'>
+    <div className='flex'>
+      {Array(4)
+        .fill('')
+        .map((v) => (
+          <ProfileImage
+            key={v}
+            imgPath=''
+          />
+        ))}
+    </div>
+    <p>외 2명 참여 중</p>
+  </div>
+);
 
 const MuteButton = () => {
   const { state: micState, toggleState: handleMicToggle } = useToggle();
@@ -90,11 +111,12 @@ export const MeetingController = ({ userId, userLevel }: MeetingControllerProps)
   return (
     <div className='p-[10px] box-border mt-[10px] border-t-2'>
       <div className={`border-t-grey-background  ${meetingState ? 'meetingOn' : 'meetingOff'}`}>
+        {meetingState && <UserViewer />}
         <div className='flex items-center title'>
           <img
             src={src}
             alt='character'
-            className='w-[30px] h-[30px] rounded-lg mr-2'
+            className='w-[40px] h-[40px] rounded-lg mr-2 bg-grey-line'
           />
           <span className='text-xl'>{userId}</span>
         </div>
