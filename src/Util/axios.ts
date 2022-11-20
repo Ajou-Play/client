@@ -11,21 +11,19 @@ const reIssueToken = () => {
   const userId = getStorageItem('userId');
   const accessToken = document.cookie;
   const refreshToken = getStorageItem('refresh');
-  return customAxios
-    .post('/users/token/reissue', {
-      userId,
-      accessToken,
-      refreshToken,
-    })
-    .then((res) => {
-      const {
-        // eslint-disable-next-line no-shadow
-        data: { userId, accessToken, refreshToken },
-      } = res;
-      document.cookie = accessToken;
-      setStorageItem('refresh', refreshToken);
-      setStorageItem('userId', userId);
-    });
+  return _.post('/users/token/reissue', {
+    userId,
+    accessToken,
+    refreshToken,
+  }).then((res) => {
+    const {
+      // eslint-disable-next-line no-shadow
+      data: { userId, accessToken, refreshToken },
+    } = res;
+    document.cookie = accessToken;
+    setStorageItem('refresh', refreshToken);
+    setStorageItem('userId', userId);
+  });
 };
 
 const customAxios = {
