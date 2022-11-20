@@ -9,7 +9,7 @@ export const CamChat = () => {
   const { windowState } = useWindowState();
 
   return (
-    <div className='w-[640px] h-[100%] flex overflow-auto'>
+    <div className='w-[640px] h-[100%] flex overflow-auto z-999'>
       {camState && (
         <video
           className='rounded-full  w-[100px] h-[100px] mr-2'

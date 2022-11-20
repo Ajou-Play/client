@@ -1,9 +1,27 @@
+import { ProfileImage } from '../ProfileImage';
 import { CHARACTER_LEVEL } from './MeetingController.const';
 import { MeetingControllerProps } from './MeetingController.type';
 
 import { useCamState, useMeetingToggleState, useMicState, useWindowState } from '@Context/WebRTC';
 
 const iconStyle = 'w-[20px] h-[20px] cursor-pointer';
+
+const UserViewer = () => (
+  <div className='users flex py-2 w-[100%] justify-between items-center'>
+    <div className='flex'>
+      {Array(4)
+        .fill('')
+        .map((v) => (
+          <ProfileImage
+            key={v}
+            imgPath=''
+          />
+        ))}
+    </div>
+    <p>외 2명 참여 중</p>
+  </div>
+);
+
 const MuteButton = () => {
   const { micState, handleMicToggle } = useMicState();
 
@@ -67,13 +85,14 @@ export const MeetingController = ({ userId, userLevel }: MeetingControllerProps)
   const { MeetingToggleButton, meetingState } = useMeetingToggleState();
 
   return (
-    <div className='absolute left-[90px] bottom-0 min-w-[272px] border-t-grey-background border-t-2 p-4 box-border'>
-      <div className={`${meetingState ? 'meetingOn' : 'meetingOff'}  p-4 box-border`}>
+    <div className='absolute box-border mt-[10px] border-t-2 bottom-0 w-[100%] p-4'>
+      <div className={`border-t-grey-background  ${meetingState ? 'meetingOn' : 'meetingOff'}`}>
+        {meetingState && <UserViewer />}
         <div className='flex items-center title'>
           <img
             src={src}
             alt='character'
-            className='w-[30px] h-[30px] rounded-lg mr-2'
+            className='w-[40px] h-[40px] rounded-lg mr-2 bg-grey-line'
           />
           <span className='text-xl'>{userId}</span>
         </div>

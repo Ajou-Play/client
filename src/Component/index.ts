@@ -10,6 +10,7 @@ export * from './RegisterForm';
 export * from './ProfileImage';
 export * from './RegisterForm';
 export * from './ProfileImage';
+export * from './Button';
 export * from './CamChat';
 export * from './Channel';
 export * from './CamChatContainer';

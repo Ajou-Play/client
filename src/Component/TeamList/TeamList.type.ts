@@ -1,7 +1,15 @@
 import { UseTeamSelect } from '@Page/MainPage/MainPage.type';
 
+export type MemberType = {
+  userId: number;
+  name: string;
+  email: string;
+  profileImage: string;
+  type: 'LOCAL' | 'OAUTH';
+};
+
 export type TeamType = {
-  img: string;
+  profileImage: string;
   teamId: number;
   name: string;
 };
@@ -18,5 +26,4 @@ export type TeamAddItemProps = {
 
 export type TeamListProps = {
   list: TeamType[];
-  handleModalOpen: () => void;
 } & Pick<UseTeamSelect, 'teamSelect' | 'handleChangeTeamSelect'>;
