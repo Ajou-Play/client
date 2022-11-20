@@ -14,14 +14,13 @@ import {
   TeamInfoContainer,
   BasicTeamInfo,
   TeamList,
-  TeamCreateModal,
   ChannelInfoContainer,
   WindowContainer,
   ChannelArchive,
   ChannelHome,
 } from '@Component/.';
 import { getChannelInfo } from '@Component/ChannelInfoContainer/ChannelInfoContainer.util';
-import { useMultiSelection, useToggle } from '@Hook/.';
+import { useMultiSelection } from '@Hook/.';
 
 export const MainPage = () => {
   const {
@@ -37,7 +36,6 @@ export const MainPage = () => {
   const archiveItems = useGetArchiveItems();
   const memberItems = useMemberList({ teamId: teamList[teamSelect]?.teamId });
   const { body, handleArchiveButtonClick } = useHandleBodyComponent();
-
   const handleClickWindow = (selectState: windowType) =>
     selectState === windowSelection ? handleInit() : handleChangeSelect(selectState);
 
