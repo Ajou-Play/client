@@ -1,10 +1,10 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 import { getStorageItem, setStorageItem } from './storage';
 
 const _: AxiosInstance = axios.create({
   baseURL: 'https://www.aplay.n-e.kr/api/v1',
-  // withCredentials: true,
+  withCredentials: true,
 });
 
 const reIssueToken = () => {
@@ -30,10 +30,10 @@ const customAxios = {
   get: (url: string) =>
     _.get(url).catch((e) => {
       if (e.statusCode === 400) reIssueToken().then(() => _.get(url));
-    }),
+    }) as Promise<AxiosResponse<any, any>>,
   post: (url: string, body: any) =>
     _.post(url, body).catch((e) => {
       if (e.statusCode === 400) reIssueToken().then(() => _.post(url, body));
-    }),
+    }) as Promise<AxiosResponse<any, any>>,
 };
 export default customAxios;
