@@ -6,6 +6,5 @@ import type { windowType } from '@Component/.';
 
 export type ChannelInfoContainerType = {
   children: React.ReactNode;
-  handleArchiveButtonClick: () => void;
   handleClickWindow: (selectState: windowType) => void;
 } & Pick<ChannelType, 'channelId' | 'name'>;

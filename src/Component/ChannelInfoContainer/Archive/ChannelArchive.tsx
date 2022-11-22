@@ -1,4 +1,4 @@
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { ARCHIVE_FORMAT, ARCHIVE_NAME } from './ChannelArchive.const';
 import type {
@@ -55,7 +55,7 @@ export const ArchiveList = ({ archiveItems }: ArchiveListProps) => {
   };
   return (
     <div
-      className='grid grid-cols-archive-layout gap-2 h-[calc(100%-254px)] overflow-auto'
+      className='min-w-[calc(100vw-462px)] grid grid-cols-archive-layout gap-2 h-[calc(100%-254px)] overflow-auto'
       onClickCapture={handleArchiveClick}
       aria-hidden
     >
@@ -81,11 +81,20 @@ const FORMAT_LIST: ({
     archiveFormat: 'word',
   },
 ];
-const CreateArchiveButton = ({ archiveFormat }: CreateArchiveButtonProps) => {
+const CreateArchiveButton = ({
+  archiveFormat,
+  handleCreate,
+}: CreateArchiveButtonProps & {
+  handleCreate: () => void;
+}) => {
   const src = ARCHIVE_FORMAT[archiveFormat];
   const name = ARCHIVE_NAME[archiveFormat];
   return (
-    <div className='flex bg-[#FCFCFC] w-[362px] h-[100px] px-[36px] py-[24px] box-border rounded-lg mr-4 mt-6 mb-8 items-center justify-between cursor-pointer'>
+    <button
+      className='flex bg-[#FCFCFC] w-[362px] h-[100px] px-[36px] py-[24px] box-border rounded-lg mr-4 mt-6 mb-8 items-center justify-between cursor-pointer'
+      type='button'
+      onClick={handleCreate}
+    >
       <div className='flex items-center'>
         <img
           src={src}
@@ -103,19 +112,23 @@ const CreateArchiveButton = ({ archiveFormat }: CreateArchiveButtonProps) => {
           height='24px'
         />
       </div>
-    </div>
+    </button>
   );
 };
 export const ChannelArchive = ({ archiveItems }: ChannelArchiveProps) => {
-  console.log('1');
+  const navigate = useNavigate();
+  const handleCreate = (archiveFormat: 'presentation' | 'word') => {
+    navigate(`/create/${archiveFormat}`);
+  };
   return (
     <>
-      <div className='text-[#403F40] font-extrabold'>새 파일 만들기</div>
-      <div className='flex'>
+      <div className='w-[100%] text-[#403F40] font-extrabold'>새 파일 만들기</div>
+      <div className='flex w-[100%]'>
         {FORMAT_LIST.map(({ id, archiveFormat }) => (
           <CreateArchiveButton
             key={id}
             archiveFormat={archiveFormat}
+            handleCreate={() => handleCreate(archiveFormat)}
           />
         ))}
       </div>

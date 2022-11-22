@@ -16,4 +16,4 @@ export type UseChannelSelect = {
   handleChangeChannelSelect: (e: any) => void;
 };
 
-export type MainPageBody = 'Home' | 'Archive';
+export type MainPageBody = 'HOME' | 'ARCHIVE';
