@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { UseTeamSelect, UseTeamList, UseChannelSelect, MainPageBody } from './MainPage.type';
 import { getChannels, getTeams, getMembers, getArchives } from './MainPage.util';
@@ -97,16 +98,4 @@ export const useGetArchiveItems = () => {
   }, []);
 
   return archiveList;
-};
-
-export const useHandleBodyComponent = () => {
-  const [body, setBody] = useState<MainPageBody>('Home');
-  const handleChangeBodyToArchive = () => setBody('Archive');
-  const handleChangeBodyToHome = () => setBody('Home');
-  const handleArchiveButtonClick =
-    body === 'Home' ? handleChangeBodyToArchive : handleChangeBodyToHome;
-  return {
-    body,
-    handleArchiveButtonClick,
-  };
 };

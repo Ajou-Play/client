@@ -1,15 +1,26 @@
 import { Route, Routes } from 'react-router-dom';
 
 import './App.css';
+import { WordView, MainView, PresentationView } from './Component';
+
 import { LoginPage, MainPage, PrivatePage, RegisterPage } from '@Page/.';
 
 function App() {
   return (
     <Routes>
       <Route
-        path='/main'
+        path='/'
         element={<MainPage />}
-      />
+      >
+        <Route
+          path='/home'
+          element={<MainView body='HOME' />}
+        />
+        <Route
+          path='/archive'
+          element={<MainView body='ARCHIVE' />}
+        />
+      </Route>
       <Route
         path='/login'
         element={<PrivatePage component={LoginPage} />}
