@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 
+import { useGetMessageHistory } from './MessageWindow.hook';
 import { compareSenderReceiverType } from './MessageWindow.util';
 
 import { MessageContent } from '@Component/.';
@@ -10,7 +11,9 @@ import { getStorageItem } from '@Util/storage';
 
 export const MessageWindow = () => {
   const teamSelect = useContext(TeamContext);
+  const messageHistory = useGetMessageHistory(teamSelect);
   const { messageData, error } = registerChatSocketEvent(teamSelect);
+
   const userId = getStorageItem('userId');
 
   const handleSendMessage = (event: any) => {
@@ -31,6 +34,16 @@ export const MessageWindow = () => {
         {error && <p>네트워크가 원활하지 않습니다.</p>}
         {!error && (
           <div>
+            {messageHistory.map(({ sender, content, createdAt }) => (
+              <MessageContent
+                key={content + createdAt}
+                type={compareSenderReceiverType(sender.senderId === Number(userId))}
+                name={sender.name}
+                content={content}
+                createAt={createdAt}
+                profileImage={sender.profileImage}
+              />
+            ))}
             {messageData.map(({ sender, content, createdAt }) => (
               <MessageContent
                 key={content + createdAt}
