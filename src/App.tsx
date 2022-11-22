@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 
 import './App.css';
-import { WordView, MainView, PresentationView } from './Component';
+import { MainView } from './Component';
 
 import { LoginPage, MainPage, PrivatePage, RegisterPage } from '@Page/.';
 
