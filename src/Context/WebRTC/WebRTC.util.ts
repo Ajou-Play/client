@@ -29,36 +29,48 @@ export const getCandidateEvent = (pc: RTCPeerConnection, candidate: RTCIceCandid
 
 export const registerRemoteDescriptionToPc = async (
   pc: RTCPeerConnection,
-  sdp: RTCSessionDescription,
+  sdp: string,
+  // my: boolean,
 ) => {
-  await pc.setRemoteDescription(new RTCSessionDescription(sdp));
+  await pc.setRemoteDescription(
+    new RTCSessionDescription({
+      type: 'answer',
+      // type: my ? 'answer' : 'offer',
+      sdp,
+    }),
+  );
+  console.log(pc);
 };
 
-export const handleAllUserEvent = (
-  addUser: Function,
-  { users }: { users: { userId: string }[] },
-  myId: number,
-) => users.forEach((user) => registerUser(user.userId, addUser, myId));
+export const handleAllUserEvent = (addUser: Function, users: { userId: string }[], myId: number) =>
+  users.forEach((user) => registerUser(user.userId, addUser, myId));
 
-export const handleUserEnterEvent = (addUser: Function, data: { id: string }, myId: number) =>
-  registerUser(data.id, addUser, myId);
+export const handleUserEnterEvent = (addUser: Function, data: { userId: string }, myId: number) =>
+  registerUser(data.userId, addUser, myId);
 
 const registerUser = async (id: string, addUser: Function, myId: number) => {
   const pc = receivePC(id, addUser, myId);
   const answer = await createReceiverOffer(pc as RTCPeerConnection);
-  sendVideo({ eventType: '/pub/meeting/receiveVideoFrom', userId: 0, sdpOffer: answer });
+  sendVideo({ eventType: 'receiveVideoFrom', userId: Number(id), sdpOffer: answer.sdp as string });
+  // sendVideo({ eventType: 'receiveVideoFrom', userId: myId, sdpOffer: answer.sdp as string });
 };
 
 const receivePC = (id: string, addUser: Function, myId: number) => {
-  const callback = (e: RTCPeerConnectionIceEvent) =>
+  const callback = (e: RTCPeerConnectionIceEvent) => {
+    console.log(e);
     sendCandidate({
-      eventType: '/pub/meeting/onIceCadidate',
+      eventType: 'onIceCadidate',
       candidate: e.candidate,
       userId: myId,
     });
-  const trackCallback = (e: RTCTrackEvent) => addUser(id, e);
+  };
+  const trackCallback = (e: RTCTrackEvent) => {
+    console.log(e);
+    addUser(id, e);
+  };
   const pc = makePeerConnection(callback, trackCallback);
   WebRTCPC.receivePCs[id] = pc;
+  console.log('recieve PC : ', pc);
   return pc;
 };
 
@@ -93,7 +105,8 @@ export const windowShareConnection = async ({
   WebRTCPC.sendPC = sendPc;
   const offer = await registerSdpToPC(sendPc);
   // sendJoin({ eventType: 'joinMeeting', userId, channelId: chatRoomId });
-  sendVideo({ eventType: '/pub/meeting/receiveVideoFrom', userId, sdpOffer: offer });
+  sendVideo({ eventType: 'receiveVideoFrom', userId, sdpOffer: offer.sdp as string });
+  // sendVideo({ eventType: 'receiveVideoFrom', userId, sdpOffer: offer });
 };
 
 // 화면 공유 stream 만들기
@@ -130,7 +143,8 @@ export const connection = async ({
   WebRTCPC.sendPC = sendPc;
   const offer = await registerSdpToPC(sendPc);
   // sendJoin({ eventType: 'joinMeeting', userId, channelId: chatRoomId });
-  sendVideo({ eventType: '/pub/meeting/receiveVideoFrom', userId, sdpOffer: offer });
+  sendVideo({ eventType: 'receiveVideoFrom', userId, sdpOffer: offer.sdp as string });
+  // sendVideo({ eventType: 'receiveVideoFrom', userId, sdpOffer: offer });
 };
 
 // 나의 MediaStream 만들기 getLocalStream
@@ -164,13 +178,18 @@ const createOffer = async (pc: RTCPeerConnection, isOffer: boolean) => {
 };
 
 const senderPC = (stream: MediaStream, addUser: Function, myId: number) => {
-  const callback = (e: RTCPeerConnectionIceEvent) =>
+  // let cnt = 0;
+  const callback = (e: RTCPeerConnectionIceEvent) => {
+    // cnt++;
+    // if (cnt > 1) return;
     sendCandidate({
-      eventType: '/pub/meeting/onIceCadidate',
+      eventType: 'onIceCadidate',
       candidate: e.candidate,
       userId: myId,
     });
-  const trackCallback = (e: RTCTrackEvent) => addUser(myId, e); // 내가 쏘는건데 동작을 해야해?
+  };
+  const trackCallback = (e: RTCTrackEvent) => console.log(e);
+  // const trackCallback = (e: RTCTrackEvent) => addUser(myId, e); // 내가 쏘는건데 동작을 해야해?
   const pc = makePeerConnection(callback, trackCallback, stream);
   return pc;
 };

@@ -12,11 +12,16 @@ export const registerSocketEvent = (
 ) => {
   const instance = Socket[socketType];
   if (!instance) throw new Error();
-  instance.connect({}, () => {
-    if (!instance) throw new Error();
-    subscribes.forEach(({ eventName, callback }) => {
-      instance.subscribe(eventName, callback);
-    });
-    if (cb) cb();
-  });
+  instance.connect(
+    {
+      accessToken: document.cookie,
+    },
+    () => {
+      if (!instance) throw new Error();
+      subscribes.forEach(({ eventName, callback }) => {
+        instance.subscribe(eventName, callback);
+      });
+      if (cb) cb();
+    },
+  );
 };
