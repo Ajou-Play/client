@@ -2,12 +2,12 @@ import axios from '@Util/axios';
 
 export const getTeams = async () => {
   const res = await axios.get(`/teams`);
-  return res.data;
+  return res.data.data;
 };
 
 export const getChannels = async ({ teamId }: { teamId: number }) => {
   const res = await axios.get(`/teams/${teamId}/channels`);
-  return res.data;
+  return res.data.data;
 };
 
 export const getMembers = async ({ teamId }: { teamId: number }) => {

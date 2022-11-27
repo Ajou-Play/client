@@ -44,27 +44,35 @@ export const registerRemoteDescriptionToPc = async (
   console.log(pc);
 };
 
-export const handleAllUserEvent = (addUser: Function, users: number[], chatRoomId: string) =>
-  users.forEach((user) => registerUser(user, addUser, chatRoomId));
+export const handleAllUserEvent = (
+  addUser: Function,
+  users: { userId: number }[],
+  chatRoomId: string,
+) => users.forEach((user) => registerUser(user.userId, addUser, chatRoomId));
 
-export const handleUserEnterEvent = (addUser: Function, data: number, chatRoomId: string) =>
-  registerUser(data, addUser, chatRoomId);
+export const handleUserEnterEvent = (
+  addUser: Function,
+  data: { userId: number },
+  chatRoomId: string,
+) => {
+  registerUser(data.userId, addUser, chatRoomId);
+};
 
 const registerUser = async (id: number, addUser: Function, chatRoomId: string) => {
   const myId = Number(getStorageItem('userId'));
   const pc = receivePC(id, addUser, myId);
   const answer = await createReceiverOffer(pc as RTCPeerConnection);
   sendVideo({ eventType: 'receiveVideoFrom', userId: Number(id), sdpOffer: answer.sdp as string });
-  // sendVideo({ eventType: 'receiveVideoFrom', userId: myId, sdpOffer: answer.sdp as string });
 };
 
 const receivePC = (id: number, addUser: Function, myId: number) => {
   const callback = (e: RTCPeerConnectionIceEvent) => {
-    sendCandidate({
-      eventType: 'onIceCadidate',
-      candidate: e.candidate,
-      userId: myId,
-    });
+    if (e.candidate)
+      sendCandidate({
+        eventType: 'onIceCadidate',
+        candidate: e.candidate,
+        userId: myId,
+      });
   };
   const trackCallback = (e: RTCTrackEvent) => {
     console.log(e);
@@ -106,9 +114,8 @@ export const windowShareConnection = async ({
   if (!sendPc) return;
   WebRTCPC.sendPC = sendPc;
   const offer = await registerSdpToPC(sendPc);
-  // sendJoin({ eventType: 'joinMeeting', userId, channelId: chatRoomId });
+
   sendVideo({ eventType: 'receiveVideoFrom', userId, sdpOffer: offer.sdp as string });
-  // sendVideo({ eventType: 'receiveVideoFrom', userId, sdpOffer: offer });
 };
 
 // 화면 공유 stream 만들기
@@ -139,14 +146,12 @@ export const connection = async ({
   chatRoomId: string;
   userId: number;
 }) => {
-  getLocalStream({ streamRef, videoRef });
+  await getLocalStream({ streamRef, videoRef });
   const sendPc = senderPC(streamRef.current!, addUser, userId);
   if (!sendPc) return;
   WebRTCPC.sendPC = sendPc;
   const offer = await registerSdpToPC(sendPc);
-  // sendJoin({ eventType: 'joinMeeting', userId, channelId: chatRoomId });
   sendVideo({ eventType: 'receiveVideoFrom', userId, sdpOffer: offer.sdp as string });
-  // sendVideo({ eventType: 'receiveVideoFrom', userId, sdpOffer: offer });
 };
 
 // 나의 MediaStream 만들기 getLocalStream
