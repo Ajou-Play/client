@@ -10,10 +10,6 @@ import { connection, muteCam, muteMic, muteWindow, windowShareConnection } from 
 import { useToggle } from '@Hook/.';
 import { getStorageItem } from '@Util/storage';
 
-const nickName = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'];
-const myId = nickName[Math.floor(Math.random() * nickName.length)];
-
-const getUrlByMeetingState = (flag: boolean) => (flag ? 'Meeting/meetingOn' : 'Meeting/meetingOff');
 export const useMeetingController = (
   cb: Function,
   addUser: Function,

@@ -10,7 +10,10 @@ export const getJoinUser = (addUser: Function, chatRoomId: string) => (user: num
   handleUserEnterEvent(addUser, user, chatRoomId);
 };
 export const getCandidateEvent = ({ candidate, userId }: any) => {
+  console.log('발생함? ');
   const myId = Number(getStorageItem('userId'));
+  console.log(userId);
+  console.log(myId);
   const pc = userId === myId ? ClientSocket.sendPC : ClientSocket.receivePC[userId];
   (pc as RTCPeerConnection).addIceCandidate(new RTCIceCandidate(candidate));
 };
@@ -24,5 +27,4 @@ export const getAnswerEvent = ({
   const myId = Number(getStorageItem('userId'));
   const pc = userId === myId ? ClientSocket.sendPC : ClientSocket.receivePC[userId];
   (pc as RTCPeerConnection).setRemoteDescription(sdp);
-  console.log(pc);
 };

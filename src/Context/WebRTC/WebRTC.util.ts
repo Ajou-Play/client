@@ -71,7 +71,7 @@ const receivePC = (id: number, addUser: Function, myId: number, chatRoomId: stri
 };
 
 export const createReceiverOffer = async (pc: RTCPeerConnection) => {
-  const answer = await createOffer(pc, true);
+  const answer = await createOffer(pc);
   return answer;
 };
 
@@ -154,14 +154,14 @@ const getLocalStream = async ({ videoRef, streamRef }: GetLocalStream) => {
 };
 
 export const registerSdpToPC = async (pc: RTCPeerConnection) => {
-  const offer = await createOffer(pc, false);
+  const offer = await createOffer(pc);
   return offer;
 };
 
-const createOffer = async (pc: RTCPeerConnection, isOffer: boolean) => {
+const createOffer = async (pc: RTCPeerConnection) => {
   const offer = await pc.createOffer({
-    offerToReceiveAudio: !isOffer,
-    offerToReceiveVideo: !isOffer,
+    offerToReceiveAudio: true,
+    offerToReceiveVideo: true,
   });
   const sdp = new RTCSessionDescription(offer);
   // ontrack 발생
@@ -170,8 +170,9 @@ const createOffer = async (pc: RTCPeerConnection, isOffer: boolean) => {
 };
 
 const senderPC = (stream: MediaStream, addUser: Function, myId: number, chatRoomId: string) => {
-  const callback = (e: RTCPeerConnectionIceEvent) =>
-    sendCandidate(e.candidate, myId, myId, chatRoomId);
+  const callback = (e: RTCPeerConnectionIceEvent) => {
+    if (e.candidate) sendCandidate(e.candidate, myId, myId, chatRoomId);
+  };
   const trackCallback = (e: RTCTrackEvent) => console.log(e);
   // const trackCallback = (e: RTCTrackEvent) => addUser(myId, e); // 내가 쏘는건데 동작을 해야해?
   const pc = makePeerConnection(callback, trackCallback, stream);
