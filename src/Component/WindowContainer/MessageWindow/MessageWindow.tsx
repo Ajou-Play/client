@@ -5,7 +5,6 @@ import { compareSenderReceiverType } from './MessageWindow.util';
 
 import { MessageContent } from '@Component/.';
 import { TeamContext } from '@Context/.';
-import { registerChatSocketEvent } from '@Socket/.';
 import { useChat } from '@Socket/Chat/useChat';
 import { getStorageItem } from '@Util/storage';
 

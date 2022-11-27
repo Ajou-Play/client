@@ -35,8 +35,13 @@ export const useTeamList: UseTeamList = () => {
   return { teamList, handleAddTeam, handleDeleteTeam };
 };
 
-export const useTeamSelect = (): UseTeamSelect => {
+export const useTeamSelect = (teamList: TeamType[]): UseTeamSelect => {
   const [teamSelect, setTeamSelect] = useState(0);
+  useEffect(() => {
+    if (teamList.length === 0) return;
+    const [teamData] = teamList;
+    setTeamSelect(Number(teamData?.teamId));
+  }, [teamList]);
   const handleChangeTeamSelect = useCallback((e: any) => {
     const id = getElementData(e, '#TeamItem');
     if (!id) return;

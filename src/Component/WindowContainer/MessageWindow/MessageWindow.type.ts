@@ -7,5 +7,5 @@ type SenderType = {
 export type MessageType = {
   sender: SenderType;
   content: string;
-  createdAt: Date;
+  createdAt: number;
 };

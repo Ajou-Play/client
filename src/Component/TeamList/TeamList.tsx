@@ -38,7 +38,7 @@ export const TeamList = ({ list, teamSelect, handleChangeTeamSelect }: TeamListP
           key={item.teamId}
           select={teamSelect === idx}
           img={item.profileImage}
-          idx={idx}
+          idx={item.teamId}
         />
       ))}
       <TeamAddItem onClick={handleOpen} />

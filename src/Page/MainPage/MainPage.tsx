@@ -27,8 +27,9 @@ export const MainPage = () => {
     handleChangeSelect,
     handleInit,
   } = useMultiSelection<windowType>('None');
-  const { teamSelect, handleChangeTeamSelect } = useTeamSelect();
+
   const { teamList } = useTeamList();
+  const { teamSelect, handleChangeTeamSelect } = useTeamSelect(teamList);
 
   const { channelSelect, handleChangeChannelSelect } = useChannelSelect(teamSelect);
   const channelList = useChannelList({ teamId: teamList[teamSelect]?.teamId });

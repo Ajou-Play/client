@@ -7,8 +7,6 @@ import { useSocket } from './useQuill';
 
 const CURSOR_LATENCY = 100;
 
-const COLORS = ['#FF385C', '#442dc9', '#28b496'];
-
 type Irange = { index: number; length: number };
 
 const TOOLBAR_OPTIONS = [
@@ -35,7 +33,7 @@ export const WordView = () => {
 
   useEffect(() => {
     if (socket == null || quill == null) return;
-    socket.once('load-document', (doc) => {
+    socket.on('load-document', (doc) => {
       quill.setContents(doc);
       quill.enable();
     });
@@ -77,10 +75,15 @@ export const WordView = () => {
     const handler = (delta: DeltaStatic) => {
       quill.updateContents(delta);
     };
-    const cursorHandler = (cursormap: { [key: string]: Irange }) => {
-      Object.keys(cursormap).forEach((source, index) => {
-        cursors?.createCursor(source, source, COLORS[index]);
-        updateCursor(source, cursormap[source]);
+    const cursorHandler = (cursormap: {
+      [key: string]: {
+        range: Irange;
+        color: string;
+      };
+    }) => {
+      Object.entries(cursormap).forEach(([source, { range, color }]) => {
+        cursors?.createCursor(source, source, color);
+        updateCursor(source, range);
       });
     };
     socket.on('receive-changes', handler);
