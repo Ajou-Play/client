@@ -32,7 +32,7 @@ export const registerRemoteDescriptionToPc = async (
   sdp: string,
   // my: boolean,
 ) => {
-  await pc.setRemoteDescription(
+  pc.setRemoteDescription(
     new RTCSessionDescription({
       type: 'answer',
       // type: my ? 'answer' : 'offer',
@@ -57,7 +57,6 @@ const registerUser = async (id: string, addUser: Function, myId: number) => {
 
 const receivePC = (id: string, addUser: Function, myId: number) => {
   const callback = (e: RTCPeerConnectionIceEvent) => {
-    console.log(e);
     sendCandidate({
       eventType: 'onIceCadidate',
       candidate: e.candidate,
@@ -173,7 +172,7 @@ const createOffer = async (pc: RTCPeerConnection, isOffer: boolean) => {
   });
   const sdp = new RTCSessionDescription(offer);
   // ontrack 발생
-  await pc.setLocalDescription(sdp);
+  pc.setLocalDescription(sdp);
   return offer;
 };
 
