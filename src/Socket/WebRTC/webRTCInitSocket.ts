@@ -1,11 +1,9 @@
-import SockJS from 'sockjs-client';
-import Stomp from 'stompjs';
+// import SockJS from 'sockjs-client';
+// import Stomp from 'stompjs';
 
-import { Socket } from '..';
-import { webRTCReceiveEvent } from './webRTCReceiveEvent';
-import { sendJoin, sendLeave } from './webRTCSendEvent';
-
-const SOCKET_SERVER = 'https://www.aplay.n-e.kr/api/socket/meeting';
+import { joinCamChat } from './sendMessage';
+import { getAnswerEvent, getCandidateEvent, getExistingUsers, getJoinUser } from './util';
+import ClientSocket from './webRTCSocket';
 
 const webRTCInitSocket = (
   webRTCJoinState: boolean,
@@ -15,18 +13,20 @@ const webRTCInitSocket = (
   chatRoomId: string,
 ) => {
   if (webRTCJoinState) {
-    const sockJS = new SockJS(`${SOCKET_SERVER}`);
-    Socket.webRTCInstance = Stomp.over(sockJS);
-    // webRTCReceiveEvent(userId, addUser, deleteUser, chatRoomId, () =>
-    webRTCReceiveEvent(userId, addUser, deleteUser, chatRoomId, () =>
-      // sendJoin({ eventType: 'joinMeeting', userId, channelId: chatRoomId }),
-      sendJoin({ eventType: 'joinMeeting', userId, channelId: '1' }),
-    );
-  } else {
-    if (!Socket.webRTCInstance) return;
-    sendLeave({ eventType: 'leaveMeeting' });
-    Socket.webRTCInstance.disconnect(() => {}, {});
-    Socket.webRTCInstance = null;
+    const clientSocket = new ClientSocket(userId);
+    joinCamChat(chatRoomId, userId);
+    clientSocket.socket!.on('existingUsers', getExistingUsers(addUser, chatRoomId));
+    clientSocket.socket!.on('joinUser', getJoinUser(addUser, chatRoomId));
+    clientSocket.socket!.on('getCandidate', getCandidateEvent);
+    clientSocket.socket!.on('getAnswer', getAnswerEvent);
+  }
+  if (ClientSocket.instance) {
+    const clientSocket = new ClientSocket(userId);
+    clientSocket.socket!.off('existingUsers', getExistingUsers(addUser, chatRoomId));
+    clientSocket.socket!.off('joinUser', getJoinUser(addUser, chatRoomId));
+    clientSocket.socket!.off('getCandidate', getCandidateEvent);
+    clientSocket.socket!.off('getAnswer', getAnswerEvent);
+    clientSocket.socket!.close();
   }
 };
 
