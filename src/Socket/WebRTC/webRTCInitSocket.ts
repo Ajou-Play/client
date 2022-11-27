@@ -17,12 +17,14 @@ const webRTCInitSocket = (
   if (webRTCJoinState) {
     const sockJS = new SockJS(`${SOCKET_SERVER}`);
     Socket.webRTCInstance = Stomp.over(sockJS);
-    webRTCReceiveEvent(userId, addUser, deleteUser, chatRoomId, () =>
-      sendJoin({ eventType: '/pub/meeting/joinMeeting', userId, channelId: chatRoomId }),
+    // webRTCReceiveEvent(userId, addUser, deleteUser, chatRoomId, () =>
+    webRTCReceiveEvent(userId, addUser, deleteUser, () =>
+      // sendJoin({ eventType: 'joinMeeting', userId, channelId: chatRoomId }),
+      sendJoin({ eventType: 'joinMeeting', userId, channelId: '1' }),
     );
   } else {
     if (!Socket.webRTCInstance) return;
-    sendLeave({ eventType: '/pub/meeting/leaveMeeting' });
+    sendLeave({ eventType: 'leaveMeeting' });
     Socket.webRTCInstance.disconnect(() => {}, {});
     Socket.webRTCInstance = null;
   }

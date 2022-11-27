@@ -7,24 +7,25 @@ const SEND_VIDEO = '/pub/meeting/receiveVideoFrom';
 const SEND_LEAVE = '/pub/meeting/leaveMeeting';
 
 type SendCandidate = {
-  eventType: typeof SEND_CANDIDATE;
+  eventType: string;
   candidate: any;
   userId: number;
 };
 
 type SendJoin = {
-  eventType: typeof SEND_JOIN;
+  eventType: string;
   userId: number;
   channelId: string;
 };
 
 type SendVideo = {
-  eventType: typeof SEND_VIDEO;
+  eventType: string;
   userId: number;
-  sdpOffer: RTCSessionDescriptionInit;
+  sdpOffer: string;
+  // sdpOffer: RTCSessionDescriptionInit;
 };
 type SendLeave = {
-  eventType: typeof SEND_LEAVE;
+  eventType: string;
 };
 
 export const sendCandidate = (body: SendCandidate) =>
