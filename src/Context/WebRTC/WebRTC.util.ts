@@ -3,6 +3,8 @@ import { sendCandidate, sendJoin, sendVideo } from '../../Socket/WebRTC/webRTCSe
 import { PC_CONFIG } from './WebRTC.const';
 import { GetLocalStream, GetWindowShareStream } from './WebRTC.type';
 
+import { getStorageItem } from '@Util/storage';
+
 export const muteMic = (ref: React.MutableRefObject<MediaStream | undefined>) => {
   if (!ref || !ref.current) return;
   ref.current.getAudioTracks().forEach((track: MediaStreamTrack) => {
@@ -42,20 +44,21 @@ export const registerRemoteDescriptionToPc = async (
   console.log(pc);
 };
 
-export const handleAllUserEvent = (addUser: Function, users: { userId: string }[], myId: number) =>
-  users.forEach((user) => registerUser(user.userId, addUser, myId));
+export const handleAllUserEvent = (addUser: Function, users: number[], chatRoomId: string) =>
+  users.forEach((user) => registerUser(user, addUser, chatRoomId));
 
-export const handleUserEnterEvent = (addUser: Function, data: { userId: string }, myId: number) =>
-  registerUser(data.userId, addUser, myId);
+export const handleUserEnterEvent = (addUser: Function, data: number, chatRoomId: string) =>
+  registerUser(data, addUser, chatRoomId);
 
-const registerUser = async (id: string, addUser: Function, myId: number) => {
+const registerUser = async (id: number, addUser: Function, chatRoomId: string) => {
+  const myId = Number(getStorageItem('userId'));
   const pc = receivePC(id, addUser, myId);
   const answer = await createReceiverOffer(pc as RTCPeerConnection);
   sendVideo({ eventType: 'receiveVideoFrom', userId: Number(id), sdpOffer: answer.sdp as string });
   // sendVideo({ eventType: 'receiveVideoFrom', userId: myId, sdpOffer: answer.sdp as string });
 };
 
-const receivePC = (id: string, addUser: Function, myId: number) => {
+const receivePC = (id: number, addUser: Function, myId: number) => {
   const callback = (e: RTCPeerConnectionIceEvent) => {
     sendCandidate({
       eventType: 'onIceCadidate',
