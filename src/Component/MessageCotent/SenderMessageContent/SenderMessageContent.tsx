@@ -5,7 +5,7 @@ export const SenderMessageContent = ({
   createAt,
 }: {
   content: string;
-  createAt: Date;
+  createAt: number;
 }) => (
   <div className='flex items-end gap-1 p-[1rem]'>
     <p className='text-grey-label'>{DateTransHm(createAt)}</p>

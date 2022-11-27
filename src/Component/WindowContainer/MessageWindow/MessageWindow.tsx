@@ -6,13 +6,14 @@ import { compareSenderReceiverType } from './MessageWindow.util';
 import { MessageContent } from '@Component/.';
 import { TeamContext } from '@Context/.';
 import { registerChatSocketEvent } from '@Socket/.';
-import { sendMessage } from '@Socket/Chat';
+import { useChat } from '@Socket/Chat/useChat';
 import { getStorageItem } from '@Util/storage';
 
 export const MessageWindow = () => {
   const teamSelect = useContext(TeamContext);
   const messageHistory = useGetMessageHistory(teamSelect);
-  const { messageData, error } = registerChatSocketEvent(teamSelect);
+  const { sendMessage, error, messageData } = useChat(teamSelect);
+  // const { messageData, error } = registerChatSocketEvent(teamSelect);
 
   const userId = getStorageItem('userId');
 
