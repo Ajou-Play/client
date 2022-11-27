@@ -24,4 +24,5 @@ export const getAnswerEvent = ({
   const myId = Number(getStorageItem('userId'));
   const pc = userId === myId ? ClientSocket.sendPC : ClientSocket.receivePC[userId];
   (pc as RTCPeerConnection).setRemoteDescription(sdp);
+  console.log(pc);
 };

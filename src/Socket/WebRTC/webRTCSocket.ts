@@ -8,7 +8,7 @@ export default class ClientSocket {
 
   static sendPC: RTCPeerConnection | null;
 
-  static receivePC: { [index: string]: RTCPeerConnection };
+  static receivePC: { [index: string]: RTCPeerConnection } = {};
 
   // eslint-disable-next-line no-use-before-define
   static instance: ClientSocket | null;

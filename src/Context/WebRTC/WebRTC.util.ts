@@ -95,7 +95,7 @@ export const windowShareConnection = async ({
   chatRoomId: string;
   userId: number;
 }) => {
-  getWindowShareStream({ videoRef, streamRef });
+  await getWindowShareStream({ videoRef, streamRef });
   const sendPc = senderPC(streamRef.current!, addUser, userId, chatRoomId);
   if (!sendPc) return;
   ClientSocket.sendPC = sendPc;
@@ -131,7 +131,7 @@ export const connection = async ({
   chatRoomId: string;
   userId: number;
 }) => {
-  getLocalStream({ streamRef, videoRef });
+  await getLocalStream({ streamRef, videoRef });
   const sendPc = senderPC(streamRef.current!, addUser, userId, chatRoomId);
   if (!sendPc) return;
   ClientSocket.sendPC = sendPc;

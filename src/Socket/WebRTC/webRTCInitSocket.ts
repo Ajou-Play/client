@@ -19,8 +19,7 @@ const webRTCInitSocket = (
     clientSocket.socket!.on('joinUser', getJoinUser(addUser, chatRoomId));
     clientSocket.socket!.on('getCandidate', getCandidateEvent);
     clientSocket.socket!.on('getAnswer', getAnswerEvent);
-  }
-  if (ClientSocket.instance) {
+  } else if (ClientSocket.instance) {
     const clientSocket = new ClientSocket(userId);
     clientSocket.socket!.off('existingUsers', getExistingUsers(addUser, chatRoomId));
     clientSocket.socket!.off('joinUser', getJoinUser(addUser, chatRoomId));
