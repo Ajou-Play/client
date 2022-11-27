@@ -23,7 +23,7 @@ export const webRTCReceiveEvent = (
   myId: number,
   addUser: Function,
   deleteUser: Function,
-  // channelId: string,
+  channelId: string,
   cb: Function,
 ) => {
   registerSocketEvent(
@@ -34,14 +34,14 @@ export const webRTCReceiveEvent = (
         callback: (data: any) => {
           const { data: users } = socketDataPasing(data);
           console.log(users);
-          handleAllUserEvent(addUser, users, myId);
+          handleAllUserEvent(addUser, users, channelId);
         },
       },
       {
         eventName: `/sub/meeting/user/${myId}/newUserArrived`,
         callback: (data: any) => {
           const { user } = socketDataPasing(data);
-          handleUserEnterEvent(addUser, user, myId);
+          handleUserEnterEvent(addUser, user, channelId);
         },
       },
       {

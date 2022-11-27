@@ -18,7 +18,7 @@ const webRTCInitSocket = (
     const sockJS = new SockJS(`${SOCKET_SERVER}`);
     Socket.webRTCInstance = Stomp.over(sockJS);
     // webRTCReceiveEvent(userId, addUser, deleteUser, chatRoomId, () =>
-    webRTCReceiveEvent(userId, addUser, deleteUser, () =>
+    webRTCReceiveEvent(userId, addUser, deleteUser, chatRoomId, () =>
       // sendJoin({ eventType: 'joinMeeting', userId, channelId: chatRoomId }),
       sendJoin({ eventType: 'joinMeeting', userId, channelId: '1' }),
     );
