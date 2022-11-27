@@ -1,11 +1,11 @@
+import { Outlet } from 'react-router-dom';
+
 import {
   useChannelList,
   useChannelSelect,
   useMemberList,
-  useGetArchiveItems,
   useTeamList,
   useTeamSelect,
-  useHandleBodyComponent,
 } from './MainPage.hook';
 
 import {
@@ -14,7 +14,6 @@ import {
   TeamList,
   ChannelInfoContainer,
   WindowContainer,
-  MainView,
   MeetingContainer,
   BasicTeamInfo,
 } from '@Component/.';
@@ -29,13 +28,11 @@ export const MainPage = () => {
     handleInit,
   } = useMultiSelection<windowType>('None');
   const { teamSelect, handleChangeTeamSelect } = useTeamSelect();
-  const { teamList, handleAddTeam, handleDeleteTeam } = useTeamList();
+  const { teamList } = useTeamList();
 
   const { channelSelect, handleChangeChannelSelect } = useChannelSelect(teamSelect);
   const channelList = useChannelList({ teamId: teamList[teamSelect]?.teamId });
-  const archiveItems = useGetArchiveItems();
   const memberItems = useMemberList({ teamId: teamList[teamSelect]?.teamId });
-  const { body, handleArchiveButtonClick } = useHandleBodyComponent();
   const handleClickWindow = (selectState: windowType) =>
     selectState === windowSelection ? handleInit() : handleChangeSelect(selectState);
 
@@ -59,13 +56,10 @@ export const MainPage = () => {
       <ChannelInfoContainer
         {...getChannelInfo({ channels: channelList, id: channelSelect })}
         handleClickWindow={handleClickWindow}
-        handleArchiveButtonClick={handleArchiveButtonClick}
       >
-        <MainView
-          archiveItems={archiveItems}
-          body={body}
-        />
+        <Outlet />
       </ChannelInfoContainer>
+
       <TeamContext.Provider value={teamSelect.toString()}>
         {windowSelection !== 'None' && (
           <WindowContainer

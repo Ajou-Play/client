@@ -1,3 +1,5 @@
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+
 import { ChannelInfoContainerType } from './ChannelInfoContainer.type';
 import { getChannelIconSrc } from './ChannelInfoContainer.util';
 
@@ -6,9 +8,13 @@ export const ChannelInfoContainer = ({
   channelId,
   name,
   handleClickWindow,
-  handleArchiveButtonClick,
 }: ChannelInfoContainerType) => {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
   const src = getChannelIconSrc({ channelId });
+
+  const handleNavigate = (type: 'HOME' | 'ARCHIVE') =>
+    navigate(type === 'HOME' ? 'ARCHIVE' : 'HOME');
 
   return (
     <div className='max-w-[calc(100vw-362px)] min-w-[calc(100vw-662px)] h-[100%]'>
@@ -24,7 +30,7 @@ export const ChannelInfoContainer = ({
         <div className='flex pr-[20px] space-x-4 leading-5.5 font-bold'>
           <button
             type='button'
-            onClick={handleArchiveButtonClick}
+            onClick={() => handleNavigate(pathname.replace('/', '') as 'HOME' | 'ARCHIVE')}
             className='bg-primary-lightOrange flex w-[110px] h-[37px] box-border p-[10px] justify-around items-center rounded-lg'
           >
             <img
