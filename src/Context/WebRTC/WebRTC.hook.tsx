@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import Switch from 'react-switch';
 
-import { WebRTCPC } from '../../Socket';
 import webRTCInitSocket from '../../Socket/WebRTC/webRTCInitSocket';
 import { WebRTCContext } from './WebRTC.provider';
 import { WebRTCUser } from './WebRTC.type';
 import { connection, muteCam, muteMic, muteWindow, windowShareConnection } from './WebRTC.util';
 
 import { useToggle } from '@Hook/.';
+import ClientSocket from '@Socket/WebRTC/webRTCSocket';
 import { getStorageItem } from '@Util/storage';
 
 export const useMeetingController = (
@@ -85,7 +85,7 @@ export const useCamController = (
 
   useEffect(() => {
     if (camState) connection({ streamRef, videoRef, addUser, chatRoomId, userId });
-    else WebRTCPC.sendPC?.close();
+    else ClientSocket.sendPC?.close();
   }, [camState]);
   return { camState, handleCamToggle, users, addUser, handleCamFalse, deleteUser };
 };
@@ -124,6 +124,7 @@ export const useWindowController = ({
 export const useUsersHandler = () => {
   const [users, setUsers] = useState<WebRTCUser[]>([]);
   const addUser = (userId: string, e: RTCTrackEvent) => {
+    console.log('userId : ', e.streams[0]);
     setUsers((oldUsers) =>
       oldUsers
         .filter((user) => user.id !== userId)

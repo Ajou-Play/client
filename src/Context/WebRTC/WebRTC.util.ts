@@ -24,25 +24,20 @@ export const muteWindow = (ref: React.MutableRefObject<MediaStream | undefined>)
   console.log('1');
 };
 
-export const getCandidateEvent = (pc: RTCPeerConnection, candidate: RTCIceCandidateInit) => {
-  if (!candidate) return;
-  pc.addIceCandidate(new RTCIceCandidate(candidate));
-};
-
-export const registerRemoteDescriptionToPc = async (
-  pc: RTCPeerConnection,
-  sdp: string,
-  // my: boolean,
-) => {
-  pc.setRemoteDescription(
-    new RTCSessionDescription({
-      type: 'answer',
-      // type: my ? 'answer' : 'offer',
-      sdp,
-    }),
-  );
-  console.log(pc);
-};
+// export const registerRemoteDescriptionToPc = async (
+//   pc: RTCPeerConnection,
+//   sdp: string,
+//   // my: boolean,
+// ) => {
+//   pc.setRemoteDescription(
+//     new RTCSessionDescription({
+//       type: 'answer',
+//       // type: my ? 'answer' : 'offer',
+//       sdp,
+//     }),
+//   );
+//   console.log(pc);
+// };
 
 export const handleAllUserEvent = (addUser: Function, users: number[], chatRoomId: string) =>
   users.forEach((user) => registerUser(user, addUser, chatRoomId));
@@ -59,12 +54,9 @@ const registerUser = async (id: number, addUser: Function, chatRoomId: string) =
 
 const receivePC = (id: number, addUser: Function, myId: number, chatRoomId: string) => {
   const callback = (e: RTCPeerConnectionIceEvent) => {
-    sendCandidate(e.candidate, myId, myId, chatRoomId);
+    sendCandidate(e.candidate, id, myId, chatRoomId);
   };
-  const trackCallback = (e: RTCTrackEvent) => {
-    console.log(e);
-    addUser(id, e);
-  };
+  const trackCallback = (e: RTCTrackEvent) => addUser(id, e);
   const pc = makePeerConnection(callback, trackCallback);
   ClientSocket.receivePC[id] = pc;
   return pc;
@@ -186,7 +178,10 @@ const makePeerConnection = (cb: Function, trackCallback: Function, stream?: Medi
   // socket event로 candidate 전송해야함
   pc.onicecandidate = (e) => cb(e);
 
-  if (stream) stream.getTracks().forEach((track) => pc.addTrack(track, stream));
+  if (stream) {
+    console.log('onTrack');
+    stream.getTracks().forEach((track) => pc.addTrack(track, stream));
+  }
 
   // pc에 sdp 등록하면 발생
   // e.streams[0]을 user의 stream으로 저장해야함

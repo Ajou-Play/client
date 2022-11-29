@@ -4,17 +4,18 @@ import { handleAllUserEvent, handleUserEnterEvent } from '@Context/WebRTC/WebRTC
 import { getStorageItem } from '@Util/storage';
 
 export const getExistingUsers = (addUser: Function, chatRoomId: string) => (users: number[]) => {
+  console.log('getExistingUsers : ', users);
   handleAllUserEvent(addUser, users, chatRoomId);
 };
 export const getJoinUser = (addUser: Function, chatRoomId: string) => (user: number) => {
+  console.log('getJoinUser : ', user);
   handleUserEnterEvent(addUser, user, chatRoomId);
 };
 export const getCandidateEvent = ({ candidate, userId }: any) => {
-  console.log('발생함? ');
+  console.log('getCandidateEvent 발생함? :', userId);
   const myId = Number(getStorageItem('userId'));
-  console.log(userId);
-  console.log(myId);
   const pc = userId === myId ? ClientSocket.sendPC : ClientSocket.receivePC[userId];
+  console.log('getCandidate PC : ', pc);
   (pc as RTCPeerConnection).addIceCandidate(new RTCIceCandidate(candidate));
 };
 export const getAnswerEvent = ({
