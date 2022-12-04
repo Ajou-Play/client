@@ -54,7 +54,7 @@ export const MainPage = () => {
             channelSelect={channelSelect}
             handleChangeChannelSelect={handleChangeChannelSelect}
           />
-          <MeetingContainer chatRoomId={channelSelect} />
+          <MeetingContainer />
         </TeamInfoContainer>
 
         <ChannelInfoContainer
