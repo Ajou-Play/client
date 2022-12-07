@@ -16,4 +16,3 @@ export * from './Channel';
 export * from './CamChatContainer';
 export * from './MeetingContainer';
 export * from './WordView';
-export * from './PresentationView';

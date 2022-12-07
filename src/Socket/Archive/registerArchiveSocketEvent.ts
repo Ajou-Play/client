@@ -5,6 +5,9 @@ import Stomp from 'stompjs';
 import { registerSocketEvent } from '../registerSocketEvent';
 import { Socket } from '../socket';
 
+import { MessageType } from '@Component/WindowContainer/MessageWindow/MessageWindow.type';
+import { ReceiveType } from '@Socket/Chat/registerChatSocketEvent';
+
 const SOCKET_SERVER = 'https://www.aplay.n-e.kr/api/socket/chat';
 
 export const registerArchiveSocketEvent = (channel: string, archive: string) => {
@@ -36,7 +39,7 @@ export const registerArchiveSocketEvent = (channel: string, archive: string) => 
                   senderId,
                   name,
                   profileImage,
-                } as SenderType,
+                } as any,
               } as MessageType,
             ]);
           },

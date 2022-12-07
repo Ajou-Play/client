@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 
 import './App.css';
-import { WordView, MainView, PresentationView } from './Component';
+import { WordView, MainView } from './Component';
 
 import { LoginPage, MainPage, PrivatePage, RegisterPage } from '@Page/.';
 
@@ -23,10 +23,6 @@ function App() {
         <Route
           path='/create/word'
           element={<WordView />}
-        />
-        <Route
-          path='/create/presentation'
-          element={<PresentationView />}
         />
       </Route>
       <Route
