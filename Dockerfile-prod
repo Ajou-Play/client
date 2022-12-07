@@ -23,3 +23,5 @@ COPY ./default.conf /etc/nginx/conf.d
 
 RUN rm /usr/share/nginx/html/index.html
 COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
+
+COPY --from=builder /usr/src/app/static /usr/share/nginx/html
