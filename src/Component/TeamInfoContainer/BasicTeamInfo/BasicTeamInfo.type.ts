@@ -8,4 +8,5 @@ export type ChannelType = {
 
 export type BasicTeamInfoProps = {
   ChannelList: ChannelType[];
+  handleAddChannel: (Channel: ChannelType) => void;
 } & Pick<UseChannelSelect, 'channelSelect' | 'handleChangeChannelSelect'>;

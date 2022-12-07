@@ -3,6 +3,8 @@ import { sendCandidate, sendJoin, sendVideo } from '../../Socket/WebRTC/webRTCSe
 import { PC_CONFIG } from './WebRTC.const';
 import { GetLocalStream, GetWindowShareStream } from './WebRTC.type';
 
+import { getStorageItem } from '@Util/storage';
+
 export const muteMic = (ref: React.MutableRefObject<MediaStream | undefined>) => {
   if (!ref || !ref.current) return;
   ref.current.getAudioTracks().forEach((track: MediaStreamTrack) => {
@@ -29,36 +31,48 @@ export const getCandidateEvent = (pc: RTCPeerConnection, candidate: RTCIceCandid
 
 export const registerRemoteDescriptionToPc = async (
   pc: RTCPeerConnection,
-  sdp: RTCSessionDescription,
+  sdp: string,
+  // my: boolean,
 ) => {
-  await pc.setRemoteDescription(new RTCSessionDescription(sdp));
+  pc.setRemoteDescription(
+    new RTCSessionDescription({
+      type: 'answer',
+      // type: my ? 'answer' : 'offer',
+      sdp,
+    }),
+  );
+  console.log(pc);
 };
 
-export const handleAllUserEvent = (
-  addUser: Function,
-  { users }: { users: { userId: string }[] },
-  myId: number,
-) => users.forEach((user) => registerUser(user.userId, addUser, myId));
+export const handleAllUserEvent = (addUser: Function, users: number[], chatRoomId: string) =>
+  users.forEach((user) => registerUser(user, addUser, chatRoomId));
 
-export const handleUserEnterEvent = (addUser: Function, data: { id: string }, myId: number) =>
-  registerUser(data.id, addUser, myId);
+export const handleUserEnterEvent = (addUser: Function, data: number, chatRoomId: string) =>
+  registerUser(data, addUser, chatRoomId);
 
-const registerUser = async (id: string, addUser: Function, myId: number) => {
+const registerUser = async (id: number, addUser: Function, chatRoomId: string) => {
+  const myId = Number(getStorageItem('userId'));
   const pc = receivePC(id, addUser, myId);
   const answer = await createReceiverOffer(pc as RTCPeerConnection);
-  sendVideo({ eventType: '/pub/meeting/receiveVideoFrom', userId: 0, sdpOffer: answer });
+  sendVideo({ eventType: 'receiveVideoFrom', userId: Number(id), sdpOffer: answer.sdp as string });
+  // sendVideo({ eventType: 'receiveVideoFrom', userId: myId, sdpOffer: answer.sdp as string });
 };
 
-const receivePC = (id: string, addUser: Function, myId: number) => {
-  const callback = (e: RTCPeerConnectionIceEvent) =>
+const receivePC = (id: number, addUser: Function, myId: number) => {
+  const callback = (e: RTCPeerConnectionIceEvent) => {
     sendCandidate({
-      eventType: '/pub/meeting/onIceCadidate',
+      eventType: 'onIceCadidate',
       candidate: e.candidate,
       userId: myId,
     });
-  const trackCallback = (e: RTCTrackEvent) => addUser(id, e);
+  };
+  const trackCallback = (e: RTCTrackEvent) => {
+    console.log(e);
+    addUser(id, e);
+  };
   const pc = makePeerConnection(callback, trackCallback);
   WebRTCPC.receivePCs[id] = pc;
+  console.log('recieve PC : ', pc);
   return pc;
 };
 
@@ -93,7 +107,8 @@ export const windowShareConnection = async ({
   WebRTCPC.sendPC = sendPc;
   const offer = await registerSdpToPC(sendPc);
   // sendJoin({ eventType: 'joinMeeting', userId, channelId: chatRoomId });
-  sendVideo({ eventType: '/pub/meeting/receiveVideoFrom', userId, sdpOffer: offer });
+  sendVideo({ eventType: 'receiveVideoFrom', userId, sdpOffer: offer.sdp as string });
+  // sendVideo({ eventType: 'receiveVideoFrom', userId, sdpOffer: offer });
 };
 
 // 화면 공유 stream 만들기
@@ -130,7 +145,8 @@ export const connection = async ({
   WebRTCPC.sendPC = sendPc;
   const offer = await registerSdpToPC(sendPc);
   // sendJoin({ eventType: 'joinMeeting', userId, channelId: chatRoomId });
-  sendVideo({ eventType: '/pub/meeting/receiveVideoFrom', userId, sdpOffer: offer });
+  sendVideo({ eventType: 'receiveVideoFrom', userId, sdpOffer: offer.sdp as string });
+  // sendVideo({ eventType: 'receiveVideoFrom', userId, sdpOffer: offer });
 };
 
 // 나의 MediaStream 만들기 getLocalStream
@@ -159,18 +175,23 @@ const createOffer = async (pc: RTCPeerConnection, isOffer: boolean) => {
   });
   const sdp = new RTCSessionDescription(offer);
   // ontrack 발생
-  await pc.setLocalDescription(sdp);
+  pc.setLocalDescription(sdp);
   return offer;
 };
 
 const senderPC = (stream: MediaStream, addUser: Function, myId: number) => {
-  const callback = (e: RTCPeerConnectionIceEvent) =>
+  // let cnt = 0;
+  const callback = (e: RTCPeerConnectionIceEvent) => {
+    // cnt++;
+    // if (cnt > 1) return;
     sendCandidate({
-      eventType: '/pub/meeting/onIceCadidate',
+      eventType: 'onIceCadidate',
       candidate: e.candidate,
       userId: myId,
     });
-  const trackCallback = (e: RTCTrackEvent) => addUser(myId, e); // 내가 쏘는건데 동작을 해야해?
+  };
+  const trackCallback = (e: RTCTrackEvent) => console.log(e);
+  // const trackCallback = (e: RTCTrackEvent) => addUser(myId, e); // 내가 쏘는건데 동작을 해야해?
   const pc = makePeerConnection(callback, trackCallback, stream);
   return pc;
 };

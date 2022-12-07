@@ -67,3 +67,53 @@
 .react-switch-bg {
   margin: 0px;
 }
+
+.quill {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: white;
+}
+
+.ql-container {
+  height: 100%;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.ql-editor {
+  height: 100%;
+  flex: 1;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.ql-toolbar {
+  /* height: 3rem; */
+}
+
+.canvas-container {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+canvas {
+  display: block;
+}
+
+#progress {
+  appearance: none;
+  height: 10px;
+  width: 12rem;
+}
+#progress::-webkit-progress-bar {
+  background: #f0f0f0;
+  border-radius: 10px;
+  box-shadow: inset 3px 3px 10px #ccc;
+}
+#progress::-webkit-progress-value {
+  border-radius: 10px;
+  background: #ff6c47;
+}

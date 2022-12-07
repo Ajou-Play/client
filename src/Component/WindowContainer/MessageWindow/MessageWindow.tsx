@@ -5,17 +5,18 @@ import { compareSenderReceiverType } from './MessageWindow.util';
 
 import { MessageContent } from '@Component/.';
 import { TeamContext } from '@Context/.';
-import { registerChatSocketEvent } from '@Socket/.';
 import { sendMessage } from '@Socket/Chat';
+import { registerChatSocketEvent } from '@Socket/index';
 import { getStorageItem } from '@Util/storage';
 
 export const MessageWindow = () => {
   const teamSelect = useContext(TeamContext);
   const messageHistory = useGetMessageHistory(teamSelect);
+
   const { messageData, error } = registerChatSocketEvent(teamSelect);
 
   const userId = getStorageItem('userId');
-
+  console.log(messageHistory, userId);
   const handleSendMessage = (event: any) => {
     if (event.code === 'Enter' && !error) {
       sendMessage({
@@ -33,11 +34,11 @@ export const MessageWindow = () => {
       <div className='min-h-[calc(100vh_-_170px)]'>
         {error && <p>네트워크가 원활하지 않습니다.</p>}
         {!error && (
-          <div>
+          <div className='overflow-auto h-[calc(100vh_-_170px)]'>
             {messageHistory.map(({ sender, content, createdAt }) => (
               <MessageContent
                 key={content + createdAt}
-                type={compareSenderReceiverType(sender.senderId === Number(userId))}
+                type={compareSenderReceiverType(Number(sender.userId) === Number(userId))}
                 name={sender.name}
                 content={content}
                 createAt={createdAt}
@@ -47,10 +48,10 @@ export const MessageWindow = () => {
             {messageData.map(({ sender, content, createdAt }) => (
               <MessageContent
                 key={content + createdAt}
-                type={compareSenderReceiverType(sender.senderId === Number(userId))}
+                type={compareSenderReceiverType(Number(sender.senderId) === Number(userId))}
                 name={sender.name}
                 content={content}
-                createAt={createdAt}
+                createAt={createdAt.getTime()}
                 profileImage={sender.profileImage}
               />
             ))}

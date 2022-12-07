@@ -27,9 +27,10 @@ const Channel = ({ name, select, dataId }: { name: string; select: boolean; data
 export const BasicTeamInfo = ({
   ChannelList,
   channelSelect,
+  handleAddChannel,
   handleChangeChannelSelect,
 }: BasicTeamInfoProps) => {
-  const { handleOpen, Component: AddChannelModal } = useAddChannelModal();
+  const { handleOpen, Component: AddChannelModal } = useAddChannelModal({ handleAddChannel });
 
   return (
     <div

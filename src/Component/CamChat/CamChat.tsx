@@ -7,7 +7,6 @@ export const CamChat = () => {
   const { users, videoRef, windowShareVideoRef } = useCamChatState();
   const { camState } = useCamState();
   const { windowState } = useWindowState();
-
   return (
     <div className='w-[640px] h-[100%] flex overflow-auto z-999'>
       {camState && (
@@ -26,15 +25,6 @@ export const CamChat = () => {
           autoPlay
         />
       )}
-      <div className='rounded-full  min-w-[100px] h-[100px] mr-2 bg-black'>1</div>
-      <div className='rounded-full  min-w-[100px] h-[100px] mr-2 bg-black'>1</div>
-      <div className='rounded-full  min-w-[100px] h-[100px] mr-2 bg-black'>1</div>
-      <div className='rounded-full  min-w-[100px] h-[100px] mr-2 bg-black'>1</div>
-      <div className='rounded-full  min-w-[100px] h-[100px] mr-2 bg-black'>1</div>
-      <div className='rounded-full  min-w-[100px] h-[100px] mr-2 bg-black'>1</div>
-      <div className='rounded-full  min-w-[100px] h-[100px] mr-2 bg-black'>1</div>
-      <div className='rounded-full  min-w-[100px] h-[100px] mr-2 bg-black'>1</div>
-      <div className='rounded-full  min-w-[100px] h-[100px] mr-2 bg-black'>1</div>
 
       {users?.map((user) => (
         <Video

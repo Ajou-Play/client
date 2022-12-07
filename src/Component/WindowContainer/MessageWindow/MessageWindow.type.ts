@@ -1,5 +1,5 @@
 type SenderType = {
-  senderId: number;
+  userId: number;
   name: string;
   profileImage: string;
 };
@@ -7,5 +7,5 @@ type SenderType = {
 export type MessageType = {
   sender: SenderType;
   content: string;
-  createdAt: Date;
+  createdAt: number;
 };

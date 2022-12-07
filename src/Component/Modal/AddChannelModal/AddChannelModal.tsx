@@ -1,15 +1,37 @@
-import { useState } from 'react';
+import { useRef, useState, useContext } from 'react';
 import Switch from 'react-switch';
 
+import { addChannel } from './AddChannelModal.util';
+
 import { Button } from '@Component/.';
+import { ChannelType } from '@Component/TeamInfoContainer/BasicTeamInfo/BasicTeamInfo.type';
+import { TeamContext } from '@Context/.';
 import { useModal } from '@Hook/.';
 
-export const useAddChannelModal = () => {
+export const useAddChannelModal = ({
+  handleAddChannel,
+}: {
+  handleAddChannel: (channel: ChannelType) => void;
+}) => {
   const { Modal, ModalContent, ModalFooter, handleOpen, handleClose } = useModal();
-
+  const teamSelect = useContext(TeamContext);
   const [checked, setChecked] = useState<boolean>(false);
+  const channelNameRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (flag: boolean) => setChecked(flag);
+
+  const handleSubmit = async () => {
+    if (channelNameRef.current?.value === '') return;
+    const { status, data } = await addChannel({
+      name: channelNameRef.current?.value ?? '',
+      teamId: teamSelect,
+    });
+    if (status === 200) {
+      console.log(data);
+      handleAddChannel(data);
+      handleClose();
+    }
+  };
 
   return {
     handleOpen,
@@ -22,7 +44,10 @@ export const useAddChannelModal = () => {
             <div className='w-[100%] flex flex-col gap-[2rem]'>
               <div className='w-[100%] flex flex-col gap-[1rem]'>
                 <p>채널 이름 *</p>
-                <input className='w-[100%] h-[3rem] bg-grey-background rounded-[6px] focus:outline-none p-[10px]' />
+                <input
+                  className='w-[100%] h-[3rem] bg-grey-background rounded-[6px] focus:outline-none p-[10px]'
+                  ref={channelNameRef}
+                />
                 <p>예) 프론트/디자이너</p>
               </div>
               <div className='w-[100%] flex flex-col gap-[1rem]'>
@@ -55,7 +80,7 @@ export const useAddChannelModal = () => {
               key='1'
               type='orange'
               content='생성'
-              onClick={() => {}}
+              onClick={handleSubmit}
             />,
           ]}
         />

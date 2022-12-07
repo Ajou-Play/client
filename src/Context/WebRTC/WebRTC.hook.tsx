@@ -168,8 +168,8 @@ export const useMeetingToggleState = () => {
 };
 
 export const useCheckCamChat = () => {
-  const { users } = useContext(WebRTCContext);
-  return !!users.length;
+  const { meetingState } = useContext(WebRTCContext);
+  return meetingState;
 };
 
 export const useCamUsers = () => {

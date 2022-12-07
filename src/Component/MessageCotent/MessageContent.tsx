@@ -10,7 +10,7 @@ export const MessageContent = ({
   type: 'sender' | 'receiver';
   name: string;
   content: string;
-  createAt: Date;
+  createAt: number;
   profileImage: string;
 }) => (
   <>

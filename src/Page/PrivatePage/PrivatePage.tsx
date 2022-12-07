@@ -6,5 +6,5 @@ import { getStorageItem } from '@Util/storage';
 
 export const PrivatePage = ({ component: Component }: PrivatePageProps) => {
   const user = getStorageItem('userId');
-  return <>{user ? <Navigate to='/main' /> : <Component />} </>;
+  return <>{user ? <Navigate to='/home' /> : <Component />} </>;
 };

@@ -11,7 +11,7 @@ export const ReceiverMessageContent = ({
   name: string;
   content: string;
   profileImage: string;
-  createAt: Date;
+  createAt: number;
 }) => (
   <div className='flex flex-col p-[1rem] gap-1'>
     <div className='flex gap-1'>

@@ -1,3 +1,7 @@
+import { useEffect, useRef, useState } from 'react';
+
+import { addTeam } from './AddTeamModal.util';
+
 import { Button } from '@Component/.';
 import { useModal, useStep } from '@Hook/.';
 
@@ -54,57 +58,84 @@ export const useAddTeamModal = () => {
     </>
   );
 
-  const StepTwoContentInAddTeamModal = ({ handlePrev }: { handlePrev: () => void }) => (
-    <>
-      <ModalContent>
-        <div className='w-[800px] h-[500px] flex flex-col gap-[4rem] items-center p-[2rem]'>
-          <h2 className='text-[1.4rem] font-bold'>팀 생성</h2>
-          <div className='w-[100%] flex flex-col gap-[2rem] overflow-auto'>
-            <div className='w-[100%] flex flex-col gap-[1rem]'>
-              <p>팀 이름 *</p>
-              <input
-                className='w-[100%] h-[3rem] bg-grey-background rounded-[6px] focus:outline-none p-[10px]'
-                placeholder='사용자 이메일 혹은 이름을 입력해주세요'
-              />
-            </div>
-            <div className='w-[100%] flex flex-col gap-[1rem]'>
-              <p>이메일로 팀원 추가</p>
-              <input
-                className='w-[100%] h-[3rem] bg-grey-background rounded-[6px] focus:outline-none p-[10px]'
-                placeholder='사용자 이메일 혹은 이름을 입력해주세요'
-              />
-            </div>
-            <div className='grid gap-[0.4rem] grid-cols-3 self-start'>
-              {Array(20)
-                .fill('')
-                .map((v, i) => (
+  const StepTwoContentInAddTeamModal = ({ handlePrev }: { handlePrev: () => void }) => {
+    const teamNameRef = useRef<HTMLInputElement>(null);
+    const teamEmailRef = useRef<HTMLInputElement>(null);
+    const [emailList, setEmailList] = useState<string[]>([]);
+
+    const handleEnter = (e: any) => {
+      if (e.code !== 'Enter' || teamEmailRef.current === null || teamEmailRef.current.value === '')
+        return;
+      setEmailList([...emailList, teamEmailRef.current.value]);
+      teamEmailRef.current.value = '';
+    };
+
+    const handleCancel = (email: string) =>
+      setEmailList(emailList.filter((prevEmail) => prevEmail !== email));
+
+    const handleSubmit = async () => {
+      if (teamNameRef.current?.value === '') return;
+      const { status, data } = await addTeam({
+        name: teamNameRef.current?.value ?? '',
+        members: emailList,
+      });
+      if (status === 201) handleClose();
+    };
+
+    return (
+      <>
+        <ModalContent>
+          <div className='w-[800px] h-[500px] flex flex-col gap-[4rem] items-center p-[2rem]'>
+            <h2 className='text-[1.4rem] font-bold'>팀 생성</h2>
+            <div className='w-[100%] flex flex-col gap-[2rem] overflow-auto'>
+              <div className='w-[100%] flex flex-col gap-[1rem]'>
+                <p>팀 이름 *</p>
+                <input
+                  ref={teamNameRef}
+                  className='w-[100%] h-[3rem] bg-grey-background rounded-[6px] focus:outline-none p-[10px]'
+                  placeholder='사용자 이메일 혹은 이름을 입력해주세요'
+                />
+              </div>
+              <div className='w-[100%] flex flex-col gap-[1rem]'>
+                <p>이메일로 팀원 추가</p>
+                <input
+                  ref={teamEmailRef}
+                  className='w-[100%] h-[3rem] bg-grey-background rounded-[6px] focus:outline-none p-[10px]'
+                  placeholder='사용자 이메일 혹은 이름을 입력해주세요'
+                  onKeyDown={handleEnter}
+                />
+              </div>
+              <div className='grid gap-[0.4rem] grid-cols-3 self-start'>
+                {emailList.map((email) => (
                   <EmailChip
-                    key={i}
-                    email='maxcha98@ajou.ac.kr'
-                    handleCancel={() => {}}
+                    key={email}
+                    email={email}
+                    handleCancel={() => handleCancel(email)}
                   />
                 ))}
+              </div>
             </div>
           </div>
-        </div>
-      </ModalContent>
-      <ModalFooter
-        buttons={[
-          <Button
-            key='1'
-            type='orange'
-            content='추가'
-          />,
-          <Button
-            key='1'
-            type='grey'
-            content='뒤로'
-            onClick={handlePrev}
-          />,
-        ]}
-      />
-    </>
-  );
+        </ModalContent>
+        <ModalFooter
+          buttons={[
+            <Button
+              key='1'
+              type='orange'
+              content='추가'
+              onClick={handleSubmit}
+            />,
+            <Button
+              key='1'
+              type='grey'
+              content='뒤로'
+              onClick={handlePrev}
+            />,
+          ]}
+        />
+      </>
+    );
+  };
 
   return {
     handleOpen,

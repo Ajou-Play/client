@@ -21,7 +21,7 @@ export const LoginForm = () => {
     formState: { errors },
   } = useForm<LoginFormType>();
 
-  const [moveRegister, moveHome] = useMovePage(['/register', '/main']);
+  const [moveRegister, moveHome] = useMovePage(['/register', '/home']);
 
   const onSubmit = (data: LoginFormType) => {
     postLogin({ ...data })
