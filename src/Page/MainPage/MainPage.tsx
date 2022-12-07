@@ -30,38 +30,40 @@ export const MainPage = () => {
 
   const { teamList } = useTeamList();
   const { teamSelect, handleChangeTeamSelect } = useTeamSelect(teamList);
-
   const { channelSelect, handleChangeChannelSelect } = useChannelSelect(teamSelect);
-  const channelList = useChannelList({ teamId: teamList[teamSelect]?.teamId });
-  const memberItems = useMemberList({ teamId: teamList[teamSelect]?.teamId });
+  const { channelList, handleAddChannel } = useChannelList({
+    teamId: teamSelect,
+  });
+  const memberItems = useMemberList({ teamId: teamList[teamSelect]?.teamId ?? -1 });
   const handleClickWindow = (selectState: windowType) =>
     selectState === windowSelection ? handleInit() : handleChangeSelect(selectState);
 
   return (
-    <div className='flex '>
-      <TeamList
-        list={teamList}
-        teamSelect={teamSelect}
-        handleChangeTeamSelect={handleChangeTeamSelect}
-      />
-
-      <TeamInfoContainer teamName={teamList[teamSelect]?.name}>
-        <BasicTeamInfo
-          ChannelList={channelList}
-          channelSelect={channelSelect}
-          handleChangeChannelSelect={handleChangeChannelSelect}
+    <TeamContext.Provider value={teamSelect.toString()}>
+      <div className='flex '>
+        <TeamList
+          list={teamList}
+          teamSelect={teamSelect}
+          handleChangeTeamSelect={handleChangeTeamSelect}
         />
-        <MeetingContainer chatRoomId={channelSelect} />
-      </TeamInfoContainer>
 
-      <ChannelInfoContainer
-        {...getChannelInfo({ channels: channelList, id: channelSelect })}
-        handleClickWindow={handleClickWindow}
-      >
-        <Outlet />
-      </ChannelInfoContainer>
+        <TeamInfoContainer teamName={teamList[teamSelect]?.name}>
+          <BasicTeamInfo
+            handleAddChannel={handleAddChannel}
+            ChannelList={channelList}
+            channelSelect={channelSelect}
+            handleChangeChannelSelect={handleChangeChannelSelect}
+          />
+          <MeetingContainer chatRoomId={channelSelect} />
+        </TeamInfoContainer>
 
-      <TeamContext.Provider value={teamSelect.toString()}>
+        <ChannelInfoContainer
+          {...getChannelInfo({ channels: channelList, id: channelSelect })}
+          handleClickWindow={handleClickWindow}
+        >
+          <Outlet />
+        </ChannelInfoContainer>
+
         {windowSelection !== 'None' && (
           <WindowContainer
             windowSelection={windowSelection}
@@ -69,7 +71,7 @@ export const MainPage = () => {
             handleInit={handleInit}
           />
         )}
-      </TeamContext.Provider>
-    </div>
+      </div>
+    </TeamContext.Provider>
   );
 };

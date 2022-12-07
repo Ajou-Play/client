@@ -102,3 +102,18 @@
 canvas {
   display: block;
 }
+
+#progress {
+  appearance: none;
+  height: 10px;
+  width: 12rem;
+}
+#progress::-webkit-progress-bar {
+  background: #f0f0f0;
+  border-radius: 10px;
+  box-shadow: inset 3px 3px 10px #ccc;
+}
+#progress::-webkit-progress-value {
+  border-radius: 10px;
+  background: #ff6c47;
+}

@@ -1,5 +1,5 @@
 type SenderType = {
-  senderId: number;
+  userId: number;
   name: string;
   profileImage: string;
 };

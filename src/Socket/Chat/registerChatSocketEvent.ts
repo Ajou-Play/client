@@ -45,12 +45,11 @@ export const registerChatSocketEvent = (channel: string) => {
               type,
               sender: { userId: senderId, name, profileImage },
             } = message;
-
             setMessageData((prev) => [
               ...prev,
               {
                 content,
-                createdAt,
+                createdAt: new Date(createdAt),
                 sender: {
                   senderId,
                   name,
