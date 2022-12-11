@@ -61,7 +61,7 @@ export const MainPage = () => {
           {...getChannelInfo({ channels: channelList, id: channelSelect })}
           handleClickWindow={handleClickWindow}
         >
-          <Outlet />
+          <Outlet context={{ channelId: channelSelect }} />
         </ChannelInfoContainer>
 
         {windowSelection !== 'None' && (

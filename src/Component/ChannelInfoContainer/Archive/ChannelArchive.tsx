@@ -94,6 +94,7 @@ const CreateArchiveButton = ({
       className='flex bg-[#FCFCFC] w-[362px] h-[100px] px-[36px] py-[24px] box-border rounded-lg mr-4 mt-6 mb-8 items-center justify-between cursor-pointer'
       type='button'
       onClick={handleCreate}
+      disabled={archiveFormat === 'presentation'}
     >
       <div className='flex items-center'>
         <img

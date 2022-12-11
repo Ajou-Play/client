@@ -5,6 +5,9 @@ import { useCallback, useEffect, useState } from 'react';
 import 'quill/dist/quill.snow.css';
 import { useSocket } from './useQuill';
 
+import { Button } from '@Component/Button';
+import { getStorageItem } from '@Util/storage';
+
 const CURSOR_LATENCY = 100;
 
 type Irange = { index: number; length: number };
@@ -46,14 +49,13 @@ export const WordView = () => {
 
   useEffect(() => {
     if (socket == null || quill == null) return;
+    const userName = getStorageItem('userName') ?? '게스트';
     const handler: TextChangeHandler = (delta, oldDelta, source) => {
       if (source !== 'user') return;
       socket.emit('send-changes', delta);
     };
-    const cursorHandler: SelectionChangeHandler = (range, oldRange, source) => {
-      // if (source !== userId.toString()) return;
-      socket.emit('send-cursor-changes', { range, id: 1 });
-    };
+    const cursorHandler: SelectionChangeHandler = (cursor: any) =>
+      socket.emit('send-cursor-changes', { range: cursor?.range, id: userName });
 
     quill.on('text-change', handler);
     quill.on('selection-change', cursorHandler);
@@ -79,10 +81,11 @@ export const WordView = () => {
       [key: string]: {
         range: Irange;
         color: string;
+        id: string;
       };
     }) => {
-      Object.entries(cursormap).forEach(([source, { range, color }]) => {
-        cursors?.createCursor(source, source, color);
+      Object.entries(cursormap).forEach(([source, { range, color, id }]) => {
+        cursors?.createCursor(source, id, color);
         updateCursor(source, range);
       });
     };
@@ -129,9 +132,18 @@ export const WordView = () => {
   }, []);
 
   return (
-    <div
-      className='w-[100%] h-[calc(100vh-3rem-162px)]'
-      ref={wrapperRef}
-    />
+    <div className='w-[100%] h-[calc(100vh-3rem-162px)]'>
+      <div className='w-[100%] flex justify-end py-[0.2rem]'>
+        <Button
+          type='orange'
+          content='저장하기'
+          onClick={() => {}}
+        />
+      </div>
+      <div
+        className='w-[100%] h-[calc(100vh-3rem-162px)]'
+        ref={wrapperRef}
+      />
+    </div>
   );
 };

@@ -79,6 +79,10 @@ export const useChannelSelect = (deps?: number): UseChannelSelect => {
   };
 
   useEffect(() => {
+    console.log('channel', channelSelect);
+  }, [channelSelect]);
+
+  useEffect(() => {
     setChannelSelect(DONT_SELECT_CHANNEL);
   }, [deps]);
 
@@ -89,7 +93,7 @@ export const useChannelSelect = (deps?: number): UseChannelSelect => {
 };
 
 export const useMemberList = ({ teamId }: { teamId: number }) => {
-  const [memberList, setMemberList] = useState<any>({});
+  const [memberList, setMemberList] = useState<any>([]);
 
   useEffect(() => {
     if (teamId === -1) return;
@@ -101,14 +105,15 @@ export const useMemberList = ({ teamId }: { teamId: number }) => {
   return memberList;
 };
 
-export const useGetArchiveItems = () => {
+export const useGetArchiveItems = (channelId: number) => {
   const [archiveList, setArchiveList] = useState([]);
 
   useEffect(() => {
-    getArchives()
+    console.log('dddddwwdw');
+    getArchives(channelId)
       .then(setArchiveList)
       .catch(() => setArchiveList([]));
-  }, []);
+  }, [channelId]);
 
   return archiveList;
 };

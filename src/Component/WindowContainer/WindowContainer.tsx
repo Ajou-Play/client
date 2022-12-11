@@ -6,7 +6,7 @@ import { MessageWindow, TeamMemberWindow } from '@Component/.';
 
 const windowMapTitle: any = {
   Message: { title: '채팅', element: <MessageWindow /> },
-  Member: { title: '멤버', element: <TeamMemberWindow memberItems={{}} /> },
+  Member: { title: '멤버', element: <TeamMemberWindow memberItems={[]} /> },
   None: {},
 };
 

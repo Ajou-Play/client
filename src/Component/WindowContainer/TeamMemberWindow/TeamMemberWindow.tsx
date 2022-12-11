@@ -1,9 +1,9 @@
 import { MemberIcon } from '@Component/.';
 
 export const TeamMemberWindow = ({ memberItems }: { memberItems: any }) => {
-  console.log(memberItems);
+  console.log('멤버', memberItems);
 
-  return memberItems.map(({ userId, profileImage, name }: any) => (
+  return memberItems?.map(({ userId, profileImage, name }: any) => (
     <div
       key={userId}
       className='w-[100%] p-[1rem] flex gap-[1rem] items-center'

@@ -6,9 +6,16 @@ export const useSocket = () => {
   const [socket, setSocket] = useState<Socket>();
 
   useEffect(() => {
-    if (isSecondRender.current) setSocket(io('http://localhost:4000'));
+    console.log('connect');
+    if (isSecondRender.current)
+      setSocket(
+        io('https://127.0.0.1:4000', {
+          withCredentials: true,
+          transports: ['websocket'],
+        }),
+      );
     isSecondRender.current = true;
-  }, []);
+  }, [isSecondRender]);
 
   return socket;
 };

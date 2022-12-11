@@ -27,11 +27,13 @@ export const LoginForm = () => {
     postLogin({ ...data })
       .then((res) => {
         const {
-          data: { userId, accessToken, refreshToken },
+          data: { userName, userId, accessToken, refreshToken },
         } = res;
+
         document.cookie = accessToken;
         setStorageItem('refresh', refreshToken);
         setStorageItem('userId', userId);
+        setStorageItem('userName', userName ?? '임시');
         moveHome();
       })
       .catch((e) => {

@@ -15,7 +15,7 @@ export const getMembers = async ({ teamId }: { teamId: number }) => {
   return res.data.members;
 };
 
-export const getArchives = async () => {
-  const res = await axios.get(`/archives`);
-  return res.data;
+export const getArchives = async (channelId: number) => {
+  const res = await axios.get(`/channels/${channelId}/docs?page=0&size=10`);
+  return res.data.data.content;
 };
