@@ -9,7 +9,7 @@ export const useSocket = () => {
     console.log('connect');
     if (isSecondRender.current)
       setSocket(
-        io('https://127.0.0.1:4000', {
+        io('https://www.aplay.n-e.kr/exp', {
           withCredentials: true,
           transports: ['websocket'],
         }),
