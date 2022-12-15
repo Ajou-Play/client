@@ -250,12 +250,7 @@ input[type='submit']:active {
   height: auto !important;
 }
 
-.participant span {
-  color: PapayaWhip;
-}
-
 .participant.main {
-  width: 20%;
   margin: 0 auto;
 }
 
@@ -332,4 +327,8 @@ a.hovertext:after {
 a.hovertext:hover:after,
 a.hovertext:focus:after {
   opacity: 1;
+}
+
+h2 {
+  height: 10px;
 }
