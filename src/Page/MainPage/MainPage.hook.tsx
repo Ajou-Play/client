@@ -109,7 +109,6 @@ export const useGetArchiveItems = (channelId: number) => {
   const [archiveList, setArchiveList] = useState([]);
 
   useEffect(() => {
-    console.log('dddddwwdw');
     getArchives(channelId)
       .then(setArchiveList)
       .catch(() => setArchiveList([]));
